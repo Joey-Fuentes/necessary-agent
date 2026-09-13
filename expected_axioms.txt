@@ -45,3 +45,5 @@
 'Toy.W_Nat.powers_witness' depends on axioms: [propext, Quot.sound]
 'Toy.W_Pref.no_powers_at_maximal' depends on axioms: [propext, Quot.sound]
 'Toy.NoTR.powers_horn1' depends on axioms: [propext, choice, Quot.sound]
+'Toy.W_Nat.fallible_witness' depends on axioms: [propext, Quot.sound]
+'Toy.W_Pref.fallible_witness' depends on axioms: [propext, Quot.sound]

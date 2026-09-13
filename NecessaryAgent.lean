@@ -40,6 +40,21 @@
     Tier 2–4 premises for all worlds; bears on the evidential argument from
     evil); `realOf` defined, `Accurate` content-indexed, MR removed (D12, D14,
     D15).
+  - v8.9 — THE FALLIBLE READING, finished.  `FalliblePowers` states the
+    powers naturalist's escape from `powers_all_tied` with the only axiom it
+    can keep (`manif₀`: manifests at w₀).  `FalliblePowers.actual` shows it
+    is free — every model with a channel state has one.  `W_Nat.fallible_witness`
+    and `W_Pref.fallible_witness`: the SAME generic structure directs the
+    channel state at maximality on the bare naturalist's model and on the
+    theist's, which differ only in `Sens`, `Rep`, `Mental`.  So fallible
+    directedness distinguishes nothing; what distinguishes the theist from
+    the bare naturalist is whether the alternatives figure.  The prose (III.5)
+    closes the reading on Mumford–Anjum (no interference at the foundation),
+    Vetter (degree is a propensity; no degree is bare) and Bird (no
+    stimulus).  One sentence remains to the powers naturalist — "the
+    alternatives figure and the state is about none of them" — answered by
+    Oderberg's abstraction criterion, which is philosophical and stays so.
+    #print axioms ×49.
   - v8.8 — THE TR FORK, certified (D23).  The powers naturalist's primitive
     is formalized as an OPTIONAL extension `Powers M` — `Directed s D` with
     the powers theorist's own axiom `manif` (an unmasked power manifests its
@@ -2045,6 +2060,47 @@ theorem powers_fork {s : M.State} (hs : PowersChannel M s) {D : M.Reality → Pr
     exact ⟨h1.1 r' ⟨w', hw', hne'⟩, h2.1 r ⟨w, hw, hne⟩⟩
 
 end PowersFork
+
+/-! ### The fallible reading (v8.9)
+
+`powers_all_tied` leaves the powers naturalist one escape: a directedness at
+maximality that can FAIL — manifests at w₀, not at w′.  `FalliblePowers`
+states that reading with the only axiom it can keep: the type manifests at
+the actual world.  Two facts are certified below.
+
+- Every `Powers` structure is a `FalliblePowers` structure (`Powers.fallible`),
+  and every model with a channel state has one (`FalliblePowers.actual`):
+  the generic structure that directs s at exactly the properties the actual
+  reality has.  Fallible directedness is therefore FREE — it costs nothing
+  and distinguishes nothing.
+- The SAME generic structure lives on `W_Nat` and on `W_Pref`
+  (`W_Nat.fallible_witness`, `W_Pref.fallible_witness`): on both, s is
+  fallibly directed at maximality, manifests it at w₀, fails at w′.  The two
+  models have identical causal structure and identical balance; they differ
+  in `Sens`, `Rep`, `Mental` and nothing else.  So "a fallible directedness
+  at the best" does not distinguish the powers naturalist from either the
+  bare naturalist or the theist.  What distinguishes W_Pref from W_Nat is
+  `Sens`: that the alternatives figure.  The powers naturalist who takes the
+  fallible reading has said nothing until he says whether they do — and
+  then he is `W_Nat` (they do not: bare, CE false) or he has the theist's
+  inclination (they do: TR's question, III.5). -/
+
+/-- Fallible directedness: the type manifests at the actual world; nothing
+    is said about other worlds. -/
+structure FalliblePowers (M : Model) where
+  Directed : M.State → (M.Reality → Prop) → Prop
+  manif₀ : ∀ s D, Directed s D → ∀ m, M.F M.w₀ m → M.CausesVia M.w₀ (M.bearer s) s m → D (M.realOf M.w₀)
+
+/-- Every power is a fallible power. -/
+def Powers.fallible {M : Model} (Pw : Powers M) : FalliblePowers M :=
+  ⟨Pw.Directed, fun s D hD m hm hcv => Pw.manif s D hD M.w₀ m hm hcv⟩
+
+/-- The generic fallible structure on any model: s is directed at exactly
+    the properties the actual reality has.  `manif₀` is immediate.  This is
+    the weakest structure the fallible reading can mean and the one most
+    favourable to it. -/
+def FalliblePowers.actual (M : Model) (s : M.State) : FalliblePowers M :=
+  ⟨fun st D => st = s ∧ D (M.realOf M.w₀), fun _ _ ⟨_, h⟩ _ _ _ => h⟩
 
 end NecessaryAgent
 
@@ -4260,6 +4316,18 @@ theorem powers_witness :
     (∀ w P ch, ¬ M.Sens w P ch) ∧ ¬ CE_stmt M ∧
     (¬ ∃ Pw' : Powers M, Pw'.Directed .s M.Maximal) :=
   ⟨channel, directed_nonempty, fun _ _ _ h => h, witness.2.1, no_powers_at_maximal⟩
+
+/-- THE FALLIBLE READING, on the bare naturalist's model.  The generic
+    fallible structure directs s at maximality — it manifests maximality at
+    w₀ and fails at w′ — with no `Sens` through any channel, the production
+    bare at both worlds, and CE false.  A fallible directedness at the best,
+    with the alternatives not figuring, IS the bare naturalist. -/
+theorem fallible_witness :
+    (FalliblePowers.actual M .s).Directed .s M.Maximal ∧ ¬ M.Maximal (M.realOf false) ∧
+    (∀ w P ch, ¬ M.Sens w P ch) ∧ M.Bare true ∧ M.Bare false ∧ ¬ CE_stmt M :=
+  ⟨⟨rfl, ⟨fun _ _ => Or.inl realOf_true, Or.inl realOf_true⟩⟩,
+   not_maximal_false, fun _ _ _ h => h, witness.2.2.2.2.2.1,
+   ⟨not_det, fun ⟨_, h⟩ => h, id⟩, witness.2.1⟩
 end W_Nat
 
 namespace W_Pref
@@ -4276,6 +4344,18 @@ theorem channel : PowersChannel M .s :=
     naturalist cannot borrow the theist's discriminating balance. -/
 theorem no_powers_at_maximal : ¬ ∃ Pw' : Powers M, Pw'.Directed .s M.Maximal :=
   fun ⟨Pw', hD⟩ => residue.2 (powers_all_maximal Pw' channel hD false ⟨_, F_c2⟩)
+
+/-- THE FALLIBLE READING, on the theist's model.  The SAME generic structure
+    directs the theist's selecting state at maximality — manifests at w₀,
+    fails at w′ (`residue`) — and here `Sens` holds at both worlds.  Compare
+    `W_Nat.fallible_witness`: same fallible directedness, same causal
+    structure, same balance.  The two models differ in `Sens`, `Rep`,
+    `Mental` and nothing else. -/
+theorem fallible_witness :
+    (FalliblePowers.actual M .s).Directed .s M.Maximal ∧ ¬ M.Maximal (M.realOf false) ∧
+    (∀ w P, M.Sens w P (.state .s)) ∧ M.Favored true ∧ M.Favored false :=
+  ⟨⟨rfl, ⟨fun _ _ => Or.inl realOf_true, Or.inl realOf_true⟩⟩,
+   residue.2, fun _ _ => rfl, ⟨.state .s, rfl⟩, ⟨.state .s, rfl⟩⟩
 end W_Pref
 
 namespace NoTR
@@ -4352,3 +4432,5 @@ end Toy
 #print axioms Toy.W_Nat.powers_witness
 #print axioms Toy.W_Pref.no_powers_at_maximal
 #print axioms Toy.NoTR.powers_horn1
+#print axioms Toy.W_Nat.fallible_witness
+#print axioms Toy.W_Pref.fallible_witness
