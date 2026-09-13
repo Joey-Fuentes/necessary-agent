@@ -121,7 +121,6 @@ fields:
   NecessaryAgent.CoreNoP4.F1 : NecessaryAgent.F1_stmt M
   NecessaryAgent.CoreNoP4.Src : NecessaryAgent.Src_stmt M
   NecessaryAgent.CoreNoP4.E : NecessaryAgent.E_stmt M
-  NecessaryAgent.CoreNoP4.L0 : NecessaryAgent.L0_stmt M
   NecessaryAgent.CoreNoP4.B1 : NecessaryAgent.B1_stmt M
   NecessaryAgent.CoreNoP4.B1' : NecessaryAgent.B1'_stmt M
   NecessaryAgent.CoreNoP4.B2 : NecessaryAgent.B2_stmt M
@@ -138,12 +137,12 @@ fields:
   NecessaryAgent.CoreNoP4.L4 : NecessaryAgent.L4_stmt M
 constructor:
   NecessaryAgent.CoreNoP4.mk {M : NecessaryAgent.Model} (F1 : NecessaryAgent.F1_stmt M)
-    (Src : NecessaryAgent.Src_stmt M) (E : NecessaryAgent.E_stmt M) (L0 : NecessaryAgent.L0_stmt M)
-    (B1 : NecessaryAgent.B1_stmt M) (B1' : NecessaryAgent.B1'_stmt M) (B2 : NecessaryAgent.B2_stmt M)
-    (P0 : NecessaryAgent.P0_stmt M) (P1 : NecessaryAgent.P1_stmt M) (P2 : NecessaryAgent.P2_stmt M)
-    (P5 : NecessaryAgent.P5_stmt M) (FA : NecessaryAgent.FA_stmt M) (P7 : NecessaryAgent.P7_stmt M)
-    (P8 : NecessaryAgent.P8_stmt M) (P9 : NecessaryAgent.P9_stmt M) (P11 : NecessaryAgent.P11_stmt M)
-    (P12 : NecessaryAgent.P12_stmt M) (L4 : NecessaryAgent.L4_stmt M) : NecessaryAgent.CoreNoP4 M
+    (Src : NecessaryAgent.Src_stmt M) (E : NecessaryAgent.E_stmt M) (B1 : NecessaryAgent.B1_stmt M)
+    (B1' : NecessaryAgent.B1'_stmt M) (B2 : NecessaryAgent.B2_stmt M) (P0 : NecessaryAgent.P0_stmt M)
+    (P1 : NecessaryAgent.P1_stmt M) (P2 : NecessaryAgent.P2_stmt M) (P5 : NecessaryAgent.P5_stmt M)
+    (FA : NecessaryAgent.FA_stmt M) (P7 : NecessaryAgent.P7_stmt M) (P8 : NecessaryAgent.P8_stmt M)
+    (P9 : NecessaryAgent.P9_stmt M) (P11 : NecessaryAgent.P11_stmt M) (P12 : NecessaryAgent.P12_stmt M)
+    (L4 : NecessaryAgent.L4_stmt M) : NecessaryAgent.CoreNoP4 M
 structure NecessaryAgent.Core (M : NecessaryAgent.Model) : Prop
 number of parameters: 1
 parents:
@@ -152,7 +151,6 @@ fields:
   NecessaryAgent.CoreNoP4.F1 : NecessaryAgent.F1_stmt M
   NecessaryAgent.CoreNoP4.Src : NecessaryAgent.Src_stmt M
   NecessaryAgent.CoreNoP4.E : NecessaryAgent.E_stmt M
-  NecessaryAgent.CoreNoP4.L0 : NecessaryAgent.L0_stmt M
   NecessaryAgent.CoreNoP4.B1 : NecessaryAgent.B1_stmt M
   NecessaryAgent.CoreNoP4.B1' : NecessaryAgent.B1'_stmt M
   NecessaryAgent.CoreNoP4.B2 : NecessaryAgent.B2_stmt M
@@ -181,7 +179,6 @@ fields:
   NecessaryAgent.CoreNoP4.F1 : NecessaryAgent.F1_stmt M
   NecessaryAgent.CoreNoP4.Src : NecessaryAgent.Src_stmt M
   NecessaryAgent.CoreNoP4.E : NecessaryAgent.E_stmt M
-  NecessaryAgent.CoreNoP4.L0 : NecessaryAgent.L0_stmt M
   NecessaryAgent.CoreNoP4.B1 : NecessaryAgent.B1_stmt M
   NecessaryAgent.CoreNoP4.B1' : NecessaryAgent.B1'_stmt M
   NecessaryAgent.CoreNoP4.B2 : NecessaryAgent.B2_stmt M
@@ -216,7 +213,6 @@ fields:
   NecessaryAgent.CoreNoP4.F1 : NecessaryAgent.F1_stmt M
   NecessaryAgent.CoreNoP4.Src : NecessaryAgent.Src_stmt M
   NecessaryAgent.CoreNoP4.E : NecessaryAgent.E_stmt M
-  NecessaryAgent.CoreNoP4.L0 : NecessaryAgent.L0_stmt M
   NecessaryAgent.CoreNoP4.B1 : NecessaryAgent.B1_stmt M
   NecessaryAgent.CoreNoP4.B1' : NecessaryAgent.B1'_stmt M
   NecessaryAgent.CoreNoP4.B2 : NecessaryAgent.B2_stmt M
@@ -380,13 +376,13 @@ fun M s =>
         M.Rep s (NecessaryAgent.Content.alt r) ∧
           ∀ (c : M.Consideration), M.Bears c r → M.Rep s (NecessaryAgent.Content.cons c r)
 def NecessaryAgent.Model.Mind : (M : NecessaryAgent.Model) → M.Thing → Prop :=
-fun M t => ∃ s, M.bearer s = t ∧ M.Mental s
+fun M t => ∃ s, M.bearer s = t ∧ (∃ w, M.E_state w s) ∧ M.Mental s
 def NecessaryAgent.Model.AccurateAll : (M : NecessaryAgent.Model) → M.State → Prop :=
 fun M s =>
   ∀ (c : NecessaryAgent.Content (NecessaryAgent.Pred (M.Thing ⊕ M.State)) M.Consideration), M.Rep s c → M.Accurate s c
 def NecessaryAgent.Model.Knows : (M : NecessaryAgent.Model) →
   M.Thing → NecessaryAgent.Content M.Reality M.Consideration → Prop :=
-fun M t c => ∃ s, M.bearer s = t ∧ M.Rep s c ∧ M.Accurate s c
+fun M t c => ∃ s, M.bearer s = t ∧ (∃ w, M.E_state w s) ∧ M.Rep s c ∧ M.Accurate s c
 def NecessaryAgent.Model.Agent : (M : NecessaryAgent.Model) → M.W → M.Thing → Prop :=
 fun M w t => ∃ s, M.bearer s = t ∧ M.SelectingRep w s
 def NecessaryAgent.Model.P7Antecedent : (M : NecessaryAgent.Model) → M.W → M.Thing → Prop :=

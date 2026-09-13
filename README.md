@@ -4,7 +4,7 @@ Three files, which must stay in agreement:
 
 | File | Role | Status |
 |---|---|---|
-| `NecessaryAgent.lean` | The formal argument. Definitions, premises, every derivation line as a theorem, a consistency witness, independence witnesses for every premise, and the named conclusion `God` with `god_exists`. | Certified by Lean 4.33.1 (v8.15: 63 results; statements and definitions pinned) |
+| `NecessaryAgent.lean` | The formal argument. Definitions, premises, every derivation line as a theorem, a consistency witness, independence witnesses for every premise, and the named conclusion `God` with `god_exists`. | Certified by Lean 4.33.1 (v8.16: 64 results; statements and definitions pinned) |
 | `docs/necessary_agent_argument_v8_7.md` | The human-readable argument. **Part I** is the Lean file in words, section for section. **Part II** is informal assessment: exits, ledger, ladder, open problems. **Part III** is the soundness dossier: each premise's case, objections, replies, cost of denial, and ceiling. | Part I inherits the certificate *if it matches the Lean file*; Parts II–III are uncertified |
 | `README.md` | This file: how to verify, how to read, how to change things without breaking them. | — |
 | `expected_axioms.txt`, `scripts/verify.sh`, `.github/workflows/verify.yml`, `lean-toolchain`, `lakefile.toml` | Continuous verification (§0.0). | CI |
@@ -23,7 +23,7 @@ Three files, which must stay in agreement:
 
 No installation: paste `NecessaryAgent.lean` into https://live.lean-lang.org (select a Lean 4 toolchain; Mathlib is not needed). Locally: install `elan` with toolchain `leanprover/lean4:v4.33.1`, then `lean NecessaryAgent.lean`. The file is self-contained (`import Std` only). Last verified 2026-09-13 under Lean 4.33.1 (commit 819816b2): exit 0, no errors, no warnings, ~90 s. No file fingerprint is stated here (the MD5 once given matched no file, and v8.14's promise of a SHA-256 in the commit message was not kept). What counts is the git commit hash and the byte-identity of `expected_axioms.txt`, `expected_statements.txt` and `expected_definitions.txt` under `scripts/verify.sh`.
 
-Expected `#print axioms` output — these sixty-three lines and nothing else (followed by the `#check` output pinned in `expected_statements.txt` and the `#print` output pinned in `expected_definitions.txt`):
+Expected `#print axioms` output — these sixty-four lines and nothing else (followed by the `#check` output pinned in `expected_statements.txt` and the `#print` output pinned in `expected_definitions.txt`):
 
 ```
 'NecessaryAgent.main' depends on axioms: [propext, choice, Quot.sound]
@@ -84,6 +84,7 @@ Expected `#print axioms` output — these sixty-three lines and nothing else (fo
 'Toy.W_Pref.fork_is_residue' depends on axioms: [propext, Quot.sound]
 'Toy.W_Two.Both.position_ii' depends on axioms: [propext, choice, Quot.sound]
 'Toy.W_Two.OneChannel.position_i' depends on axioms: [propext, choice, Quot.sound]
+'Toy.W_Two.Both.ID_and_not_IDF' depends on axioms: [propext, Quot.sound]
 'NecessaryAgent.L0_of_P1' does not depend on any axioms
 'NecessaryAgent.fallible_actual_trivial' does not depend on any axioms
 'Toy.P8s_holds' depends on axioms: [propext, Quot.sound]
@@ -104,7 +105,7 @@ Every push to `main` (and every pull request) runs `.github/workflows/verify.yml
 5. (v8.14) the `#check` output — the **statement** of every certified result — is byte-identical to `expected_statements.txt`. Without this, a theorem whose statement was weakened to `… ∨ (1 = 1)` while keeping the same proof term passed checks 1–4 unchanged; the third external review demonstrated it, and it is now a tested failure;
 6. (v8.15) the `#print` output of every **definition** those statements name — the `Model` structure and all its definitions, every `X_stmt`, the premise structures, `God`, `KnowsAll`, the powers structures — is byte-identical to `expected_definitions.txt`. Check 5 pins types *by name*; the fourth review showed `def AccordsValue … := True` with patched proofs passed checks 1–5.
 
-**What green means after all six checks, exactly:** the file declares these sixty-three results, with these axiom sets, these printed types, and these printed definitions. It does not mean the definitions are the right ones — that is the faithfulness question (§1), which is read, not run — and a commit can change a pinned definition and its expected file together; the commit diff is the last line of defence and the reader is the one after that.
+**What green means after all six checks, exactly:** the file declares these sixty-four results, with these axiom sets, these printed types, and these printed definitions. It does not mean the definitions are the right ones — that is the faithfulness question (§1), which is read, not run — and a commit can change a pinned definition and its expected file together; the commit diff is the last line of defence and the reader is the one after that.
 
 A green check on `main` means what the paragraph after item 6 says, and no more. Any change to a premise, theorem, or witness that alters what is certified changes the output and fails the build; `expected_axioms.txt` must be updated in the same commit with the reason in the message. Locally: `scripts/verify.sh` (needs `lean` on PATH; elan reads `lean-toolchain` automatically), or `lake build`.
 
@@ -130,7 +131,7 @@ The script's negative behaviour is tested: a `sorry` inserted into a proof, a `#
 **Not certified (and not certifiable by any tool):**
 - That the premises are true.
 - That the Lean definitions mean what the prose words mean. This "faithfulness" step is an informal judgment; the definitions are written to make it checkable by inspection, and the prose gives the Lean name beside every definition and premise so the reader can compare.
-- That the modeling decisions (Lean header D1–D23; prose §1.0 D1–D28) are the right stipulations. Each is a place where earlier versions were ambiguous. Rejecting one is rejecting a stipulation, which is priced in prose §7.
+- That the modeling decisions (Lean header D1–D23; prose §1.0 D1–D28 (D28 resolved in v8.16)) are the right stipulations. Each is a place where earlier versions were ambiguous. Rejecting one is rejecting a stipulation, which is priced in prose §7.
 - Anything in prose Parts II–III, or in `cosmic_strand_v2.md`. In particular: that Exit 1's price (D22) is too high to pay is a judgment, and the TR fork (D23) is stated, not formalized.
 
 ---
@@ -213,7 +214,7 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | mind without value | `mind_of_CE_NBL` | CoreNoP4 + CE + NBL + CH + TR (no P4: v8.10) |
 | 3.3–3.4 | `T3_4` | Axioms0 (via derived P10) |
 | 3.6 | `T3_6` | Axioms (P5) |
-| 3.7 | `T3_7` | Core (Src, P1, L0, B1) |
+| 3.7 | `T3_7` | Core (Src, P1, B1) |
 | mentality by elimination | `mental_of_nonactual`, `inground_state_in_force` | FA (states in force, v8.15) |
 | 3.8 | `T3_8` | FA |
 | 3.9–3.10 | `T3_10`, `selecting_props` | P9 |
@@ -238,7 +239,9 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | denying P4 is polytheism | `W_P4.two_minds` | — (model) |
 | IDF alone is not P4 (alternation) | `W_P4.IDF_and_not_P4` | — (model) |
 | the fallible structure is content-free | `fallible_actual_iff`, `fallible_actual_trivial` | — (no axioms) |
-| L0 derived | `L0_of_P1` | P1 |
+| L0 derived (not a field since v8.16) | `L0_of_P1` | P1 |
+| ID ≠ IDF, both directions | `W_P4.IDF_and_not_ID`, `W_Two.Both.ID_and_not_IDF` | — (models) |
+| position (i)'s N₂ is not a mind | `W_Two.OneChannel.position_i` (`not_mind_N2`, `not_knows_N2`) | — (model) |
 | P8s, SK consistent with `Axioms` | `P8s_holds`, `SK_holds` | — (model) |
 | IDF ≠ ID | `W_P4.IDF_and_not_ID` | — (model) |
 | "directed at non-empty" is a tautology | `natural_directed_nonempty` | — (no axioms) |
@@ -485,6 +488,16 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 
 ---
 
+### v8.15 → v8.16 (the deferred definitional changes)
+
+| # | Change | Where |
+|---|---|---|
+| cv | `Mind`, `Knows` require the state in force at some world; D28 resolved; consumers re-threaded | `Model.Mind`, `Model.Knows`, `knowsAll_of_rep`, `T3_8`, `T3_11`, `T3_11'`, `mind_of_CE_NBL`, `knows_actual`; `Toy.*` |
+| cw | L0 removed as a `CoreNoP4` field (derived: `L0_of_P1`); no proof used it | `CoreNoP4`; every witness statement |
+| cx | `W_Two`: per-state `Rep`/`Mental`; position (i)'s N₂ certified not a mind, knows nothing | `Toy.W_Two.OneChannel.position_i` |
+| cy | `W_Two.Both.ID_and_not_IDF` (kinds differ across worlds); with `W_P4.IDF_and_not_ID`, IDF ≠ ID both ways | `Toy.W_Two.Both` |
+| cz | v8.15 independently verified by CI run 94204794756 (recorded in the handoff) | handoff |
+
 ## 4. Workflow for future changes
 
 Every prior version of this argument was declared fixed by the person who fixed it and then broken by the next reader. The Lean file exists to end that. It only works if the workflow is followed.
@@ -493,7 +506,7 @@ Every prior version of this argument was declared fixed by the person who fixed 
 2. **Make the matching change in the Lean file.** If a definition changes, every theorem mentioning it must be re-proved; the compiler will tell you which.
 3. **Run the three checks (§0.1).** If `Toy.A` no longer compiles, either the new premise set is inconsistent or the toy model needs a different instance — find out which before proceeding. If a witness no longer compiles, the corresponding independence claim in the prose must be withdrawn.
 4. **Re-check faithfulness by inspection**: read the changed Lean definition and the changed prose sentence side by side.
-5. **Never accept a "verified" claim from the same session that made the change.** Hand the files to a fresh reader (human or chat) with the expected outputs and the instruction: reproduce the sixty-three `#print axioms` lines, the pinned statements and the pinned definitions, then attack faithfulness, then attack Part II. (v8.14 and v8.15 were produced by the session that reviewed v8.13, applying the third and fourth reviews; per this rule neither has been independently verified.)
+5. **Never accept a "verified" claim from the same session that made the change.** Hand the files to a fresh reader (human or chat) with the expected outputs and the instruction: reproduce the sixty-four `#print axioms` lines, the pinned statements and the pinned definitions, then attack faithfulness, then attack Part II. (v8.14–8.16 were produced by the session that reviewed v8.13. v8.15 was independently verified by CI run 94204794756; v8.16 has not yet been.)
 
 What a fresh reader can still legitimately attack after all this: (i) whether a Lean definition captures the intended notion; (ii) whether a stipulation D1–D12 is reasonable; (iii) whether a premise is true. They cannot legitimately attack the inference from premises to conclusion — if they think they can, the Lean file is the arbiter, and they should produce a compiling counterexample.
 

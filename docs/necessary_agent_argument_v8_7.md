@@ -1,5 +1,5 @@
 # A Necessary Agent: The Argument at Minimum Cost
-## Version 8.15 — after the fourth external review: FA and P9 weakened to states in force; four witnesses corrected (P6→FA); `mind_of_CE_NBL` concludes of the selector; `T3_11'` proved directly; L0 derived from P1; definitions pinned in CI. Machine-checked core; P3, P6 and P10 derived; the necessary-mind conclusion needs no value premise; P4⁺ adopted: one being; soundness dossier complete; two naturalist packages certified (¬CE and ¬TR); the theist's residue certified and priced; the conclusion named (`God`) and certified (`god_exists`); the TR fork certified for the necessitating reading (`powers_fork`); the fallible reading open (v8.14); P4 narrowed to uniqueness (`CoreNoP4`, `W_P4.two_minds`); III.4 rewritten; IDF stated and its limit certified; CatU, P1, P11 argued; 63 certified results
+## Version 8.16 — the deferred definitional changes: `Mind`/`Knows` require the state in force; L0 removed as a field; position (i)'s N₂ certified not a mind; ID ∧ ¬IDF certified. After the fourth external review: FA and P9 weakened to states in force; four witnesses corrected (P6→FA); `mind_of_CE_NBL` concludes of the selector; `T3_11'` proved directly; L0 derived from P1; definitions pinned in CI. Machine-checked core; P3, P6 and P10 derived; the necessary-mind conclusion needs no value premise; P4⁺ adopted: one being; soundness dossier complete; two naturalist packages certified (¬CE and ¬TR); the theist's residue certified and priced; the conclusion named (`God`) and certified (`god_exists`); the TR fork certified for the necessitating reading (`powers_fork`); the fallible reading open (v8.14); P4 narrowed to uniqueness (`CoreNoP4`, `W_P4.two_minds`); III.4 rewritten; IDF stated and its limit certified; CatU, P1, P11 argued; 64 certified results
 
 ---
 
@@ -44,7 +44,15 @@ Nothing in the certificate depends on anything beyond Lean's standard axioms (`p
 - (o) **P12 reduced.** Outcomes have a category (D13). Two premises — CatOpen: each category class is an open region (no output is a limit of outputs of other categories); CatU: uncountably many categories are realized — entail P12 by pure logic (`P12_of_cat`). These are the two claims the v5 defense of P12 actually made; they are now separated and each can be attacked on its own. The L4 model satisfies both, so they are consistent with every premise except L4.
 - (p) **Appendix A** reproduces the Lean definitions and premise statements verbatim, so the faithfulness check (Part I against Lean) can be done without opening the Lean file.
 
-**Changes from v8.14 (this revision — v8.15: after the fourth external review, a read-through without a compiler that found four formal gaps between certificate and claim, and a long tail of stale prose).**
+**Changes from v8.15 (this revision — v8.16: the two items v8.15 deferred, and the two uncompiled conjectures).**
+
+- (cs) **`Mind` and `Knows` tightened.** `Mind t := ∃ s, bearer s = t ∧ (∃ w, E_state w s) ∧ Mental s`; `Knows t c := ∃ s, bearer s = t ∧ (∃ w, E_state w s) ∧ Rep s c ∧ Accurate s c`. D28's looseness is resolved rather than recorded: a being is a mind or a knower only in virtue of a state it actually occupies at some world. Every consumer re-threaded through `inground_state_in_force` (the certified chain's states are necessary states of a necessary being, in force everywhere). Nothing certified is lost; `W_Id.*`, `two_minds`, `DState`, `knowsAll_of_rep`, `knows_actual` re-derived.
+- (ct) **L0 removed as a field.** `L0_of_P1` (v8.15) made it derived; no proof used `A.L0`; it is now not a field of `CoreNoP4`, and every witness statement drops the conjunct. `CoreNoP4` has seventeen fields.
+- (cu) **Position (i)'s N₂ is certified not a mind.** `W_Two` now makes `Rep` and `Mental` hold of N₂'s state iff `both`; in `OneChannel` N₂ produces at every world, is fundamental, is not an agent, is **not a mind** and **knows nothing** (`not_mind_N2`, `not_knows_N2`, both in `position_i`). The v8.14 remark that N₂ was a mind "only because `Mental := True` is global" is discharged; position (i) is a second producer, full stop, and it is still unpriced.
+- (cv) **ID ∧ ¬IDF certified.** `W_Two.Both.ID_and_not_IDF` (`kd := true`: the two worlds' first items differ in kind, so `TypeDeterministic` fails and ID holds — vacuously, the only way ID can hold in a model of `Core`, where `T2_4` refutes `Deterministic`). With `W_P4.IDF_and_not_ID`, IDF and ID are separated in both directions.
+- (cw) **Independent verification recorded.** v8.15 (`fe64e68`) was verified by the repository's CI (GitHub Actions run 94204794756, Lean 4.33.1 `819816b2`, all six checks, artifact byte-identical to the expected files). v8.16 has not yet been.
+
+**Changes from v8.14 (v8.15: after the fourth external review, a read-through without a compiler that found four formal gaps between certificate and claim, and a long tail of stale prose).**
 
 - (ck) **FA and P9 weakened to states in force.** `Historical w s` needs an ancestor of `s` at `w`; by F1 nothing causes an absent state, so `¬ Historical w s` held *vacuously* at every world where `s` is absent, and since `Rep` is not world-indexed the v8.2–8.14 FA bound every non-mental representing state at every world where it was absent — a contingent organism's non-mental detector state, present at two worlds with different realities and absent at two others, violated it. P9 had the same shape for necessary states of contingent beings. Both now carry the hypothesis `M.E_state w s →`. Every use in the proofs has the state in force (`inground_state_in_force`), so nothing certified changes; this is a premise *weakening* with no loss of theorems, and the priced premise is now the one the prose defends (III.3, D19).
 - (cl) **Four witnesses certified the retired P6.** `W_P2`, `W_P4`, `W_P1`, `W_L4` listed `P6_stmt` instead of `FA_stmt` in their "every other field holds" conjunction since v8.2, through three reviews. Fixed; the four now certify FA.
@@ -227,7 +235,7 @@ The Lean file fixes a structure `Model` whose fields are the primitive sorts and
 - **D22** The two exits (v8.7). Every field has an independence witness, so every premise is deniable; the two a serious naturalist takes are these. *Exit 1*, `W_Nat` (¬CE): the necessary foundation could have produced many realities, produced this one, and nothing bore on which. Its price: (a) the whole content of the first stage — under D21, Λ inside a ~2-order-of-magnitude window against a ~120-order natural range, Q inside a ~2-order window, quark masses inside the nuclear-stability island, near-zero initial gravitational entropy against a ~10¹²² maximum, 3+1 dimensions — obtains with nothing bearing on any of it; (b) contrastive explanation is exempted at exactly one point and demanded everywhere above it; (c) the measure cosmology uses for initial conditions is rejected, or kept and Boltzmann brains inherited. *Exit 2*, `NoTR` (¬TR): something bore on the outcome — a necessary state directed at a determinate kind — but the state is about nothing; the alternatives, including producing nothing, never figured. Its price is the fork in D23. *The theist's residue* (`W_Pref.residue`) is one binary fact — whether the inclination toward the best prevailed — of the kind every libertarian pays at every free choice; the content of the outcome is explained by `Maximal`. The asymmetry over Exit 1 is in what is left unexplained (a yes/no against the whole first stage) and in the kind of gap (familiar against new). It bites against a naturalist who accepts libertarian agency anywhere; against a compatibilist it does not, and the comparison there is content alone.
 - **D25** IDF (v8.12). `SameProfile` and `IDF_stmt` are defined in the file as an optional premise: fundamental beings sharing every necessary feature are one. It is the refusal of primitive thisness *for fundamental beings*. *Corrected (v8.14–8.15):* it is not "made once" for both P4 and CE's Objection 9 — IDF is about `Thing`s with `SameProfile`, ID (D1) about first-stage `Item`s and `kind`; `W_P4.IDF_and_not_ID` certifies IDF ∧ ¬ID consistent. IDF excludes III.6's position (ii) (`W_Two.Both.not_IDF`) and is silent on (i) and (iv). `W_P4.IDF_and_not_P4` certifies IDF alone is not P4.
 - **D27** Causally inert contingents are outside "reality" (recorded v8.15; true since v7.1). `Concrete t := ∃ w y, Causes w (inl t) y`, and `ContingentItem` requires `Concrete`. So a contingent thing that never causes anything at any world is not a contingent item: it is outside `realOf w`, P2 does not require it to have a cause, and `BringsAbout`, `KnowsAll`, and `God` say nothing about it. "Brings about every world's contingent reality" means every *causally active* contingent. In `W_Pref`/`W_Nat` this is visible: `d1` "causes nothing, so is not concrete."
-- **D28** `Mind` and `Knows` do not require the state to be in force (recorded v8.15). `Mind t := ∃ s, bearer s = t ∧ Mental s`; `Knows t c := ∃ s, bearer s = t ∧ Rep s c ∧ Accurate s c`. Neither requires `E_state w s` at any world, so a being counts as a mind or a knower in virtue of a state-type it never occupies. The certified chain uses a necessary state of a necessary being, which is in force at every world (`inground_state_in_force`), so `God`'s conjuncts are unaffected; the definitions are looser than the words, and tightening them is deferred to a pass that re-derives each affected identity theorem.
+- **D28** `Mind` and `Knows` require the state to be in force at some world (resolved v8.16; recorded as a looseness in v8.15). `Mind t := ∃ s, bearer s = t ∧ (∃ w, E_state w s) ∧ Mental s`, and likewise `Knows`. The certified chain uses necessary states of a necessary being, in force at every world (`inground_state_in_force`), so nothing certified changed.
 - **D26** Corrections to D23 and D25 after the third review (v8.14). *D23:* the fallible reading is open. `FalliblePowers.actual` is content-free (`fallible_actual_iff`); the v8.9 witnesses are deleted; `powers_fork`'s left horn is `W_Pref.residue` on the theist's own model (`W_Pref.fork_is_residue`); `manif` is the necessitating reading only, and it is Lowe's reconstruction of Mumford–Anjum, not their axiom. *D25:* IDF excludes position (ii) (`W_Two.Both.position_ii`) and is silent on (i) and (iv) (`W_Two.OneChannel.position_i`, `W_P4`), where nothing is `Bare`; IDF and ID (D1) are about different sorts and are separate commitments. *D3 is where the "transition from a fixed state" lives:* `T2_2` is `rfl`.
 - **D24** P4's scope (v8.10). `Core` = `CoreNoP4` + P4, and `section CoreTheorems` is typed over `CoreNoP4`; only `T2_8` takes `Core`. The necessary-mind conclusion (`mind_of_CE_NBL`), non-determinism, the anti-chance results, and mentality by elimination do not use P4; uniqueness and identification (`T2_8`, `identify`, `main`, `god_exists`) do. Denying P4 therefore yields several necessary grounds each subject to Tiers 2–3 — `W_P4.two_minds` — not none. Uniqueness rests on IDF (III.6), the anti-haecceitist commitment CE already carries.
 - **D23** The TR fork (v8.7; certified v8.8 — `Powers`, `powers_fork`; III.5). `Sens w P (state s)` is primitive, so `NoTR` may stipulate it for a determinate-type disposition; D20 says such a disposition is one in which no alternatives figure, i.e. ¬CE, not ¬TR. v8.8 gives the powers naturalist his own primitive, `Directed s D`, with his own axiom `manif`, and certifies the fork from it. (i) `W_Nat.powers_witness`: a powers channel directed at a determinate type with no `Sens` is the bare naturalist's model — Horn 2 is ¬CE. (ii) `powers_all_tied` and `powers_fork`: a powers channel directed at *maximality* ties every possible reality, because `manif` necessitates where `Sens` only inclines; so the powers naturalist who keeps GG inherits `all_tied` with no w₀ escape, and the one who drops it has a channel that does not track the good and a bare contrast among the D-realities. (iii) `W_Pref.no_powers_at_maximal`: the theist's own selecting state, which fails at w′, is *not* a power on any `Powers` structure — `Sens` is inclination, and the powers naturalist cannot borrow the theist's discriminating balance. What remains open is the *fallible* reading — a directedness at maximality that may fail — which (iii) shows is not a power and which is exactly `Sens`-as-inclination, where the alternatives figure and TR's question returns in full. Ranging over unproduced alternatives is what Oderberg (2017) calls specific indifference and reserves for the mental; the nil alternative is the lever, since a power directed at D is not directed at its own non-manifestation. *v8.9:* the fallible reading is finished. `FalliblePowers` states it with the only axiom it can keep (manifests at w₀); `FalliblePowers.actual` shows it is free — every model with a channel state has it; `W_Nat.fallible_witness` and `W_Pref.fallible_witness` show it is the *same* structure on the bare naturalist's and the theist's models, which differ only in `Sens`, `Rep`, `Mental`. On Mumford–Anjum it is not a tendency (no interference at the foundation), on Vetter not a potentiality (degree is a propensity; no degree is bare), on Bird not a disposition (no stimulus). What is left is the theist's inclination with content denied — one sentence — and the reply is Oderberg's criterion (III.5). *(The v8.9 sentences in this entry on the fallible reading are withdrawn: D26.)*
@@ -238,7 +246,7 @@ The Lean file fixes a structure `Model` whose fields are the primitive sorts and
 - **D13** Outcomes have a category — ontological kind or law-structure. CatOpen says each category class is an open region of the similarity topology; CatU says uncountably many categories are realized among possible first-stage outputs. P12 follows from them (`P12_of_cat`).
 - **D17** Channels of sensitivity are exhaustively the ground's laws/dispositions as such, or a state of a thing. A third, sui generis "value-explanation with no subject" is not articulated in the literature (reasons-explanation is agent-indexed); a skeptic who wants one must supply it.
 - **D18** Sensitivity attaches to the property as a function `Reality → Prop`, and coextension on the *live alternatives* (Ω) does not transfer it: `DLaw`/`DState` work because `D` and `Maximal` differ at the empty reality. *Scoped (v8.15):* Lean functions are extensional, so two properties coextensive over *all* realities are identified (`funext`/`propext`) and `Sens` transfers between them. This is extension over all `Pred Item` rather than over Ω, not the hyperintensionality Fodor or Davidson have in mind; the earlier appeal to them is withdrawn.
-- **D12** "t knows content c" means: some state of t represents c and is accurate *with respect to c* (accuracy is a relation between a state and a content). "t knows all of Ω" (`KnowsAll t`) means: t knows ⟨nil⟩, and for every r ∈ Ω, t knows ⟨alt r⟩ and knows ⟨cons c r⟩ for every consideration c bearing on r. This is what 3.11's "knows every possible contingent reality" is taken to mean.
+- **D12** "t knows content c" means: some state of t, in force at some world (v8.16), represents c and is accurate *with respect to c* (accuracy is a relation between a state and a content). "t knows all of Ω" (`KnowsAll t`) means: t knows ⟨nil⟩, and for every r ∈ Ω, t knows ⟨alt r⟩ and knows ⟨cons c r⟩ for every consideration c bearing on r. This is what 3.11's "knows every possible contingent reality" is taken to mean, and nothing stronger.
 - **D14** A reality is a set of items, and the contingent reality of a world is *defined* as the set of contingent items existing there. So Ω is fixed by the model's own contingent content; it is not a free type.
 - **D16** The balance of value-grounded reasons is the comparative `AtLeast`. "O's outcome at w accords with the balance" is defined (§1.4): the contingent reality of w is at least as well supported as every member of Ω and as the empty reality.
 - **D15** MR is not formalized. Tier 4's certified result is that O's outcome accords with the balance of value-grounded reasons (`AccordsValue`). That some of those reasons are moral is an interpretive premise (§7, Tier 4), not a conjunct of any theorem.
@@ -288,9 +296,9 @@ The Lean file fixes a structure `Model` whose fields are the primitive sorts and
 - **Derived at w** (`Derived w s`). s has a source at w.
 - **Historical at w** (`Historical w s`). Some ancestor of s at w is a contingent item.
 - **Represents all of Ω** (`RepAllOmega s`). s represents ⟨nil⟩; and for every r ∈ Ω: s represents ⟨alt r⟩, and for every consideration c bearing on r, s represents ⟨cons c r⟩.
-- **Mind** (`Mind t`). Some state of t is mental.
+- **Mind** (`Mind t`). Some state of t, in force at some world, is mental. *(v8.16; before, the in-force clause was absent, D28.)*
 - **Accurate throughout** (`AccurateAll s`). s accurately represents every content it represents.
-- **Knows** (`Knows t c`). Some state of t represents c and accurately represents c.
+- **Knows** (`Knows t c`). Some state of t, in force at some world, represents c and accurately represents c. *(v8.16.)*
 - **Knows all of Ω** (`KnowsAll t`). t knows ⟨nil⟩; and for every r ∈ Ω, t knows ⟨alt r⟩ and, for every consideration c bearing on r, knows ⟨cons c r⟩.
 - **Agent at w** (`Agent w t`). Some state of t is a selecting representation at w.
 - **P7-antecedent at w** (`P7Antecedent w t`). (i) Some state of t is a selecting representation at w, represents all of Ω, and is accurate throughout; (ii) every motivational state on which O's outcome at w depends is a necessary state.
@@ -312,7 +320,7 @@ Every premise is a named proposition `X_stmt` in the Lean file. `CoreNoP4` bundl
 | **F1** | If x causes y at w, then x and y exist at w. | framework |
 | **Src** | If s′ is a source of s at w, then s′ is an ancestor of s at w, s′ is a representing state, and s′ represents everything s represents. | framework (D5) |
 | **E** | Some contingent item exists at w₀. | evident |
-| **L0** | Nothing is an ancestor of itself, at any world. | near-universal |
+| **L0** | Nothing is an ancestor of itself, at any world. *Derived from P1 (`L0_of_P1`); not a field since v8.16.* | derived |
 | **B1** | State s causes z at w iff the bearer of s causes z at w in virtue of s. | definitional |
 | **B1′** | If t causes z at w in virtue of s, then t is the bearer of s and t causes z at w. | definitional |
 | **B2** | If the bearer of s is in s at w, then the bearer of s causes s at w. | mild |
@@ -548,12 +556,12 @@ Each is a single theorem stating: all other premise statements hold; this one fa
 | *(the fallible reading)* | `fallible_actual_iff` (v8.14) — `FalliblePowers.actual M s` directs s at D iff the actual reality has D | — | the v8.9 `fallible_witness` theorems are deleted; nothing with content about a fallible directedness is in the file |
 | *(¬NBL as a package)* | `Toy.BothChannels` (v8.14) — law channel value-sensitive at every world, state channel on at w₀ | NBL fails; nothing else | `God` holds: denying NBL alone costs no conclusion |
 | P4, position (ii) | `Toy.W_Two.Both` (v8.14) — N and N₂ both fundamental, both channels, both producing at every world, `SameProfile` | P4, P4⁺, **IDF** fail | excluded by IDF and by nothing else |
-| P4, position (i) | `Toy.W_Two.OneChannel` (v8.14) — N₂ produces at every world with no channel state | P4, P4⁺ fail; **IDF holds, CE holds, no world is `Bare`** | the "bare source" of III.6 (i) has no formal price |
+| P4, position (i) | `Toy.W_Two.OneChannel` (v8.14; reworked v8.16) — N₂ produces at every world with no channel state; its state neither represents nor is mental | P4, P4⁺ fail; **IDF holds, CE holds, no world is `Bare`; N₂ is not a mind and knows nothing** (`not_mind_N2`, `not_knows_N2`) | the "bare source" of III.6 (i) is a second producer and nothing else, and the file has no price for it |
 | *(the consistency witness's God)* | `Toy.god_holds`, `Toy.knows_everything` (v8.14) | nothing fails | see §6.0 |
 | *(uniform propensity)* | `uniform_countable_refuted` (v8.14) — countably infinitely many realized categories, uniform `μ` | `PropGoverned w₀` refuted from P11 + CatOpen + L4 | III.7's uniform horn is a theorem, with CatOpen among its hypotheses |
 | *(P8s, SK consistent)* | `Toy.P8s_holds`, `Toy.SK_holds` (v8.15) | nothing fails | the optional premises hold in the consistency witness |
-| *(IDF ≠ ID)* | `Toy.W_P4.IDF_and_not_ID` (v8.15) | ID fails, IDF holds | the two commitments come apart |
-| *(L0 derived)* | `L0_of_P1` (v8.15) | — | L0 is a theorem of P1; kept as a field for continuity |
+| *(IDF ≠ ID)* | `Toy.W_P4.IDF_and_not_ID` (v8.15); `Toy.W_Two.Both.ID_and_not_IDF` (v8.16) | ID fails, IDF holds; IDF fails, ID holds | the two commitments come apart in both directions |
+| *(L0 derived)* | `L0_of_P1` (v8.15) | — | L0 is a theorem of P1; removed as a field in v8.16 |
 
 Not covered, by design: P7, P8, MR (Tier 4's vocabulary is abstract, so their independence is trivial); P11 (its denial is non-Archimedean chance, priced at Exit 2B(i)); F1 and Src (framework).
 
@@ -1761,11 +1769,16 @@ def RepAllOmega (s : M.State) : Prop :=
   M.Rep s .nil ∧
   ∀ r, M.InOmega r → M.Rep s (.alt r) ∧ ∀ c, M.Bears c r → M.Rep s (.cons c r)
 
-def Mind (t : M.Thing) : Prop := ∃ s, M.bearer s = t ∧ M.Mental s
+/-- t is a mind: some state OF t, in force at some world, is mental.  (v8.16: the
+    in-force clause is new; before it a thing counted as a mind in virtue of a
+    state-type it never occupied — D28.) -/
+def Mind (t : M.Thing) : Prop := ∃ s, M.bearer s = t ∧ (∃ w, M.E_state w s) ∧ M.Mental s
 /-- s accurately represents everything it represents. -/
 def AccurateAll (s : M.State) : Prop := ∀ c, M.Rep s c → M.Accurate s c
+/-- t knows c: some state of t, in force at some world (v8.16), represents c
+    accurately. -/
 def Knows (t : M.Thing) (c : Content M.Reality M.Consideration) : Prop :=
-  ∃ s, M.bearer s = t ∧ M.Rep s c ∧ M.Accurate s c
+  ∃ s, M.bearer s = t ∧ (∃ w, M.E_state w s) ∧ M.Rep s c ∧ M.Accurate s c
 
 def Agent (w : M.W) (t : M.Thing) : Prop := ∃ s, M.bearer s = t ∧ M.SelectingRep w s
 
@@ -2010,7 +2023,6 @@ structure CoreNoP4 (M : Model) where
   F1  : F1_stmt M
   Src : Src_stmt M
   E   : E_stmt M
-  L0  : L0_stmt M
   B1  : B1_stmt M
   B1' : B1'_stmt M
   B2  : B2_stmt M
@@ -2201,9 +2213,9 @@ theorem uniform_countable_refuted (M : Model) (h11 : P11_stmt M) (hO : CatOpen_s
 
 ```lean
 /-- L0 (no self-ancestry) is a THEOREM of P1 (v8.15): a well-founded relation
-    is irreflexive.  L0 is kept as a `CoreNoP4` field for continuity with the
-    witness statements, but it is derived, not independent; a direction-
-    neutral theory of causation (two-way links) is excluded by P1 itself. -/
+    is irreflexive.  L0 was a `CoreNoP4` field through v8.15; removed in
+    v8.16 (derived, like P3, NI, P10).  A direction-neutral theory of
+    causation (two-way links) is excluded by P1 itself. -/
 theorem L0_of_P1 (M : Model) (h : P1_stmt M) : L0_stmt M := fun w x =>
   (h w).induction (C := fun x => ¬ M.Anc w x x) x (fun x ih hx => ih x hx hx)
 
