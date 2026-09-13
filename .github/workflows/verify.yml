@@ -42,5 +42,6 @@ jobs:
           name: print-axioms
           path: |
             build/actual_axioms.txt
+            build/actual_statements.txt
             build/stderr.txt
           if-no-files-found: ignore

@@ -40,6 +40,32 @@
     Tier 2–4 premises for all worlds; bears on the evidential argument from
     evil); `realOf` defined, `Accurate` content-indexed, MR removed (D12, D14,
     D15).
+  - v8.14 — AFTER THE THIRD EXTERNAL REVIEW (of v8.13).  (a) The two
+    `fallible_witness` theorems are DELETED: `fallible_actual_iff` certifies
+    that `FalliblePowers.actual` directs s at D iff the ACTUAL reality has D
+    (s does not occur), so those witnesses certified only that the actual
+    reality is maximal; the fallible reading is OPEN, not "one sentence".
+    (b) `naturalPowers` / `natural_directed_nonempty`: on the structure used
+    by `W_Nat.Pw`, every state of every model is "directed at a non-empty
+    reality" — Horn 2's second conjunct is a tautology.  (c)
+    `W_Pref.fork_is_residue`: `powers_fork`'s left horn, on the theist's own
+    model, is `residue` — the "fails to track the good" cost is shared.
+    (d) `W_Two`: two fundamentals BOTH producing at EVERY world.  `Both.
+    position_ii` is III.6's position (ii) (both channels; `SameProfile`;
+    IDF false); `OneChannel.position_i` is position (i): N₂ produces with no
+    channel state, IDF holds, CE holds, P4 fails, and NO world is `Bare` —
+    `Bare` is world-indexed, so "N₂ pays Exit 1's bill" has no formal
+    referent.  `W_P4` is position (iv), not (ii).  (e) `BothChannels.
+    witness`: ¬NBL with the state channel on keeps `God`; the priced exit is
+    the package `Axiarch`/`DLaw`, not the premise.  (f) `god_holds`,
+    `knows_everything`: in `Toy.A` the being satisfying `God` accurately
+    represents every set of items as an alternative AND as actual, and the
+    empty reality is maximal.  (g) `uniform_countable_refuted`: the uniform
+    horn of III.7's propensity fork is a THEOREM from P11 + CatOpen + L4
+    (CatOpen was omitted from the prose dependency).  (h) `scripts/verify.sh`
+    now also pins the STATEMENT of every certified result
+    (`expected_statements.txt`); previously a weakened statement with the
+    same proof passed byte-identically.  58 `#print axioms` results.
   - v8.13 — THE THREE REMAINING PROSE BURDENS (no Lean change).  CatU: the
     v8.5 argument from parameter continua is withdrawn (manifolds are
     second-countable); the positive argument is from infinitely many
@@ -734,6 +760,24 @@ theorem L2 (m : FinMeasure A μ Open) (hunc : Uncountable ι) (hopen : ∀ i, Op
   have h3 := A.le_trans _ _ _ h1 h2
   rw [hlen, nsmul_eq_rec] at h3
   exact hk h3
+
+/-- Countable uniform case (v8.14): a countably infinite pairwise-disjoint
+    family of open regions all of the SAME measure has measure zero.  Used
+    for the uniform horn of the propensity fork (III.7). -/
+theorem L2_countable_uniform (m : FinMeasure A μ Open) {H : Nat → X → Prop} (hopen : ∀ i, Open (H i))
+    (hdisj : ∀ i j, i ≠ j → ∀ x, ¬ (H i x ∧ H j x)) (v : V) (huni : ∀ n, μ (H n) = v) : v = A.zero := by
+  apply Classical.byContradiction
+  intro hne
+  have hv0 : A.le A.zero v := by have := m.nonneg (H 0); rw [huni 0] at this; exact this
+  obtain ⟨n, hn⟩ := A.arch_pos v hv0 hne
+  have hn' : ∀ i, A.le A.one (nsmul A n (μ (H i))) := fun i => by rw [huni i, nsmul_eq_rec]; exact hn
+  obtain ⟨k, hk⟩ := A.arch (nsmul A n (μ (fun _ => True)))
+  have h1 := list_bound H m hopen hdisj n hn' (List.range k) List.nodup_range
+  have h2 : A.le (nsmul A n (μ (lunion H (List.range k)))) (nsmul A n (μ (fun _ => True))) :=
+    nsmul_le_nsmul A (m.mono _ _ (lunion_meas H m hopen _) m.meas_top (fun _ _ => trivial)) n
+  have h3 := A.le_trans _ _ _ h1 h2
+  rw [List.length_range, nsmul_eq_rec] at h3
+  exact hk h3
 end
 
 
@@ -1215,6 +1259,21 @@ theorem P12_of_cat (M : Model) (hU : CatU_stmt M) (hO : CatOpen_stmt M) : P12_st
     hU hpg, fun i => hO hpg i.1, fun i => ?_, fun i j hij φ ⟨h1, h2⟩ => hij (Subtype.ext (h1.symm.trans h2))⟩
   obtain ⟨φ, hφ, hk⟩ := i.2
   exact ⟨φ, hφ, hk⟩
+
+/-- The UNIFORM horn of the propensity fork (III.7), certified (v8.14): if the
+    realized categories include a countably infinite injective family and the
+    propensity is uniform over them (every category class has the measure of
+    the actual one), then P11 + CatOpen + L4 refute propensity-governance.
+    CatOpen is needed: L4 speaks only of OPEN regions. -/
+theorem uniform_countable_refuted (M : Model) (h11 : P11_stmt M) (hO : CatOpen_stmt M) (h4 : L4_stmt M)
+    (hpg : M.PropGoverned M.w₀) (f : Nat → M.Cat) (hf : Function.Injective f)
+    (huni : ∀ n, M.μ (fun φ => M.cat φ = f n) = M.μ (fun φ => M.cat φ = M.cat (M.F M.w₀))) : False := by
+  obtain ⟨A, hz, ⟨m⟩⟩ := h11 hpg
+  have hopen : ∀ n, M.POpen (fun φ => M.cat φ = f n) := fun n => hO hpg (f n)
+  have hdisj : ∀ i j, i ≠ j → ∀ φ, ¬ ((fun φ => M.cat φ = f i) φ ∧ (fun φ => M.cat φ = f j) φ) :=
+    fun i j hij φ ⟨h1, h2⟩ => hij (hf (h1.symm.trans h2))
+  have hv := L2_countable_uniform m hopen hdisj _ huni
+  exact h4 hpg (fun φ => M.cat φ = M.cat (M.F M.w₀)) (hO hpg _) (hv.trans hz) M.w₀ rfl
 
 /-- **P10 derived.**  If the production is favored — sensitive to maximality
     through some channel — then by NI the channel is not a law, so it is a
@@ -2086,6 +2145,24 @@ structure Powers (M : Model) where
 def PowersChannel (M : Model) (s : M.State) : Prop :=
   M.NecState s ∧ ∀ w, (∃ x, M.F w x) → ∃ m, M.F w m ∧ M.CausesVia w (M.bearer s) s m
 
+/-- The "natural" powers structure used by `W_Nat.Pw` and `NoTR.Pw`, stated
+    generically (v8.14): s is directed at D iff every productive world's
+    reality has D. -/
+def naturalPowers (M : Model) (s : M.State) : Powers M :=
+  ⟨fun st D => st = s ∧ ∀ w, (∃ x, M.F w x) → D (M.realOf w),
+   fun _ _ ⟨_, h⟩ w m hm _ => h w ⟨m, hm⟩⟩
+
+theorem natural_directed_iff (M : Model) (s : M.State) (D : M.Reality → Prop) :
+    (naturalPowers M s).Directed s D ↔ ∀ w, (∃ x, M.F w x) → D (M.realOf w) :=
+  ⟨fun h => h.2, fun h => ⟨rfl, h⟩⟩
+
+/-- On it, EVERY state of EVERY model is "directed at a non-empty reality":
+    `F w ⊆ realOf w`.  So `W_Nat.powers_witness`'s "directed at a determinate
+    type" is a tautology of the structure, not a finding about `W_Nat`. -/
+theorem natural_directed_nonempty (M : Model) (s : M.State) :
+    (naturalPowers M s).Directed s (fun r => ∃ x, r x) :=
+  ⟨rfl, fun _ ⟨x, hx⟩ => ⟨x, hx.1, hx.2.1⟩⟩
+
 section PowersFork
 variable {M : Model} (Pw : Powers M)
 
@@ -2141,29 +2218,24 @@ theorem powers_fork {s : M.State} (hs : PowersChannel M s) {D : M.Reality → Pr
 
 end PowersFork
 
-/-! ### The fallible reading (v8.9)
+/-! ### The fallible reading (v8.9; corrected v8.14)
 
 `powers_all_tied` leaves the powers naturalist one escape: a directedness at
 maximality that can FAIL — manifests at w₀, not at w′.  `FalliblePowers`
 states that reading with the only axiom it can keep: the type manifests at
-the actual world.  Two facts are certified below.
+the actual world.
 
-- Every `Powers` structure is a `FalliblePowers` structure (`Powers.fallible`),
-  and every model with a channel state has one (`FalliblePowers.actual`):
-  the generic structure that directs s at exactly the properties the actual
-  reality has.  Fallible directedness is therefore FREE — it costs nothing
-  and distinguishes nothing.
-- The SAME generic structure lives on `W_Nat` and on `W_Pref`
-  (`W_Nat.fallible_witness`, `W_Pref.fallible_witness`): on both, s is
-  fallibly directed at maximality, manifests it at w₀, fails at w′.  The two
-  models have identical causal structure and identical balance; they differ
-  in `Sens`, `Rep`, `Mental` and nothing else.  So "a fallible directedness
-  at the best" does not distinguish the powers naturalist from either the
-  bare naturalist or the theist.  What distinguishes W_Pref from W_Nat is
-  `Sens`: that the alternatives figure.  The powers naturalist who takes the
-  fallible reading has said nothing until he says whether they do — and
-  then he is `W_Nat` (they do not: bare, CE false) or he has the theist's
-  inclination (they do: TR's question, III.5). -/
+v8.14: the v8.9 claim that `FalliblePowers.actual` shows "the same structure
+on both sides" is WITHDRAWN.  `fallible_actual_iff` certifies that on that
+structure "s is directed at D" holds iff the ACTUAL reality has D; the state
+s does not occur in the definiens.  So the two v8.9 witnesses
+(`W_Nat.fallible_witness`, `W_Pref.fallible_witness`, now deleted) certified
+only that the actual reality is maximal on each model's balance.  What a
+fallible directedness IS — a structure weaker than `manif`, stronger than
+`manif₀`, with content about s — has not been formalized, and nothing has
+been shown about it.  The fallible reading is OPEN (III.5).  What remains
+certified is `no_powers_at_maximal`: no NECESSITATING directedness at
+maximality lives on a discriminating balance. -/
 
 /-- Fallible directedness: the type manifests at the actual world; nothing
     is said about other worlds. -/
@@ -2176,11 +2248,23 @@ def Powers.fallible {M : Model} (Pw : Powers M) : FalliblePowers M :=
   ⟨Pw.Directed, fun s D hD m hm hcv => Pw.manif s D hD M.w₀ m hm hcv⟩
 
 /-- The generic fallible structure on any model: s is directed at exactly
-    the properties the actual reality has.  `manif₀` is immediate.  This is
-    the weakest structure the fallible reading can mean and the one most
-    favourable to it. -/
+    the properties the actual reality has.  `manif₀` is immediate.  v8.14:
+    it is CONTENT-FREE — see `fallible_actual_iff` — and is kept only so that
+    the withdrawal is checkable. -/
 def FalliblePowers.actual (M : Model) (s : M.State) : FalliblePowers M :=
   ⟨fun st D => st = s ∧ D (M.realOf M.w₀), fun _ _ ⟨_, h⟩ _ _ _ => h⟩
+
+/-- v8.14.  `FalliblePowers.actual M s` directs s at D iff the ACTUAL reality
+    has D.  The state does not occur on the right-hand side; "fallibly
+    directed at maximality" is exactly "the actual reality is maximal". -/
+theorem fallible_actual_iff (M : Model) (s : M.State) (D : M.Reality → Prop) :
+    (FalliblePowers.actual M s).Directed s D ↔ D (M.realOf M.w₀) :=
+  ⟨fun h => h.2, fun h => ⟨rfl, h⟩⟩
+
+theorem fallible_actual_trivial (M : Model) (s : M.State) :
+    (FalliblePowers.actual M s).Directed s (fun _ => True) ∧
+    (FalliblePowers.actual M s).Directed s (fun r => r = M.realOf M.w₀) :=
+  ⟨⟨rfl, trivial⟩, ⟨rfl, rfl⟩⟩
 
 end NecessaryAgent
 
@@ -2525,6 +2609,27 @@ theorem A : Axioms M where
   P4plus := P4plus_holds
 /-- The full premise set, including P4⁺, is consistent. -/
 theorem premises_consistent : Nonempty (Axioms M) := ⟨A⟩
+
+/-- v8.14.  `God` holds of N in the consistency witness. -/
+theorem god_holds : God M .N := by
+  obtain ⟨_, _, _, _, _, N₀, hN⟩ := main A
+  have e : N₀ = .N := ((hN.1 true).2 .N (fund_N Pall true)).symm
+  subst e; exact hN
+
+/-- v8.14.  What that being "knows": every set of items as an alternative,
+    every set of items AS ACTUAL (`Accurate := True`); every reality
+    including the empty one is maximal (`AtLeast := True`); Ω is a singleton.
+    `KnowsAll` and `AccordsValue` are as thin as their primitives. -/
+theorem knows_everything :
+    (∀ r : M.Reality, M.Knows .N (.alt r)) ∧ (∀ r : M.Reality, M.Knows .N (.act r)) ∧
+    (∀ r : M.Reality, M.Maximal r) ∧ M.Maximal M.emptyReality ∧
+    (∀ r r', M.InOmega r → M.InOmega r' → r = r') := by
+  refine ⟨fun _ => ⟨.s, rfl, trivial, trivial⟩, fun _ => ⟨.s, rfl, trivial, trivial⟩,
+    fun _ => ⟨fun _ _ => trivial, trivial⟩, ⟨fun _ _ => trivial, trivial⟩, ?_⟩
+  rintro r r' ⟨w, rfl, x, hx⟩ ⟨w', rfl, x', hx'⟩
+  obtain ⟨rfl, _⟩ := F_char Pall _ _ hx
+  obtain ⟨rfl, _⟩ := F_char Pall _ _ hx'
+  rfl
 
 /-! ### Independence of P3 -/
 namespace Bare
@@ -4444,17 +4549,6 @@ theorem powers_witness :
     (¬ ∃ Pw' : Powers M, Pw'.Directed .s M.Maximal) :=
   ⟨channel, directed_nonempty, fun _ _ _ h => h, witness.2.1, no_powers_at_maximal⟩
 
-/-- THE FALLIBLE READING, on the bare naturalist's model.  The generic
-    fallible structure directs s at maximality — it manifests maximality at
-    w₀ and fails at w′ — with no `Sens` through any channel, the production
-    bare at both worlds, and CE false.  A fallible directedness at the best,
-    with the alternatives not figuring, IS the bare naturalist. -/
-theorem fallible_witness :
-    (FalliblePowers.actual M .s).Directed .s M.Maximal ∧ ¬ M.Maximal (M.realOf false) ∧
-    (∀ w P ch, ¬ M.Sens w P ch) ∧ M.Bare true ∧ M.Bare false ∧ ¬ CE_stmt M :=
-  ⟨⟨rfl, ⟨fun _ _ => Or.inl realOf_true, Or.inl realOf_true⟩⟩,
-   not_maximal_false, fun _ _ _ h => h, witness.2.2.2.2.2.1,
-   ⟨not_det, fun ⟨_, h⟩ => h, id⟩, witness.2.1⟩
 end W_Nat
 
 namespace W_Pref
@@ -4472,17 +4566,17 @@ theorem channel : PowersChannel M .s :=
 theorem no_powers_at_maximal : ¬ ∃ Pw' : Powers M, Pw'.Directed .s M.Maximal :=
   fun ⟨Pw', hD⟩ => residue.2 (powers_all_maximal Pw' channel hD false ⟨_, F_c2⟩)
 
-/-- THE FALLIBLE READING, on the theist's model.  The SAME generic structure
-    directs the theist's selecting state at maximality — manifests at w₀,
-    fails at w′ (`residue`) — and here `Sens` holds at both worlds.  Compare
-    `W_Nat.fallible_witness`: same fallible directedness, same causal
-    structure, same balance.  The two models differ in `Sens`, `Rep`,
-    `Mental` and nothing else. -/
-theorem fallible_witness :
-    (FalliblePowers.actual M .s).Directed .s M.Maximal ∧ ¬ M.Maximal (M.realOf false) ∧
-    (∀ w P, M.Sens w P (.state .s)) ∧ M.Favored true ∧ M.Favored false :=
-  ⟨⟨rfl, ⟨fun _ _ => Or.inl realOf_true, Or.inl realOf_true⟩⟩,
-   residue.2, fun _ _ => rfl, ⟨.state .s, rfl⟩, ⟨.state .s, rfl⟩⟩
+/-- v8.14.  A powers structure on the THEIST's model directed at a
+    determinate type ("non-empty"): `powers_fork` takes its LEFT horn, at the
+    world where `residue` holds — and the theist's own `Sens`-channel "fails
+    to track the good" there in the same sense.  Horn 1's cost is shared. -/
+def PwNonempty : Powers M := naturalPowers M .s
+theorem fork_is_residue :
+    PwNonempty.Directed .s (fun r => ∃ x, r x) ∧
+    (∃ w, (∃ x, M.F w x) ∧ (fun r : M.Reality => ∃ x, r x) (M.realOf w) ∧ ¬ M.Maximal (M.realOf w)) ∧
+    (M.Sens false M.Maximal (.state .s) ∧ ¬ M.Maximal (M.realOf false)) :=
+  ⟨natural_directed_nonempty M .s, ⟨false, ⟨_, F_c2⟩, ⟨.inl .c2, cont_c2, rfl⟩, residue.2⟩, ⟨rfl, residue.2⟩⟩
+
 end W_Pref
 
 namespace NoTR
@@ -4509,6 +4603,369 @@ theorem powers_horn1 :
    powers_all_tied Pw channel ⟨rfl, fun _ _ => ⟨fun _ _ => trivial, trivial⟩⟩,
    witness.2.2.2.2.2.2.1⟩
 end NoTR
+
+/-! ### v8.14: denying NBL with the state channel ON.  Every field of `Axioms`
+    except NBL; the law channel value-sensitive at EVERY world; and `Agential`,
+    a selecting representation, and `God` still hold.  `Axiarch` loses the
+    conclusion because it ALSO switches the state channel off. -/
+namespace BothChannels
+/-- Sensitivity through the LAW channel at every world, and through the state at w₀. -/
+def P : Params := ⟨fun w _ ch => ch = .law ∨ w = true, fun _ => True, True, True, False, true⟩
+local notation "M" => Mk P
+
+theorem selRep : (M).SelectingRep true .s :=
+  ⟨⟨.inl .c, F_c P, ⟨rfl, rfl, rfl, rfl⟩⟩, ⟨.nil, trivial⟩, Or.inr rfl⟩
+theorem core : Core M := core_of P (fun _ => trivial) trivial trivial (Or.inl ⟨.law, fun _ => Or.inl rfl⟩)
+theorem hP4 : ∀ w, (M).Fundamental w .N ∧ ∀ t, (M).Fundamental w t → t = .N := fun w =>
+  ⟨fund_N P w, fun t ht => by
+    cases t
+    · rfl
+    · exact absurd ht.1 (not_nec_c P)
+    · exact absurd ht.1 (not_nec_d P)⟩
+
+/-- Every field of `Axioms` except NBL; the law channel is value-sensitive at
+    EVERY world; and the conclusion — `Agential`, a selecting representation,
+    `God` — still holds.  `Axiarch`'s "no selecting representation" comes from
+    switching the state channel off, not from denying NBL. -/
+theorem witness :
+    Nonempty (Core M) ∧ CE_stmt M ∧ GG_stmt M ∧ CH_stmt M ∧ TR_stmt M ∧ P4plus_stmt M ∧
+    ¬ NBL_stmt M ∧ (∀ w P, (M).Sens w P .law) ∧
+    (M).Agential true ∧ (∃ st, (M).SelectingRep true st) ∧ God M .N :=
+  ⟨⟨core⟩, h_CE P ⟨.law, fun _ => Or.inl rfl⟩, h_GG P (fun _ _ _ h => h),
+   h_CH P rfl (fun _ _ _ h => h.resolve_left (fun e => nomatch e)), h_TR P trivial (fun _ => trivial),
+   h_P4plus P,
+   fun h => h false (fun _ => True) (Or.inl rfl), fun _ _ => Or.inl rfl,
+   ⟨⟨.law, Or.inl rfl⟩, ⟨.s, selRep⟩⟩, ⟨.s, selRep⟩,
+   ⟨hP4, brings_about_of_P4 core.toCoreNoP4 hP4, ⟨.s, rfl, trivial⟩,
+    knowsAll_of_rep (s := .s) rfl ⟨trivial, fun _ _ => ⟨trivial, fun _ _ => trivial⟩⟩ (fun _ _ => trivial),
+    ⟨.s, rfl, selRep⟩,
+    ⟨⟨.s, rfl, selRep, ⟨trivial, fun _ _ => ⟨trivial, fun _ _ => trivial⟩⟩, fun _ _ => trivial⟩,
+     fun _ h _ => h.elim⟩,
+    trivial, ⟨fun _ _ => trivial, trivial⟩⟩⟩
+end BothChannels
+
+/-! ### v8.14: two fundamentals, BOTH producing at EVERY world.
+    `both = true`: both states are channels — III.6 position (ii).
+    `both = false`: only N's state is — III.6 position (i).
+    `W_P4` is position (iv), alternation. -/
+namespace W_Two
+inductive T | N | N2 | a | a' | b | b' | d | d' deriving DecidableEq
+inductive S | s1 | s2 deriving DecidableEq
+abbrev Item := Sum T S
+theorem item_cases (x : Item) :
+    x = .inl .N ∨ x = .inl .N2 ∨ x = .inl .a ∨ x = .inl .a' ∨ x = .inl .b ∨ x = .inl .b' ∨
+    x = .inl .d ∨ x = .inl .d' ∨ x = .inr .s1 ∨ x = .inr .s2 := by
+  rcases x with ⟨t⟩|⟨st⟩
+  · cases t <;> simp
+  · cases st <;> simp
+def rank : Item → Nat
+  | .inl .N => 0 | .inl .N2 => 0 | .inr .s1 => 1 | .inr .s2 => 1
+  | .inl .a => 2 | .inl .a' => 2 | .inl .b => 2 | .inl .b' => 2 | .inl .d => 3 | .inl .d' => 3
+def causesB : Bool → Item → Item → Bool
+  | _,     .inl .N,  .inr .s1 => true
+  | _,     .inl .N2, .inr .s2 => true
+  | true,  .inl .N,  .inl .a  => true
+  | true,  .inr .s1, .inl .a  => true
+  | true,  .inl .N2, .inl .b  => true
+  | true,  .inr .s2, .inl .b  => true
+  | true,  .inl .a,  .inl .d  => true
+  | true,  .inl .b,  .inl .d  => true
+  | false, .inl .N,  .inl .a' => true
+  | false, .inr .s1, .inl .a' => true
+  | false, .inl .N2, .inl .b' => true
+  | false, .inr .s2, .inl .b' => true
+  | false, .inl .a', .inl .d' => true
+  | false, .inl .b', .inl .d' => true
+  | _, _, _ => false
+def ethingB : Bool → T → Bool
+  | _, .N => true | _, .N2 => true
+  | w, .a => w | w, .b => w | w, .d => w
+  | w, .a' => !w | w, .b' => !w | w, .d' => !w
+theorem causes_rank : ∀ w x y, causesB w x y = true → rank x < rank y := by
+  intro w x y h
+  rcases item_cases x with rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl <;>
+    rcases item_cases y with rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl <;>
+    cases w <;> simp_all [causesB, rank]
+def bearer : S → T | .s1 => .N | .s2 => .N2
+
+def Mk (both : Bool) : Model where
+  W := Bool
+  w₀ := true
+  Thing := T
+  State := S
+  bearer := bearer
+  Consideration := Unit
+  V := Rat
+  vzero := 0
+  K := Unit
+  kind := fun _ => ()
+  Cat := Unit
+  cat := fun _ => ()
+  E_thing := fun w t => ethingB w t = true
+  E_state := fun _ _ => True
+  Causes := fun w x y => causesB w x y = true
+  CausesVia := fun w t st z =>
+    (t = .N ∧ st = .s1 ∧ ((w = true ∧ z = .inl .a) ∨ (w = false ∧ z = .inl .a'))) ∨
+    (t = .N2 ∧ st = .s2 ∧ ((w = true ∧ z = .inl .b) ∨ (w = false ∧ z = .inl .b')))
+  DependsOn := fun _ x => x = .inl .N ∨ x = .inr .s1 ∨ x = .inl .N2 ∨ x = .inr .s2
+  Bears := fun _ _ => True
+  Rep := fun _ _ => True
+  Source := fun _ _ _ => False
+  Mental := fun _ => True
+  Accurate := fun _ _ => True
+  Sens := fun _ _ ch => ch = .state .s1 ∨ (both = true ∧ ch = .state .s2)
+  HasProp := False
+  POpen := fun _ => False
+  μ := fun _ => 0
+  MotivState := fun _ => False
+  ActsOnBest := fun _ _ => True
+  EssOutweighs := fun _ => False
+  AtLeast := fun _ _ => True
+  Good := fun _ => True
+
+section generic
+variable (both : Bool)
+local notation "M" => Mk both
+
+theorem anc_rank {w : Bool} {x y : (M).Item} (h : (M).Anc w x y) : rank x < rank y := by
+  induction h with
+  | single h => exact causes_rank _ _ _ h
+  | tail _ h ih => exact Nat.lt_trans ih (causes_rank _ _ _ h)
+theorem nec_N : (M).Nec .N := fun w => by cases w <;> rfl
+theorem nec_N2 : (M).Nec .N2 := fun w => by cases w <;> rfl
+theorem not_nec {t : T} (h1 : t ≠ .N) (h2 : t ≠ .N2) : ¬ (M).Nec t := fun hn => by
+  have hf := hn false; have ht := hn true; cases t <;> simp_all [Mk, ethingB]
+theorem necstate (st : S) : (M).NecState st := fun _ _ => trivial
+theorem not_cont_thing {t : T} (h : (M).Nec t) : ¬ (M).ContingentItem (.inl t) := fun hc => hc.1 h
+theorem not_cont_state (st : S) : ¬ (M).ContingentItem (.inr st) := fun h => h.1 (necstate both st)
+theorem cont_a  : (M).ContingentItem (.inl .a)  := ⟨not_nec both (by simp) (by simp), ⟨true,  .inl .d,  rfl⟩⟩
+theorem cont_a' : (M).ContingentItem (.inl .a') := ⟨not_nec both (by simp) (by simp), ⟨false, .inl .d', rfl⟩⟩
+theorem cont_b  : (M).ContingentItem (.inl .b)  := ⟨not_nec both (by simp) (by simp), ⟨true,  .inl .d,  rfl⟩⟩
+theorem cont_b' : (M).ContingentItem (.inl .b') := ⟨not_nec both (by simp) (by simp), ⟨false, .inl .d', rfl⟩⟩
+theorem E_a  {w : Bool} (h : (M).E w (.inl .a))  : w = true := by
+  cases w; · exact absurd (h : ethingB false .a = true) Bool.false_ne_true
+  · rfl
+theorem E_b  {w : Bool} (h : (M).E w (.inl .b))  : w = true := by
+  cases w; · exact absurd (h : ethingB false .b = true) Bool.false_ne_true
+  · rfl
+theorem E_d  {w : Bool} (h : (M).E w (.inl .d))  : w = true := by
+  cases w; · exact absurd (h : ethingB false .d = true) Bool.false_ne_true
+  · rfl
+theorem E_a' {w : Bool} (h : (M).E w (.inl .a')) : w = false := by
+  cases w; · rfl
+  · exact absurd (h : ethingB true .a' = true) Bool.false_ne_true
+theorem E_b' {w : Bool} (h : (M).E w (.inl .b')) : w = false := by
+  cases w; · rfl
+  · exact absurd (h : ethingB true .b' = true) Bool.false_ne_true
+theorem E_d' {w : Bool} (h : (M).E w (.inl .d')) : w = false := by
+  cases w; · rfl
+  · exact absurd (h : ethingB true .d' = true) Bool.false_ne_true
+theorem no_cont_anc {y : (M).Item} (hy : rank y < 2) : ¬ (M).ContingentItem y := by
+  rcases item_cases y with rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl
+  · exact not_cont_thing both (nec_N both)
+  · exact not_cont_thing both (nec_N2 both)
+  · simp [rank] at hy
+  · simp [rank] at hy
+  · simp [rank] at hy
+  · simp [rank] at hy
+  · simp [rank] at hy
+  · simp [rank] at hy
+  · exact not_cont_state both _
+  · exact not_cont_state both _
+theorem F_a  : (M).F true  (.inl .a)  := ⟨cont_a both,  rfl, fun _ hy => no_cont_anc both (anc_rank both hy)⟩
+theorem F_b  : (M).F true  (.inl .b)  := ⟨cont_b both,  rfl, fun _ hy => no_cont_anc both (anc_rank both hy)⟩
+theorem F_a' : (M).F false (.inl .a') := ⟨cont_a' both, rfl, fun _ hy => no_cont_anc both (anc_rank both hy)⟩
+theorem F_b' : (M).F false (.inl .b') := ⟨cont_b' both, rfl, fun _ hy => no_cont_anc both (anc_rank both hy)⟩
+theorem F_char : ∀ w x, (M).F w x →
+    (w = true ∧ (x = .inl .a ∨ x = .inl .b)) ∨ (w = false ∧ (x = .inl .a' ∨ x = .inl .b')) := by
+  intro w x hx
+  rcases item_cases x with rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl
+  · exact absurd hx.1 (not_cont_thing both (nec_N both))
+  · exact absurd hx.1 (not_cont_thing both (nec_N2 both))
+  · exact Or.inl ⟨E_a both hx.2.1, Or.inl rfl⟩
+  · exact Or.inr ⟨E_a' both hx.2.1, Or.inl rfl⟩
+  · exact Or.inl ⟨E_b both hx.2.1, Or.inr rfl⟩
+  · exact Or.inr ⟨E_b' both hx.2.1, Or.inr rfl⟩
+  · exfalso; obtain rfl := E_d both hx.2.1
+    exact hx.2.2 _ (Relation.TransGen.single (rfl : causesB true (.inl .a) (.inl .d) = true)) (cont_a both)
+  · exfalso; obtain rfl := E_d' both hx.2.1
+    exact hx.2.2 _ (Relation.TransGen.single (rfl : causesB false (.inl .a') (.inl .d') = true)) (cont_a' both)
+  · exact absurd hx.1 (not_cont_state both _)
+  · exact absurd hx.1 (not_cont_state both _)
+theorem uncaused_N (w : Bool) : ∀ y, ¬ (M).Causes w y (.inl .N) := fun y h => by
+  rcases item_cases y with rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl <;> cases w <;> simp_all [Mk, causesB]
+theorem uncaused_N2 (w : Bool) : ∀ y, ¬ (M).Causes w y (.inl .N2) := fun y h => by
+  rcases item_cases y with rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl <;> cases w <;> simp_all [Mk, causesB]
+theorem fund_N  (w : Bool) : (M).Fundamental w .N  := ⟨nec_N both,  ⟨true, .inr .s1, rfl⟩, uncaused_N both w⟩
+theorem fund_N2 (w : Bool) : (M).Fundamental w .N2 := ⟨nec_N2 both, ⟨true, .inr .s2, rfl⟩, uncaused_N2 both w⟩
+
+/-- Every field of `Axioms` except P4 and P4⁺. -/
+theorem fields :
+    F1_stmt M ∧ Src_stmt M ∧ E_stmt M ∧ L0_stmt M ∧ B1_stmt M ∧ B1'_stmt M ∧ B2_stmt M ∧
+    P0_stmt M ∧ P1_stmt M ∧ P2_stmt M ∧ P5_stmt M ∧ FA_stmt M ∧ P7_stmt M ∧ P8_stmt M ∧ P9_stmt M ∧
+    P11_stmt M ∧ P12_stmt M ∧ L4_stmt M ∧ CE_stmt M ∧ NBL_stmt M ∧ GG_stmt M ∧ CH_stmt M ∧ TR_stmt M := by
+  refine ⟨?F1, fun _ _ _ h => h.elim, ⟨.inl .a, cont_a both, rfl⟩, fun w x h => Nat.lt_irrefl _ (anc_rank both h),
+    ?B1, ?B1', ?B2, ?P0,
+    (fun _ => Subrelation.wf (fun {_ _} h => anc_rank both h) (InvImage.wf rank Nat.lt_wfRel.wf)), ?P2,
+    fun _ _ _ => ⟨trivial, fun _ _ => ⟨trivial, fun _ _ => trivial⟩⟩, fun _ _ hnm _ => absurd trivial hnm,
+    fun _ _ => Or.inl trivial, fun _ _ => ⟨fun h => h, fun _ => ⟨fun _ _ => trivial, trivial⟩⟩,
+    fun _ _ _ _ _ _ _ => trivial,
+    fun _ => ⟨archRat, rfl, ⟨zeroMeasureRat _⟩⟩, fun h => (h.2.2 : False).elim, fun _ _ ho => ho.elim,
+    ?CE, ?NBL, fun _ _ _ h => h, ?CH, fun _ _ _ _ => ⟨trivial, fun _ _ => trivial⟩⟩
+  case F1 =>
+    intro w x y h
+    rcases item_cases x with rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl <;>
+      rcases item_cases y with rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl <;>
+      cases w <;> simp_all [Mk, causesB, ethingB, Model.E]
+  case B1 =>
+    intro w st z
+    cases st <;> rcases item_cases z with rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl <;> cases w <;>
+      simp [Mk, causesB, bearer]
+  case B1' =>
+    intro w t st z h
+    rcases h with ⟨rfl, rfl, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩ | ⟨rfl, rfl, ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩⟩ <;> exact ⟨rfl, rfl⟩
+  case B2 => intro w st _; cases st <;> cases w <;> rfl
+  case P0 =>
+    intro w x hx
+    rcases hx with rfl | rfl | rfl | rfl <;> cases w
+    · exact ⟨.inl .a', F_a' both, rfl⟩
+    · exact ⟨.inl .a, F_a both, rfl⟩
+    · exact ⟨.inl .a', F_a' both, Or.inl ⟨rfl, rfl, Or.inr ⟨rfl, rfl⟩⟩⟩
+    · exact ⟨.inl .a, F_a both, Or.inl ⟨rfl, rfl, Or.inl ⟨rfl, rfl⟩⟩⟩
+    · exact ⟨.inl .b', F_b' both, rfl⟩
+    · exact ⟨.inl .b, F_b both, rfl⟩
+    · exact ⟨.inl .b', F_b' both, Or.inr ⟨rfl, rfl, Or.inr ⟨rfl, rfl⟩⟩⟩
+    · exact ⟨.inl .b, F_b both, Or.inr ⟨rfl, rfl, Or.inl ⟨rfl, rfl⟩⟩⟩
+  case P2 =>
+    intro w x hx hex
+    rcases item_cases x with rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl
+    · exact absurd hx (not_cont_thing both (nec_N both))
+    · exact absurd hx (not_cont_thing both (nec_N2 both))
+    · obtain rfl := E_a both hex;  exact ⟨.inl .N, rfl⟩
+    · obtain rfl := E_a' both hex; exact ⟨.inl .N, rfl⟩
+    · obtain rfl := E_b both hex;  exact ⟨.inl .N2, rfl⟩
+    · obtain rfl := E_b' both hex; exact ⟨.inl .N2, rfl⟩
+    · obtain rfl := E_d both hex;  exact ⟨.inl .a, rfl⟩
+    · obtain rfl := E_d' both hex; exact ⟨.inl .a', rfl⟩
+    · exact absurd hx (not_cont_state both _)
+    · exact absurd hx (not_cont_state both _)
+  case CE =>
+    intro w ⟨x, hx⟩
+    rcases F_char both w x hx with ⟨rfl, _⟩ | ⟨rfl, _⟩ <;>
+      exact Or.inr (Or.inr ⟨(M).Maximal, .state .s1, Or.inl rfl⟩)
+  case NBL =>
+    rintro w _ (h | ⟨_, h⟩) <;> cases h
+  case CH =>
+    intro w st _ h
+    rcases h with h | ⟨_, h⟩ <;> cases h <;> cases w
+    · exact ⟨.inl .a', F_a' both, Or.inl ⟨rfl, rfl, Or.inr ⟨rfl, rfl⟩⟩⟩
+    · exact ⟨.inl .a, F_a both, Or.inl ⟨rfl, rfl, Or.inl ⟨rfl, rfl⟩⟩⟩
+    · exact ⟨.inl .b', F_b' both, Or.inr ⟨rfl, rfl, Or.inr ⟨rfl, rfl⟩⟩⟩
+    · exact ⟨.inl .b, F_b both, Or.inr ⟨rfl, rfl, Or.inl ⟨rfl, rfl⟩⟩⟩
+
+theorem not_P4 : ¬ P4_stmt M := by
+  rintro ⟨N0, hN⟩
+  have h1 := (hN true).2 _ (fund_N both true)
+  have h2 := (hN true).2 _ (fund_N2 both true)
+  subst h1; cases h2
+theorem not_P4plus : ¬ P4plus_stmt M := fun h => by
+  have := h .N .N2 (fund_N both) (nec_N2 both) ⟨true, .inr .s2, rfl⟩
+  cases this
+/-- Both beings produce a first item at EVERY world (no alternation, no idleness). -/
+theorem both_produce : ∀ w, (∃ m, (M).F w m ∧ (M).CausesVia w .N .s1 m) ∧
+    (∃ m, (M).F w m ∧ (M).CausesVia w .N2 .s2 m) := by
+  intro w; cases w
+  · exact ⟨⟨.inl .a', F_a' both, Or.inl ⟨rfl, rfl, Or.inr ⟨rfl, rfl⟩⟩⟩,
+           ⟨.inl .b', F_b' both, Or.inr ⟨rfl, rfl, Or.inr ⟨rfl, rfl⟩⟩⟩⟩
+  · exact ⟨⟨.inl .a, F_a both, Or.inl ⟨rfl, rfl, Or.inl ⟨rfl, rfl⟩⟩⟩,
+           ⟨.inl .b, F_b both, Or.inr ⟨rfl, rfl, Or.inl ⟨rfl, rfl⟩⟩⟩⟩
+theorem two_minds : (M).Mind .N ∧ (M).Mind .N2 := ⟨⟨.s1, rfl, trivial⟩, ⟨.s2, rfl, trivial⟩⟩
+/-- `Bare` is a predicate on WORLDS.  With N's state a channel, no world is bare —
+    whatever N₂ does.  "N₂ pays Exit 1's bill for its share" has no formal referent. -/
+theorem not_bare : ∀ w, ¬ (M).Bare w := fun _ h => h.2.1 ⟨.state .s1, Or.inl rfl⟩
+theorem agent_N : (M).Agent true .N := ⟨.s1, rfl, ⟨(both_produce both true).1, ⟨.nil, trivial⟩, Or.inl rfl⟩⟩
+theorem realities_differ : (M).realOf true ≠ (M).realOf false := fun h => by
+  have this : (M).realOf true (.inl .a) := ⟨cont_a both, rfl⟩
+  rw [h] at this
+  exact Bool.false_ne_true this.2
+end generic
+
+/-! III.6 position (ii): two fundamentals, both channels, both active everywhere. -/
+namespace Both
+local notation "M" => Mk true
+theorem agent_N2 : (M).Agent true .N2 :=
+  ⟨.s2, rfl, ⟨(both_produce true true).2, ⟨.nil, trivial⟩, Or.inr ⟨rfl, rfl⟩⟩⟩
+theorem same_profile : SameProfile M .N .N2 := by
+  refine ⟨fun s hb _ => ?_, fun s' hb _ => ?_⟩
+  · cases s
+    · exact ⟨.s2, rfl, necstate true .s2, fun _ => Iff.rfl, Iff.rfl, fun _ => Iff.rfl,
+        fun _ _ => ⟨fun _ => Or.inr ⟨rfl, rfl⟩, fun _ => Or.inl rfl⟩⟩
+    · exact nomatch (hb : T.N2 = T.N)
+  · cases s'
+    · exact nomatch (hb : T.N = T.N2)
+    · exact ⟨.s1, rfl, necstate true .s1, fun _ => Iff.rfl, Iff.rfl, fun _ => Iff.rfl,
+        fun _ _ => ⟨fun _ => Or.inr ⟨rfl, rfl⟩, fun _ => Or.inl rfl⟩⟩
+/-- IDF does non-vacuous work: it is FALSE here, and it is the only thing that excludes this model. -/
+theorem not_IDF : ¬ IDF_stmt M := fun h => by
+  have := h .N .N2 (fund_N true) (fund_N2 true) same_profile
+  cases this
+theorem position_ii :
+    (∀ w, (M).Fundamental w .N) ∧ (∀ w, (M).Fundamental w .N2) ∧ T.N ≠ T.N2 ∧
+    (M).Mind .N ∧ (M).Mind .N2 ∧ (M).Agent true .N ∧ (M).Agent true .N2 ∧
+    (∀ w, (∃ m, (M).F w m ∧ (M).CausesVia w .N .s1 m) ∧ (∃ m, (M).F w m ∧ (M).CausesVia w .N2 .s2 m)) ∧
+    SameProfile M .N .N2 ∧ ¬ IDF_stmt M ∧ ¬ P4_stmt M ∧ ¬ P4plus_stmt M ∧ (∀ w, ¬ (M).Bare w) ∧
+    (M).realOf true ≠ (M).realOf false ∧
+    (F1_stmt M ∧ Src_stmt M ∧ E_stmt M ∧ L0_stmt M ∧ B1_stmt M ∧ B1'_stmt M ∧ B2_stmt M ∧
+     P0_stmt M ∧ P1_stmt M ∧ P2_stmt M ∧ P5_stmt M ∧ FA_stmt M ∧ P7_stmt M ∧ P8_stmt M ∧ P9_stmt M ∧
+     P11_stmt M ∧ P12_stmt M ∧ L4_stmt M ∧ CE_stmt M ∧ NBL_stmt M ∧ GG_stmt M ∧ CH_stmt M ∧ TR_stmt M) :=
+  ⟨fund_N true, fund_N2 true, by simp, (two_minds true).1, (two_minds true).2, agent_N true, agent_N2,
+   both_produce true, same_profile, not_IDF, not_P4 true, not_P4plus true, not_bare true,
+   realities_differ true, fields true⟩
+end Both
+
+/-! III.6 position (i): N₂ produces at every world, no state of N₂ is a channel;
+    IDF HOLDS (profiles differ), P4 fails, CE holds, and NO world is bare. -/
+namespace OneChannel
+local notation "M" => Mk false
+theorem N2_no_channel : ∀ w P, ¬ (M).Sens w P (.state .s2) := by
+  rintro w P (h | ⟨h, _⟩)
+  · exact nomatch (Chan.state.inj h : S.s2 = S.s1)
+  · exact nomatch (h : false = true)
+theorem profile_ne : ¬ SameProfile M .N .N2 := fun hsp => by
+  obtain ⟨s', hb, _, _, _, _, hsens⟩ := hsp.1 .s1 rfl (necstate false .s1)
+  cases s' with
+  | s1 => exact nomatch (hb : T.N = T.N2)
+  | s2 => exact N2_no_channel true (M).Maximal ((hsens true (M).Maximal).mp (Or.inl rfl))
+theorem profile_ne' : ¬ SameProfile M .N2 .N := fun hsp => by
+  obtain ⟨s, hb, _, _, _, _, hsens⟩ := hsp.2 .s1 rfl (necstate false .s1)
+  cases s with
+  | s1 => exact nomatch (hb : T.N = T.N2)
+  | s2 => exact N2_no_channel true (M).Maximal ((hsens true (M).Maximal).mpr (Or.inl rfl))
+theorem fund_cases {t : T} (ht : ∀ w, (M).Fundamental w t) : t = .N ∨ t = .N2 :=
+  Classical.byContradiction fun hc =>
+    not_nec false (fun h => hc (Or.inl h)) (fun h => hc (Or.inr h)) (ht true).1
+theorem IDF_holds : IDF_stmt M := by
+  intro t t' ht ht' hsp
+  rcases fund_cases ht with rfl | rfl <;> rcases fund_cases ht' with rfl | rfl
+  · rfl
+  · exact absurd hsp profile_ne
+  · exact absurd hsp profile_ne'
+  · rfl
+theorem not_agent_N2 (w : Bool) : ¬ (M).Agent w .N2 := fun ⟨s, hb, hsel⟩ => by
+  cases s with
+  | s1 => exact nomatch (hb : T.N = T.N2)
+  | s2 => exact N2_no_channel w _ hsel.2.2
+theorem position_i :
+    IDF_stmt M ∧ ¬ P4_stmt M ∧ CE_stmt M ∧ (∀ w, ¬ (M).Bare w) ∧
+    (∀ w P, ¬ (M).Sens w P (.state .s2)) ∧
+    (∀ w, ∃ m, (M).F w m ∧ (M).CausesVia w .N2 .s2 m) ∧
+    (∀ w, (M).Fundamental w .N2) ∧ (M).Mind .N2 ∧ (∀ w, ¬ (M).Agent w .N2) ∧
+    (M).Agent true .N ∧ (M).realOf true ≠ (M).realOf false :=
+  ⟨IDF_holds, not_P4 false, (fields false).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1, not_bare false,
+   N2_no_channel, fun w => (both_produce false w).2, fund_N2 false, (two_minds false).2, not_agent_N2,
+   agent_N false, realities_differ false⟩
+end OneChannel
+end W_Two
 
 end Toy
 
@@ -4559,7 +5016,74 @@ end Toy
 #print axioms Toy.W_Nat.powers_witness
 #print axioms Toy.W_Pref.no_powers_at_maximal
 #print axioms Toy.NoTR.powers_horn1
-#print axioms Toy.W_Nat.fallible_witness
-#print axioms Toy.W_Pref.fallible_witness
 #print axioms Toy.W_P4.two_minds
 #print axioms Toy.W_P4.IDF_and_not_P4
+#print axioms NecessaryAgent.fallible_actual_iff
+#print axioms NecessaryAgent.natural_directed_nonempty
+#print axioms NecessaryAgent.uniform_countable_refuted
+#print axioms Toy.god_holds
+#print axioms Toy.knows_everything
+#print axioms Toy.BothChannels.witness
+#print axioms Toy.W_Pref.fork_is_residue
+#print axioms Toy.W_Two.Both.position_ii
+#print axioms Toy.W_Two.OneChannel.position_i
+
+-- v8.14: the STATEMENT of every certified result, pinned (expected_statements.txt)
+#check @NecessaryAgent.main
+#check @NecessaryAgent.god_exists
+#check @NecessaryAgent.identify
+#check @NecessaryAgent.T3_11'
+#check @NecessaryAgent.T2_4'
+#check @Toy.premises_consistent
+#check @Toy.Bare.witness
+#check @Toy.Axiarch.witness
+#check @Toy.NoCH.witness
+#check @Toy.NoTR.witness
+#check @Toy.DLaw.witness
+#check @Toy.DState.witness
+#check @NecessaryAgent.no_modal_collapse
+#check @NecessaryAgent.mind_of_CE_NBL
+#check @NecessaryAgent.P3_of
+#check @NecessaryAgent.exists_maximal
+#check @NecessaryAgent.T4_6s
+#check @NecessaryAgent.knows_actual
+#check @Toy.NoMind.witness
+#check @Toy.NoAcc.witness
+#check @Toy.Narrow.witness
+#check @Toy.Chance.witness
+#check @Toy.W_P2.witness
+#check @Toy.W_P4.witness
+#check @Toy.W_P1.witness
+#check @Toy.W_L4.witness
+#check @NecessaryAgent.P12_of_cat
+#check @NecessaryAgent.L2_of_P11
+#check @NecessaryAgent.archRat
+#check @Toy.W_Id.originator_neither
+#check @Toy.W_Id.agent_ne_originator
+#check @Toy.W_Id.matrix
+#check @Toy.W_Id.originator_is_mind_not_agent
+#check @Toy.W_Id.originator_is_agent_and_mind_with_another_mind
+#check @Toy.W_Id.mind_is_agent_not_originator
+#check @Toy.W_Id.all_one
+#check @NecessaryAgent.originator_produces_mind_and_agent
+#check @NecessaryAgent.stateless_originator_is_neither
+#check @NecessaryAgent.all_worlds_accord'
+#check @NecessaryAgent.all_tied
+#check @Toy.W_Pref.witness
+#check @Toy.W_Nat.witness
+#check @NecessaryAgent.powers_all_tied
+#check @NecessaryAgent.powers_fork
+#check @Toy.W_Nat.powers_witness
+#check @Toy.W_Pref.no_powers_at_maximal
+#check @Toy.NoTR.powers_horn1
+#check @Toy.W_P4.two_minds
+#check @Toy.W_P4.IDF_and_not_P4
+#check @NecessaryAgent.fallible_actual_iff
+#check @NecessaryAgent.natural_directed_nonempty
+#check @NecessaryAgent.uniform_countable_refuted
+#check @Toy.god_holds
+#check @Toy.knows_everything
+#check @Toy.BothChannels.witness
+#check @Toy.W_Pref.fork_is_residue
+#check @Toy.W_Two.Both.position_ii
+#check @Toy.W_Two.OneChannel.position_i

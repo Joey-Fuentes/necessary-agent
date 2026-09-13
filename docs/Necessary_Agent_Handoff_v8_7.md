@@ -1,7 +1,7 @@
-# A Necessary Agent — Handoff (v8.13)
+# A Necessary Agent — Handoff (v8.14)
 
 **Status:** Consolidated as of 2026-09-13. Supersedes `Necessary_Agent_Teleological_Handoff.md`, `teleological_argument_proof.md`, and `teleological_argument_proof__1_.md` in full.
-**Verified:** `NecessaryAgent.lean` compiles under Lean 4.33.1 (core, no Mathlib), exit 0, zero errors, zero warnings, zero `sorry`; 51 `#print axioms` results, every one depending on at most `propext`, `choice`, `Quot.sound`. CI (`scripts/verify.sh`) passes locally on this commit. Output in `NecessaryAgent_v8_7_print_axioms.txt`. MD5 of the verified file: `21290ecf4e49ecf77894593cb036cab9`.
+**Verified:** `NecessaryAgent.lean` compiles under Lean 4.33.1 (core, no Mathlib), exit 0, zero errors, zero warnings, zero `sorry`; 58 `#print axioms` results, every one depending on at most `propext`, `choice`, `Quot.sound`; the statement of each pinned in `expected_statements.txt`. CI (`scripts/verify.sh`, checks 1–5) passes locally on this commit. **Produced by the session that reviewed v8.13; not independently verified** (README §4, step 5).
 
 ---
 
@@ -11,7 +11,7 @@ Construct the strongest argument for a necessary rational agent — God, in the 
 
 The target, in the terms the file now uses: **make every exit from `god_exists` as expensive as the literature allows, and state each price exactly.**
 
-What "proof" means here, and what it doesn't. `god_exists` is a certified theorem of the form `Axioms M → ∃ N, God M N ∧ (unique)`. The antecedent cannot be discharged: every field of `Axioms` has an independence witness in the same file, i.e. a Lean proof that denying it is consistent. So the argument is a proof for anyone who accepts the premises, and a priced bill for anyone who doesn't. It is not, and cannot be made into, a demonstration that closes every exit — the certification apparatus is itself the proof of that. The remaining work is entirely on the *prices*.
+What "proof" means here, and what it doesn't. `god_exists` is a certified theorem of the form `Axioms M → ∃ N, God M N ∧ (unique)`. The antecedent cannot be discharged: every contested field of `Axioms` has an independence witness in the same file (P7, P8, P11, F1, Src do not: README §5), i.e. a Lean proof that denying it is consistent. So the argument is a proof for anyone who accepts the premises, and a priced bill for anyone who doesn't. It is not, and cannot be made into, a demonstration that closes every exit — the certification apparatus is itself the proof of that. The remaining work is on the *prices* — and, after the third review, on two places where the price has no formal object: the fallible powers reading (III.5) and a second channel-less fundamental (III.6).
 
 ---
 
@@ -120,27 +120,49 @@ Excluded permanently: biological error rates, the 10⁻³⁸ product, photosynth
 | B.6 (P4 "undeveloped") | — | **Done (v8.10)** — III.6 rewritten; uniqueness at IDF |
 | B.7 (CatU cheap for discrete physics) | — | **Done (v8.7)** — conceded in III.7, Objection 4; CatU restated as modal |
 
+### 8a. Status of the third external review's recommendations (v8.13 review → v8.14)
+
+| Item | Recommendation | Status |
+|---|---|---|
+| E.1 | CI pins statements, not just axiom lists | **Done** — `expected_statements.txt`; the `… ∨ (1 = 1)` attack is a tested failure |
+| E.2 | MD5, "prose only" labels, "v8.12: 51", "as of v8.11", handoff §1 "every field" | **Done** |
+| E.3 | Withdraw "one sentence wide"; fix or delete `FalliblePowers.actual` witnesses; Horn 1 = residue | **Done** — `fallible_actual_iff`; witnesses deleted; `W_Pref.fork_is_residue` |
+| E.4 | III.5 rewritten to Mumford–Anjum, Vetter, Bird; Oderberg reconciled | **Done** in prose (philosophical; no Lean) |
+| E.5 | Add position (i)/(ii) models; correct III.6 (ii); state (i)/(iv) unpriced | **Done** — `W_Two`; Cost/Ceiling/III.9 rewritten |
+| E.6 | Separate IDF from ID | **Done** in prose; `W_P4` has IDF ∧ ¬ID (¬ID not compiled as a theorem) |
+| E.7 | III.1: ties; `T2_2` is `rfl` | **Done** in prose |
+| E.8 | III.4: count as interpretive; Collins | **Done** in prose |
+| E.9 | III.7: CatU's second premise; certify uniform horn; middle horn; BHW; Schiffrin–Wald | **Done** — `uniform_countable_refuted`; prose |
+| E.10 | III.2: ¬NBL as package | **Done** — `BothChannels.witness` |
+| E.11 | §6.2: "determinate type" tautology | **Done** — `natural_directed_nonempty` |
+| E.12 | §6.0: primitives; God in `Toy.A` | **Done** — `god_holds`, `knows_everything` |
+| E.13 | L0 entry for direction-neutral causation | **Partly** — noted in III.6 P1; no dossier section yet |
+| E.14 | Add the review results to the expected files | **Done** |
+| — | Not compiled (review Part C): ID ∧ ¬IDF model; a non-mind position-(i) N₂; ¬ID on `W_P4` as a theorem | **Open** |
+
 ---
 
-## 9. Burdens — status as of v8.11
+## 9. Burdens — status as of v8.14
 
 **Closed as far as formal work can close them:**
 
-1. **TR** (v8.8–8.9). The fork certified on the powers theorist's own axiom (`powers_fork`, `powers_all_tied`); the fallible reading certified as the same structure on both sides (`W_Nat.fallible_witness`, `W_Pref.fallible_witness`) and closed in prose on Mumford–Anjum, Vetter, Bird. Remaining: one sentence for the powers naturalist to assert as a primitive — "the alternatives figure and the state is about none of them" — answered by Oderberg's abstraction criterion. Philosophical, and stays so.
-2. **P4** (v8.10). `Core` = `CoreNoP4` + P4; the mind conclusion is typed free of P4; `W_P4.two_minds`. III.6 rewritten: trilemma for the second being; uniqueness located at IDF. Remaining: IDF's defense, shared with III.1's Objection 9.
-3. **CE dossier** (v8.7). III.1 answers the review's Attacks 1–7 by name: the residue conceded and the asymmetry stated with scope; Past Hypothesis routed; Norton's dome classified as bare with the dome's own critics; the haecceitistic exit priced as necessitarianism about the constants. Remaining: IDF/anti-haecceitism as the one shared commitment.
-4. **III.4** (v8.11). Smith satisfied by the `Rep`/`Sens` split; evil-god relocated to the interpretation of `AtLeast` and priced; Dasgupta answered by a count; the residue named. Remaining: the problem of evil at P8/w₀, located and not answered — by design (§8.4).
+1. **TR, necessitating reading** (v8.8). `powers_fork`, `powers_all_tied`, `no_powers_at_maximal`.
+2. **P4, position (ii)** (v8.14). `W_Two.Both.not_IDF`: IDF and nothing else excludes a second channel-bearing fundamental.
+3. **CE dossier** (v8.7, corrected v8.14). Residue restated as "which of the maximal class, and whether the inclination prevailed"; `T2_2` no longer cited as evidence.
+4. **III.4** (v8.11, scoped v8.14). The count is an interpretive premise; Collins engaged.
+5. **Uniform propensity horn** (v8.14). `uniform_countable_refuted`.
+6. **CI** (v8.14). Statements pinned.
 
-**Argued in prose (v8.13); nothing further to formalize without model extension:**
+**Open — formal:**
 
-5. **CatU.** Positive argument from infinitely many independent discrete structural respects (III.7); one contestable premise, that a law-structure with infinitely many independent features is possible. The countable-kinds skeptic meets the propensity fork (uniform → refuted by L4; property-tracking → NBL; bare weights → III.4's count). Certifying the fork would need a notion of what a propensity's weights track — a real model extension; recommendation: leave it prose unless a reviewer presses it.
-6. **P1.** Argued: the contradiction lives in the ungrounded chain (finite truncations consistent); the unsatisfiable-pair diagnosis is explained, not rivaled; the endless-future symmetry needs backward causation. Open only for a theorist who denies causation has a direction.
-7. **P11.** Argued against NAP: ultrafilter-dependence is fatal for a one-off's objective propensity; non-invariance under relabeling; infinitesimal chance for every alternative. Open only for an NAP account of objective chance, which the literature does not offer.
-8. **IDF** — done (v8.12); see 2.
+7. **A per-being notion of contribution to F_w.** Without it, III.6's positions (i) and (iv) — a second fundamental that produces with no channel, or by turns — are consistent with IDF, CE, and every field but P4/P4⁺ with no world `Bare` (`W_Two.OneChannel.position_i`, `W_P4`), and the argument has no bill for a naturalist who grants one mind and posits one brute producer alongside it. This is now the highest-leverage formal item.
+8. **A formalization of fallible directedness** with content about the state (weaker than `manif`, stronger than `manif₀`). Nothing has been shown about the fallible reading; `FalliblePowers.actual` is content-free.
+9. **L0** as a dossier entry (direction-neutral causation is excluded there, not at P1).
+10. Not compiled: ID ∧ ¬IDF; a non-mind position-(i) N₂; ¬ID on `W_P4`.
 
-**Remaining open, all philosophical:** Oderberg's abstraction criterion applied to the fallible inclination (TR); IDF against a committed foundation-haecceitist (P4, CE); the possibility of infinite independent structure (CatU); the problem of evil at P8/w₀ (located, not answered, by design).
+**Open — philosophical:** TR's content claim against a powers naturalist holding the theist's own modal primitive (III.5); IDF against a foundation-haecceitist, as a separate commitment from ID (III.6); CatU's two contestable premises (III.7); the problem of evil at P8/w₀ (located, not answered, by design); BHW's modelling-relativity reply (III.7).
 
-**Housekeeping:** drop the v8.5 review into `docs/`; bump `actions/*` to `@v5`; rename the docs from `_v8_7` to unversioned names in one commit (git tracks versions); and — per the README's own rule — commission a **fresh external review of v8.13** by someone who did not write it, asked specifically to attack: III.5's readings of Mumford–Anjum and Vetter; III.6's IDF and the four-position analysis; III.4's relocation of Law to the theory of reasons; III.7's positive argument for CatU and the propensity fork; and III.6's reply to the endless-future symmetry. Those are the places where v8.8–8.13 leaned on readings of the literature, and where a hostile referee will go first. **This is now the highest-value next step; the burden list is empty of formal work.**
+**Housekeeping:** drop the v8.5 and v8.13 reviews into `docs/` (`docs/necessary_agent_v8_13_review.md` is added in this commit); bump `actions/*` to `@v5`; rename the docs from `_v8_7` to unversioned names in one commit. **Next step, per README §4 step 5:** a fresh reader who did not produce v8.14 must reproduce `verify.sh` (58 lines + statements) before anything in this handoff is treated as verified; the two open formal items (§9, items 7–8) are where a fourth review should build its countermodels.
 
 ## 10. Rules for every subsequent pass
 

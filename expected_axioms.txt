@@ -45,7 +45,14 @@
 'Toy.W_Nat.powers_witness' depends on axioms: [propext, Quot.sound]
 'Toy.W_Pref.no_powers_at_maximal' depends on axioms: [propext, Quot.sound]
 'Toy.NoTR.powers_horn1' depends on axioms: [propext, choice, Quot.sound]
-'Toy.W_Nat.fallible_witness' depends on axioms: [propext, Quot.sound]
-'Toy.W_Pref.fallible_witness' depends on axioms: [propext, Quot.sound]
 'Toy.W_P4.two_minds' depends on axioms: [propext, Quot.sound]
 'Toy.W_P4.IDF_and_not_P4' depends on axioms: [propext, choice, Quot.sound]
+'NecessaryAgent.fallible_actual_iff' does not depend on any axioms
+'NecessaryAgent.natural_directed_nonempty' does not depend on any axioms
+'NecessaryAgent.uniform_countable_refuted' depends on axioms: [propext, choice, Quot.sound]
+'Toy.god_holds' depends on axioms: [propext, choice, Quot.sound]
+'Toy.knows_everything' depends on axioms: [propext, Quot.sound]
+'Toy.BothChannels.witness' depends on axioms: [propext, choice, Quot.sound]
+'Toy.W_Pref.fork_is_residue' depends on axioms: [propext, Quot.sound]
+'Toy.W_Two.Both.position_ii' depends on axioms: [propext, choice, Quot.sound]
+'Toy.W_Two.OneChannel.position_i' depends on axioms: [propext, choice, Quot.sound]

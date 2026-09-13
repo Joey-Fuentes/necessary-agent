@@ -204,3 +204,9 @@ Go through the premises and mark each one. If you mark every box "accept," the c
 | Nothing necessary and concrete besides the source | ☐ | …the source necessarily generates other necessary beings |
 
 If your only unchecked boxes are the two in bold, you are in the company of the most careful naturalists, and §5 is a fair description of what you and the theist each pay. If you checked everything, the conclusion in §4 is yours — and it has a name and a theorem.
+
+---
+
+## Note added in v8.14 (after the third external review)
+
+Two things this guide says in the strong form should be read with the v8.14 corrections in mind. First, the powers-naturalist's exit (denying TR) is **not** "one sentence wide": the machine-checked result that seemed to show his "fallible" position is the same as the theist's turned out to certify only that the actual world is best on each model's scale — it said nothing about the state at all — and it has been deleted. What is certified is narrower: a directedness that *necessitates* the best either ties every possibility or contradicts a discriminating scale. The rest is the philosophical case for TR. Second, denying uniqueness (P4) is "polytheism" only for a second being that *also* selects; a second being that merely produces, with no selecting state, is consistent with every other premise, and the argument currently has no price for it. Both points are in the argument's §III.5 and §III.6.

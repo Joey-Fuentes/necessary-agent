@@ -1,0 +1,535 @@
+@NecessaryAgent.main : ∀ {M : NecessaryAgent.Model},
+  NecessaryAgent.Axioms M →
+    (∃ u, M.Fundamental M.w₀ u) ∧
+      ¬M.Deterministic ∧
+        ¬M.PropGoverned M.w₀ ∧
+          M.Favored M.w₀ ∧
+            M.Agential M.w₀ ∧
+              ∃ N,
+                (∀ (w : M.W), M.Fundamental w N ∧ ∀ (t : M.Thing), M.Fundamental w t → t = N) ∧
+                  (∀ (w : M.W), (∃ x, M.ContingentItem x ∧ M.E w x) → M.BringsAbout w N) ∧
+                    M.Mind N ∧
+                      NecessaryAgent.KnowsAll M N ∧
+                        M.Agent M.w₀ N ∧ M.P7Antecedent M.w₀ N ∧ M.ActsOnBest M.w₀ N ∧ M.AccordsValue M.w₀
+@NecessaryAgent.god_exists : ∀ {M : NecessaryAgent.Model},
+  NecessaryAgent.Axioms M → ∃ N, NecessaryAgent.God M N ∧ ∀ (N' : M.Thing), NecessaryAgent.God M N' → N' = N
+@NecessaryAgent.identify : ∀ {M : NecessaryAgent.Model},
+  NecessaryAgent.Axioms M →
+    ∃ N, (∀ (w : M.W), M.Fundamental w N) ∧ M.Mind N ∧ M.Agent M.w₀ N ∧ NecessaryAgent.KnowsAll M N
+@NecessaryAgent.T3_11' : ∀ {M : NecessaryAgent.Model},
+  NecessaryAgent.Axioms0 M → ∃ Ag, M.Nec Ag ∧ M.Concrete Ag ∧ M.Agent M.w₀ Ag ∧ M.Mind Ag ∧ NecessaryAgent.KnowsAll M Ag
+@NecessaryAgent.T2_4' : ∀ {M : NecessaryAgent.Model},
+  NecessaryAgent.CoreNoP4 M → NecessaryAgent.ID_stmt M → ¬M.TypeDeterministic
+Toy.premises_consistent : Nonempty (NecessaryAgent.Axioms Toy.M)
+Toy.Bare.witness : Nonempty (NecessaryAgent.Core (Toy.Mk Toy.Bare.P)) ∧
+  NecessaryAgent.NBL_stmt (Toy.Mk Toy.Bare.P) ∧
+    NecessaryAgent.GG_stmt (Toy.Mk Toy.Bare.P) ∧
+      NecessaryAgent.CH_stmt (Toy.Mk Toy.Bare.P) ∧
+        NecessaryAgent.TR_stmt (Toy.Mk Toy.Bare.P) ∧
+          NecessaryAgent.P4plus_stmt (Toy.Mk Toy.Bare.P) ∧
+            ¬NecessaryAgent.CE_stmt (Toy.Mk Toy.Bare.P) ∧
+              ¬NecessaryAgent.P3_stmt (Toy.Mk Toy.Bare.P) ∧ ¬(Toy.Mk Toy.Bare.P).Favored true
+Toy.Axiarch.witness : Nonempty (NecessaryAgent.Core (Toy.Mk Toy.Axiarch.P)) ∧
+  NecessaryAgent.CE_stmt (Toy.Mk Toy.Axiarch.P) ∧
+    NecessaryAgent.GG_stmt (Toy.Mk Toy.Axiarch.P) ∧
+      NecessaryAgent.CH_stmt (Toy.Mk Toy.Axiarch.P) ∧
+        NecessaryAgent.TR_stmt (Toy.Mk Toy.Axiarch.P) ∧
+          NecessaryAgent.P4plus_stmt (Toy.Mk Toy.Axiarch.P) ∧
+            ¬NecessaryAgent.NBL_stmt (Toy.Mk Toy.Axiarch.P) ∧
+              ¬NecessaryAgent.NI_stmt (Toy.Mk Toy.Axiarch.P) ∧
+                (Toy.Mk Toy.Axiarch.P).Favored true ∧
+                  ¬NecessaryAgent.P10_stmt (Toy.Mk Toy.Axiarch.P) ∧ ¬(Toy.Mk Toy.Axiarch.P).Agential true
+Toy.NoCH.witness : Nonempty (NecessaryAgent.Core (Toy.Mk Toy.NoCH.P)) ∧
+  NecessaryAgent.CE_stmt (Toy.Mk Toy.NoCH.P) ∧
+    NecessaryAgent.NBL_stmt (Toy.Mk Toy.NoCH.P) ∧
+      NecessaryAgent.GG_stmt (Toy.Mk Toy.NoCH.P) ∧
+        NecessaryAgent.TR_stmt (Toy.Mk Toy.NoCH.P) ∧
+          NecessaryAgent.P4plus_stmt (Toy.Mk Toy.NoCH.P) ∧
+            ¬NecessaryAgent.CH_stmt (Toy.Mk Toy.NoCH.P) ∧ ¬(Toy.Mk Toy.NoCH.P).Agential true
+Toy.NoTR.witness : Nonempty (NecessaryAgent.Core (Toy.Mk Toy.NoTR.P)) ∧
+  NecessaryAgent.CE_stmt (Toy.Mk Toy.NoTR.P) ∧
+    NecessaryAgent.NBL_stmt (Toy.Mk Toy.NoTR.P) ∧
+      NecessaryAgent.GG_stmt (Toy.Mk Toy.NoTR.P) ∧
+        NecessaryAgent.CH_stmt (Toy.Mk Toy.NoTR.P) ∧
+          NecessaryAgent.P4plus_stmt (Toy.Mk Toy.NoTR.P) ∧
+            ¬NecessaryAgent.TR_stmt (Toy.Mk Toy.NoTR.P) ∧
+              ¬(Toy.Mk Toy.NoTR.P).Agential true ∧
+                (¬∃ t, (Toy.Mk Toy.NoTR.P).Mind t) ∧
+                  (¬∃ st c, (Toy.Mk Toy.NoTR.P).Rep st c) ∧ (Toy.Mk Toy.NoTR.P).Favored true
+Toy.DLaw.witness : Nonempty (NecessaryAgent.Core (Toy.Mk Toy.DLaw.P)) ∧
+  NecessaryAgent.CE_stmt (Toy.Mk Toy.DLaw.P) ∧
+    NecessaryAgent.NI_stmt (Toy.Mk Toy.DLaw.P) ∧
+      NecessaryAgent.GG_stmt (Toy.Mk Toy.DLaw.P) ∧
+        NecessaryAgent.CH_stmt (Toy.Mk Toy.DLaw.P) ∧
+          NecessaryAgent.TR_stmt (Toy.Mk Toy.DLaw.P) ∧
+            NecessaryAgent.P4plus_stmt (Toy.Mk Toy.DLaw.P) ∧
+              ¬NecessaryAgent.NBL_stmt (Toy.Mk Toy.DLaw.P) ∧
+                (Toy.Mk Toy.DLaw.P).Sens true Toy.DLaw.D NecessaryAgent.Chan.law ∧
+                  ¬(Toy.Mk Toy.DLaw.P).Favored true ∧
+                    (Toy.Mk Toy.DLaw.P).Bare true ∧ ¬NecessaryAgent.P3_stmt (Toy.Mk Toy.DLaw.P)
+Toy.DState.witness : Nonempty (NecessaryAgent.Core (Toy.Mk Toy.DState.P)) ∧
+  NecessaryAgent.CE_stmt (Toy.Mk Toy.DState.P) ∧
+    NecessaryAgent.NBL_stmt (Toy.Mk Toy.DState.P) ∧
+      NecessaryAgent.CH_stmt (Toy.Mk Toy.DState.P) ∧
+        NecessaryAgent.TR_stmt (Toy.Mk Toy.DState.P) ∧
+          NecessaryAgent.P4plus_stmt (Toy.Mk Toy.DState.P) ∧
+            ¬NecessaryAgent.GG_stmt (Toy.Mk Toy.DState.P) ∧
+              ¬(Toy.Mk Toy.DState.P).Favored true ∧
+                ¬NecessaryAgent.P3_stmt (Toy.Mk Toy.DState.P) ∧
+                  ∃ t, (Toy.Mk Toy.DState.P).Nec t ∧ (Toy.Mk Toy.DState.P).Concrete t ∧ (Toy.Mk Toy.DState.P).Mind t
+@NecessaryAgent.no_modal_collapse : ∀ {M : NecessaryAgent.Model}, NecessaryAgent.CoreNoP4 M → ∃ w w', M.F w ≠ M.F w'
+@NecessaryAgent.mind_of_CE_NBL : ∀ {M : NecessaryAgent.Model},
+  NecessaryAgent.CoreNoP4 M →
+    NecessaryAgent.CE_stmt M →
+      NecessaryAgent.NBL_stmt M →
+        NecessaryAgent.CH_stmt M →
+          NecessaryAgent.TR_stmt M →
+            ∃ t s,
+              M.Nec t ∧
+                M.Concrete t ∧
+                  M.bearer s = t ∧
+                    (∃ m, M.F M.w₀ m ∧ M.CausesVia M.w₀ t s m) ∧
+                      M.RepState s ∧
+                        (∃ P, M.Sens M.w₀ P (NecessaryAgent.Chan.state s)) ∧ ∃ t', M.Nec t' ∧ M.Concrete t' ∧ M.Mind t'
+NecessaryAgent.P3_of : ∀ (M : NecessaryAgent.Model),
+  NecessaryAgent.CE_stmt M → NecessaryAgent.NBL_stmt M → NecessaryAgent.GG_stmt M → NecessaryAgent.P3_stmt M
+@NecessaryAgent.exists_maximal : ∀ {M : NecessaryAgent.Model}, NecessaryAgent.Axioms0 M → ∃ r, M.InOmega r ∧ M.Maximal r
+@NecessaryAgent.T4_6s : ∀ {M : NecessaryAgent.Model},
+  NecessaryAgent.Axioms0 M →
+    NecessaryAgent.P8s_stmt M →
+      ∃ Ag, M.Agent M.w₀ Ag ∧ M.P7Antecedent M.w₀ Ag ∧ M.ActsOnBest M.w₀ Ag ∧ M.Good (M.realOf M.w₀)
+@NecessaryAgent.knows_actual : ∀ {M : NecessaryAgent.Model},
+  NecessaryAgent.Axioms0 M →
+    NecessaryAgent.SK_stmt M → ∃ Ag, M.Agent M.w₀ Ag ∧ M.Knows Ag (NecessaryAgent.Content.act (M.realOf M.w₀))
+Toy.NoMind.witness : (NecessaryAgent.F1_stmt (Toy.Mk Toy.NoMind.P) ∧
+    NecessaryAgent.Src_stmt (Toy.Mk Toy.NoMind.P) ∧
+      NecessaryAgent.E_stmt (Toy.Mk Toy.NoMind.P) ∧
+        NecessaryAgent.L0_stmt (Toy.Mk Toy.NoMind.P) ∧
+          NecessaryAgent.B1_stmt (Toy.Mk Toy.NoMind.P) ∧
+            NecessaryAgent.B1'_stmt (Toy.Mk Toy.NoMind.P) ∧
+              NecessaryAgent.B2_stmt (Toy.Mk Toy.NoMind.P) ∧
+                NecessaryAgent.P0_stmt (Toy.Mk Toy.NoMind.P) ∧
+                  NecessaryAgent.P1_stmt (Toy.Mk Toy.NoMind.P) ∧
+                    NecessaryAgent.P2_stmt (Toy.Mk Toy.NoMind.P) ∧
+                      NecessaryAgent.P4_stmt (Toy.Mk Toy.NoMind.P) ∧
+                        NecessaryAgent.P5_stmt (Toy.Mk Toy.NoMind.P) ∧
+                          NecessaryAgent.P7_stmt (Toy.Mk Toy.NoMind.P) ∧
+                            NecessaryAgent.P8_stmt (Toy.Mk Toy.NoMind.P) ∧
+                              NecessaryAgent.P9_stmt (Toy.Mk Toy.NoMind.P) ∧
+                                NecessaryAgent.P11_stmt (Toy.Mk Toy.NoMind.P) ∧
+                                  NecessaryAgent.P12_stmt (Toy.Mk Toy.NoMind.P) ∧
+                                    NecessaryAgent.L4_stmt (Toy.Mk Toy.NoMind.P) ∧
+                                      NecessaryAgent.CE_stmt (Toy.Mk Toy.NoMind.P) ∧
+                                        NecessaryAgent.NBL_stmt (Toy.Mk Toy.NoMind.P) ∧
+                                          NecessaryAgent.GG_stmt (Toy.Mk Toy.NoMind.P) ∧
+                                            NecessaryAgent.CH_stmt (Toy.Mk Toy.NoMind.P) ∧
+                                              NecessaryAgent.TR_stmt (Toy.Mk Toy.NoMind.P) ∧
+                                                NecessaryAgent.P4plus_stmt (Toy.Mk Toy.NoMind.P)) ∧
+  ¬NecessaryAgent.FA_stmt (Toy.Mk Toy.NoMind.P) ∧ ¬∃ t, (Toy.Mk Toy.NoMind.P).Mind t
+Toy.NoAcc.witness : (NecessaryAgent.F1_stmt (Toy.Mk Toy.NoAcc.P) ∧
+    NecessaryAgent.Src_stmt (Toy.Mk Toy.NoAcc.P) ∧
+      NecessaryAgent.E_stmt (Toy.Mk Toy.NoAcc.P) ∧
+        NecessaryAgent.L0_stmt (Toy.Mk Toy.NoAcc.P) ∧
+          NecessaryAgent.B1_stmt (Toy.Mk Toy.NoAcc.P) ∧
+            NecessaryAgent.B1'_stmt (Toy.Mk Toy.NoAcc.P) ∧
+              NecessaryAgent.B2_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                NecessaryAgent.P0_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                  NecessaryAgent.P1_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                    NecessaryAgent.P2_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                      NecessaryAgent.P4_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                        NecessaryAgent.P5_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                          NecessaryAgent.FA_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                            NecessaryAgent.P7_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                              NecessaryAgent.P8_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                                NecessaryAgent.P11_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                                  NecessaryAgent.P12_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                                    NecessaryAgent.L4_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                                      NecessaryAgent.CE_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                                        NecessaryAgent.NBL_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                                          NecessaryAgent.GG_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                                            NecessaryAgent.CH_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                                              NecessaryAgent.TR_stmt (Toy.Mk Toy.NoAcc.P) ∧
+                                                NecessaryAgent.P4plus_stmt (Toy.Mk Toy.NoAcc.P)) ∧
+  ¬NecessaryAgent.P9_stmt (Toy.Mk Toy.NoAcc.P) ∧ ¬∃ t, NecessaryAgent.KnowsAll (Toy.Mk Toy.NoAcc.P) t
+Toy.Narrow.witness : (NecessaryAgent.F1_stmt (Toy.Mk Toy.Narrow.P) ∧
+    NecessaryAgent.Src_stmt (Toy.Mk Toy.Narrow.P) ∧
+      NecessaryAgent.E_stmt (Toy.Mk Toy.Narrow.P) ∧
+        NecessaryAgent.L0_stmt (Toy.Mk Toy.Narrow.P) ∧
+          NecessaryAgent.B1_stmt (Toy.Mk Toy.Narrow.P) ∧
+            NecessaryAgent.B1'_stmt (Toy.Mk Toy.Narrow.P) ∧
+              NecessaryAgent.B2_stmt (Toy.Mk Toy.Narrow.P) ∧
+                NecessaryAgent.P0_stmt (Toy.Mk Toy.Narrow.P) ∧
+                  NecessaryAgent.P1_stmt (Toy.Mk Toy.Narrow.P) ∧
+                    NecessaryAgent.P2_stmt (Toy.Mk Toy.Narrow.P) ∧
+                      NecessaryAgent.P4_stmt (Toy.Mk Toy.Narrow.P) ∧
+                        NecessaryAgent.FA_stmt (Toy.Mk Toy.Narrow.P) ∧
+                          NecessaryAgent.P7_stmt (Toy.Mk Toy.Narrow.P) ∧
+                            NecessaryAgent.P8_stmt (Toy.Mk Toy.Narrow.P) ∧
+                              NecessaryAgent.P9_stmt (Toy.Mk Toy.Narrow.P) ∧
+                                NecessaryAgent.P11_stmt (Toy.Mk Toy.Narrow.P) ∧
+                                  NecessaryAgent.P12_stmt (Toy.Mk Toy.Narrow.P) ∧
+                                    NecessaryAgent.L4_stmt (Toy.Mk Toy.Narrow.P) ∧
+                                      NecessaryAgent.CE_stmt (Toy.Mk Toy.Narrow.P) ∧
+                                        NecessaryAgent.NBL_stmt (Toy.Mk Toy.Narrow.P) ∧
+                                          NecessaryAgent.GG_stmt (Toy.Mk Toy.Narrow.P) ∧
+                                            NecessaryAgent.CH_stmt (Toy.Mk Toy.Narrow.P) ∧
+                                              NecessaryAgent.TR_stmt (Toy.Mk Toy.Narrow.P) ∧
+                                                NecessaryAgent.P4plus_stmt (Toy.Mk Toy.Narrow.P)) ∧
+  ¬NecessaryAgent.P5_stmt (Toy.Mk Toy.Narrow.P) ∧
+    ¬∃ st, (Toy.Mk Toy.Narrow.P).SelectingRep true st ∧ (Toy.Mk Toy.Narrow.P).RepAllOmega st
+Toy.Chance.witness : (NecessaryAgent.F1_stmt (Toy.Mk Toy.Chance.P) ∧
+    NecessaryAgent.Src_stmt (Toy.Mk Toy.Chance.P) ∧
+      NecessaryAgent.E_stmt (Toy.Mk Toy.Chance.P) ∧
+        NecessaryAgent.L0_stmt (Toy.Mk Toy.Chance.P) ∧
+          NecessaryAgent.B1_stmt (Toy.Mk Toy.Chance.P) ∧
+            NecessaryAgent.B1'_stmt (Toy.Mk Toy.Chance.P) ∧
+              NecessaryAgent.B2_stmt (Toy.Mk Toy.Chance.P) ∧
+                NecessaryAgent.P0_stmt (Toy.Mk Toy.Chance.P) ∧
+                  NecessaryAgent.P1_stmt (Toy.Mk Toy.Chance.P) ∧
+                    NecessaryAgent.P2_stmt (Toy.Mk Toy.Chance.P) ∧
+                      NecessaryAgent.P4_stmt (Toy.Mk Toy.Chance.P) ∧
+                        NecessaryAgent.P5_stmt (Toy.Mk Toy.Chance.P) ∧
+                          NecessaryAgent.FA_stmt (Toy.Mk Toy.Chance.P) ∧
+                            NecessaryAgent.P7_stmt (Toy.Mk Toy.Chance.P) ∧
+                              NecessaryAgent.P8_stmt (Toy.Mk Toy.Chance.P) ∧
+                                NecessaryAgent.P9_stmt (Toy.Mk Toy.Chance.P) ∧
+                                  NecessaryAgent.P11_stmt (Toy.Mk Toy.Chance.P) ∧
+                                    NecessaryAgent.L4_stmt (Toy.Mk Toy.Chance.P) ∧
+                                      NecessaryAgent.CE_stmt (Toy.Mk Toy.Chance.P) ∧
+                                        NecessaryAgent.NBL_stmt (Toy.Mk Toy.Chance.P) ∧
+                                          NecessaryAgent.GG_stmt (Toy.Mk Toy.Chance.P) ∧
+                                            NecessaryAgent.CH_stmt (Toy.Mk Toy.Chance.P) ∧
+                                              NecessaryAgent.TR_stmt (Toy.Mk Toy.Chance.P) ∧
+                                                NecessaryAgent.P4plus_stmt (Toy.Mk Toy.Chance.P)) ∧
+  ¬NecessaryAgent.P12_stmt (Toy.Mk Toy.Chance.P) ∧ (Toy.Mk Toy.Chance.P).PropGoverned true
+Toy.W_P2.witness : (NecessaryAgent.F1_stmt Toy.W_P2.M ∧
+    NecessaryAgent.Src_stmt Toy.W_P2.M ∧
+      NecessaryAgent.E_stmt Toy.W_P2.M ∧
+        NecessaryAgent.L0_stmt Toy.W_P2.M ∧
+          NecessaryAgent.B1_stmt Toy.W_P2.M ∧
+            NecessaryAgent.B1'_stmt Toy.W_P2.M ∧
+              NecessaryAgent.B2_stmt Toy.W_P2.M ∧
+                NecessaryAgent.P0_stmt Toy.W_P2.M ∧
+                  NecessaryAgent.P1_stmt Toy.W_P2.M ∧
+                    NecessaryAgent.CE_stmt Toy.W_P2.M ∧
+                      NecessaryAgent.NBL_stmt Toy.W_P2.M ∧
+                        NecessaryAgent.GG_stmt Toy.W_P2.M ∧
+                          NecessaryAgent.P4_stmt Toy.W_P2.M ∧
+                            NecessaryAgent.P5_stmt Toy.W_P2.M ∧
+                              NecessaryAgent.P6_stmt Toy.W_P2.M ∧
+                                NecessaryAgent.P7_stmt Toy.W_P2.M ∧
+                                  NecessaryAgent.P8_stmt Toy.W_P2.M ∧
+                                    NecessaryAgent.P9_stmt Toy.W_P2.M ∧
+                                      NecessaryAgent.CH_stmt Toy.W_P2.M ∧
+                                        NecessaryAgent.TR_stmt Toy.W_P2.M ∧
+                                          NecessaryAgent.P11_stmt Toy.W_P2.M ∧
+                                            NecessaryAgent.P12_stmt Toy.W_P2.M ∧
+                                              NecessaryAgent.L4_stmt Toy.W_P2.M ∧
+                                                NecessaryAgent.P4plus_stmt Toy.W_P2.M) ∧
+  ¬NecessaryAgent.P2_stmt Toy.W_P2.M ∧
+    ¬∃ u, Toy.W_P2.M.Fundamental true u ∧ Toy.W_P2.M.Anc true (Sum.inl u) (Sum.inl Toy.W_P2.T.c)
+Toy.W_P4.witness : (NecessaryAgent.F1_stmt Toy.W_P4.M ∧
+    NecessaryAgent.Src_stmt Toy.W_P4.M ∧
+      NecessaryAgent.E_stmt Toy.W_P4.M ∧
+        NecessaryAgent.L0_stmt Toy.W_P4.M ∧
+          NecessaryAgent.B1_stmt Toy.W_P4.M ∧
+            NecessaryAgent.B1'_stmt Toy.W_P4.M ∧
+              NecessaryAgent.B2_stmt Toy.W_P4.M ∧
+                NecessaryAgent.P0_stmt Toy.W_P4.M ∧
+                  NecessaryAgent.P1_stmt Toy.W_P4.M ∧
+                    NecessaryAgent.P2_stmt Toy.W_P4.M ∧
+                      NecessaryAgent.CE_stmt Toy.W_P4.M ∧
+                        NecessaryAgent.NBL_stmt Toy.W_P4.M ∧
+                          NecessaryAgent.GG_stmt Toy.W_P4.M ∧
+                            NecessaryAgent.P5_stmt Toy.W_P4.M ∧
+                              NecessaryAgent.P6_stmt Toy.W_P4.M ∧
+                                NecessaryAgent.P7_stmt Toy.W_P4.M ∧
+                                  NecessaryAgent.P8_stmt Toy.W_P4.M ∧
+                                    NecessaryAgent.P9_stmt Toy.W_P4.M ∧
+                                      NecessaryAgent.CH_stmt Toy.W_P4.M ∧
+                                        NecessaryAgent.TR_stmt Toy.W_P4.M ∧
+                                          NecessaryAgent.P11_stmt Toy.W_P4.M ∧
+                                            NecessaryAgent.P12_stmt Toy.W_P4.M ∧ NecessaryAgent.L4_stmt Toy.W_P4.M) ∧
+  ¬NecessaryAgent.P4_stmt Toy.W_P4.M ∧
+    ¬NecessaryAgent.P4plus_stmt Toy.W_P4.M ∧
+      ¬∃ N0, ∀ (w : Toy.W_P4.M.W), (∃ x, Toy.W_P4.M.ContingentItem x ∧ Toy.W_P4.M.E w x) → Toy.W_P4.M.BringsAbout w N0
+Toy.W_P1.witness : (NecessaryAgent.F1_stmt Toy.W_P1.M ∧
+    NecessaryAgent.Src_stmt Toy.W_P1.M ∧
+      NecessaryAgent.E_stmt Toy.W_P1.M ∧
+        NecessaryAgent.L0_stmt Toy.W_P1.M ∧
+          NecessaryAgent.B1_stmt Toy.W_P1.M ∧
+            NecessaryAgent.B1'_stmt Toy.W_P1.M ∧
+              NecessaryAgent.B2_stmt Toy.W_P1.M ∧
+                NecessaryAgent.P0_stmt Toy.W_P1.M ∧
+                  NecessaryAgent.P2_stmt Toy.W_P1.M ∧
+                    NecessaryAgent.CE_stmt Toy.W_P1.M ∧
+                      NecessaryAgent.NBL_stmt Toy.W_P1.M ∧
+                        NecessaryAgent.GG_stmt Toy.W_P1.M ∧
+                          NecessaryAgent.P4_stmt Toy.W_P1.M ∧
+                            NecessaryAgent.P5_stmt Toy.W_P1.M ∧
+                              NecessaryAgent.P6_stmt Toy.W_P1.M ∧
+                                NecessaryAgent.P7_stmt Toy.W_P1.M ∧
+                                  NecessaryAgent.P8_stmt Toy.W_P1.M ∧
+                                    NecessaryAgent.P9_stmt Toy.W_P1.M ∧
+                                      NecessaryAgent.CH_stmt Toy.W_P1.M ∧
+                                        NecessaryAgent.TR_stmt Toy.W_P1.M ∧
+                                          NecessaryAgent.P11_stmt Toy.W_P1.M ∧
+                                            NecessaryAgent.P12_stmt Toy.W_P1.M ∧
+                                              NecessaryAgent.L4_stmt Toy.W_P1.M ∧
+                                                NecessaryAgent.P4plus_stmt Toy.W_P1.M) ∧
+  ¬NecessaryAgent.P1_stmt Toy.W_P1.M ∧
+    ¬∃ u, Toy.W_P1.M.Fundamental true u ∧ Toy.W_P1.M.Anc true (Sum.inl u) (Sum.inl (Toy.W_P1.T.c 1))
+Toy.W_L4.witness : (NecessaryAgent.F1_stmt Toy.W_L4.M ∧
+    NecessaryAgent.Src_stmt Toy.W_L4.M ∧
+      NecessaryAgent.E_stmt Toy.W_L4.M ∧
+        NecessaryAgent.L0_stmt Toy.W_L4.M ∧
+          NecessaryAgent.B1_stmt Toy.W_L4.M ∧
+            NecessaryAgent.B1'_stmt Toy.W_L4.M ∧
+              NecessaryAgent.B2_stmt Toy.W_L4.M ∧
+                NecessaryAgent.P0_stmt Toy.W_L4.M ∧
+                  NecessaryAgent.P1_stmt Toy.W_L4.M ∧
+                    NecessaryAgent.P2_stmt Toy.W_L4.M ∧
+                      NecessaryAgent.CE_stmt Toy.W_L4.M ∧
+                        NecessaryAgent.NBL_stmt Toy.W_L4.M ∧
+                          NecessaryAgent.GG_stmt Toy.W_L4.M ∧
+                            NecessaryAgent.P4_stmt Toy.W_L4.M ∧
+                              NecessaryAgent.P5_stmt Toy.W_L4.M ∧
+                                NecessaryAgent.P6_stmt Toy.W_L4.M ∧
+                                  NecessaryAgent.P7_stmt Toy.W_L4.M ∧
+                                    NecessaryAgent.P8_stmt Toy.W_L4.M ∧
+                                      NecessaryAgent.P9_stmt Toy.W_L4.M ∧
+                                        NecessaryAgent.CH_stmt Toy.W_L4.M ∧
+                                          NecessaryAgent.TR_stmt Toy.W_L4.M ∧
+                                            NecessaryAgent.P11_stmt Toy.W_L4.M ∧
+                                              NecessaryAgent.P12_stmt Toy.W_L4.M ∧
+                                                NecessaryAgent.P4plus_stmt Toy.W_L4.M) ∧
+  ¬NecessaryAgent.L4_stmt Toy.W_L4.M ∧
+    Toy.W_L4.M.PropGoverned Toy.W_L4.w0 ∧ NecessaryAgent.CatU_stmt Toy.W_L4.M ∧ NecessaryAgent.CatOpen_stmt Toy.W_L4.M
+NecessaryAgent.P12_of_cat : ∀ (M : NecessaryAgent.Model),
+  NecessaryAgent.CatU_stmt M → NecessaryAgent.CatOpen_stmt M → NecessaryAgent.P12_stmt M
+NecessaryAgent.L2_of_P11 : ∀ (M : NecessaryAgent.Model), NecessaryAgent.P11_stmt M → NecessaryAgent.L2P11_stmt M
+NecessaryAgent.archRat : NecessaryAgent.ArchOrd Rat
+Toy.W_Id.originator_neither : Nonempty (NecessaryAgent.Axioms0 (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True)) ∧
+  (∀ (w : (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).W)
+      (t : (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).Thing),
+      (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).Fundamental w t → t = Toy.W_Id.T.N) ∧
+    (∀ (w : (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).W)
+        (t : (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).Thing),
+        (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).Agent w t → t = Toy.W_Id.T.M) ∧
+      (∀ (t : (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).Thing),
+          (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).Mind t → t = Toy.W_Id.T.L ∨ t = Toy.W_Id.T.M) ∧
+        (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).Mind Toy.W_Id.T.L ∧
+          (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).Mind Toy.W_Id.T.M ∧
+            (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).Agent true Toy.W_Id.T.M ∧
+              (Toy.W_Id.T.N ≠ Toy.W_Id.T.L ∧ Toy.W_Id.T.N ≠ Toy.W_Id.T.M ∧ Toy.W_Id.T.L ≠ Toy.W_Id.T.M) ∧
+                ¬NecessaryAgent.P4plus_stmt (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True)
+Toy.W_Id.agent_ne_originator : Nonempty (NecessaryAgent.Axioms0 (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True)) ∧
+  (∀ (w : (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).W)
+      (t : (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).Thing),
+      (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).Agent w t → t = Toy.W_Id.T.M) ∧
+    (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.M True).Mind Toy.W_Id.T.M ∧ Toy.W_Id.T.N ≠ Toy.W_Id.T.M
+Toy.W_Id.matrix : ∀ (br bs : Toy.W_Id.Who) (mentalS : Prop),
+  Nonempty (NecessaryAgent.Axioms0 (Toy.W_Id.Mk br bs mentalS)) ∧
+    (∀ (w : (Toy.W_Id.Mk br bs mentalS).W) (t : (Toy.W_Id.Mk br bs mentalS).Thing),
+        (Toy.W_Id.Mk br bs mentalS).Fundamental w t → t = Toy.W_Id.T.N) ∧
+      (∀ (w : (Toy.W_Id.Mk br bs mentalS).W) (t : (Toy.W_Id.Mk br bs mentalS).Thing),
+          (Toy.W_Id.Mk br bs mentalS).Agent w t → t = bs.toT) ∧
+        (Toy.W_Id.Mk br bs mentalS).Agent true bs.toT ∧
+          (∀ (t : (Toy.W_Id.Mk br bs mentalS).Thing), (Toy.W_Id.Mk br bs mentalS).Mind t → t = br.toT ∨ t = bs.toT) ∧
+            (Toy.W_Id.Mk br bs mentalS).Mind br.toT ∧ (Toy.W_Id.Mk br bs mentalS).Mind bs.toT
+Toy.W_Id.originator_is_mind_not_agent : Nonempty
+    (NecessaryAgent.Axioms0 (Toy.W_Id.Mk Toy.W_Id.Who.N Toy.W_Id.Who.M False)) ∧
+  (Toy.W_Id.Mk Toy.W_Id.Who.N Toy.W_Id.Who.M False).Mind Toy.W_Id.T.N ∧
+    (∀ (w : (Toy.W_Id.Mk Toy.W_Id.Who.N Toy.W_Id.Who.M False).W)
+        (t : (Toy.W_Id.Mk Toy.W_Id.Who.N Toy.W_Id.Who.M False).Thing),
+        (Toy.W_Id.Mk Toy.W_Id.Who.N Toy.W_Id.Who.M False).Agent w t → t = Toy.W_Id.T.M) ∧
+      (Toy.W_Id.Mk Toy.W_Id.Who.N Toy.W_Id.Who.M False).Mind Toy.W_Id.T.M ∧ Toy.W_Id.T.N ≠ Toy.W_Id.T.M
+Toy.W_Id.originator_is_agent_and_mind_with_another_mind : Nonempty
+    (NecessaryAgent.Axioms0 (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.N False)) ∧
+  (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.N False).Agent true Toy.W_Id.T.N ∧
+    (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.N False).Mind Toy.W_Id.T.N ∧
+      (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.N False).Mind Toy.W_Id.T.L ∧ Toy.W_Id.T.N ≠ Toy.W_Id.T.L
+Toy.W_Id.mind_is_agent_not_originator : Nonempty
+    (NecessaryAgent.Axioms0 (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.L False)) ∧
+  (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.L False).Mind Toy.W_Id.T.L ∧
+    (Toy.W_Id.Mk Toy.W_Id.Who.L Toy.W_Id.Who.L False).Agent true Toy.W_Id.T.L ∧ Toy.W_Id.T.N ≠ Toy.W_Id.T.L
+Toy.W_Id.all_one : Nonempty (NecessaryAgent.Axioms0 (Toy.W_Id.Mk Toy.W_Id.Who.N Toy.W_Id.Who.N False)) ∧
+  (Toy.W_Id.Mk Toy.W_Id.Who.N Toy.W_Id.Who.N False).Mind Toy.W_Id.T.N ∧
+    (Toy.W_Id.Mk Toy.W_Id.Who.N Toy.W_Id.Who.N False).Agent true Toy.W_Id.T.N
+@NecessaryAgent.originator_produces_mind_and_agent : ∀ {M : NecessaryAgent.Model},
+  NecessaryAgent.Axioms0 M →
+    ∃ N,
+      (∀ (w : M.W), M.Fundamental w N) ∧
+        (∃ Nstar,
+            M.Mind Nstar ∧
+              NecessaryAgent.KnowsAll M Nstar ∧ (Nstar = N ∨ ∀ (w : M.W), M.Anc w (Sum.inl N) (Sum.inl Nstar))) ∧
+          ∃ Ag,
+            M.Agent M.w₀ Ag ∧ NecessaryAgent.KnowsAll M Ag ∧ (Ag = N ∨ ∀ (w : M.W), M.Anc w (Sum.inl N) (Sum.inl Ag))
+@NecessaryAgent.stateless_originator_is_neither : ∀ {M : NecessaryAgent.Model},
+  NecessaryAgent.Axioms0 M →
+    (∀ (N : M.Thing), (∀ (w : M.W), M.Fundamental w N) → ∀ (st : M.State), M.bearer st ≠ N) →
+      ∃ N,
+        (∀ (w : M.W), M.Fundamental w N) ∧ (∀ (t : M.Thing), M.Mind t → t ≠ N) ∧ ∀ (t : M.Thing), M.Agent M.w₀ t → t ≠ N
+@NecessaryAgent.all_worlds_accord' : ∀ {M : NecessaryAgent.Model},
+  NecessaryAgent.Axioms0 M →
+    NecessaryAgent.P7all_stmt M →
+      NecessaryAgent.P8all_stmt M → M.HasProp ∨ ∀ (w : M.W), (∃ x, M.F w x) → M.AccordsValue w
+@NecessaryAgent.all_tied : ∀ {M : NecessaryAgent.Model},
+  NecessaryAgent.Axioms0 M →
+    NecessaryAgent.P7all_stmt M →
+      NecessaryAgent.P8all_stmt M →
+        ¬M.HasProp →
+          ∀ (w w' : M.W),
+            (∃ x, M.F w x) →
+              (∃ x, M.F w' x) → M.AtLeast (M.realOf w) (M.realOf w') ∧ M.AtLeast (M.realOf w) M.emptyReality
+Toy.W_Pref.witness : Nonempty (NecessaryAgent.Axioms Toy.W_Pref.M) ∧
+  ¬NecessaryAgent.P8all_stmt Toy.W_Pref.M ∧
+    Toy.W_Pref.M.AtLeast (Toy.W_Pref.M.realOf true) (Toy.W_Pref.M.realOf false) ∧
+      ¬Toy.W_Pref.M.AtLeast (Toy.W_Pref.M.realOf false) (Toy.W_Pref.M.realOf true) ∧
+        Toy.W_Pref.M.P7Antecedent false Toy.W_Pref.T.N ∧ ¬Toy.W_Pref.M.Maximal (Toy.W_Pref.M.realOf false)
+Toy.W_Nat.witness : (NecessaryAgent.F1_stmt Toy.W_Nat.M ∧
+    NecessaryAgent.Src_stmt Toy.W_Nat.M ∧
+      NecessaryAgent.E_stmt Toy.W_Nat.M ∧
+        NecessaryAgent.L0_stmt Toy.W_Nat.M ∧
+          NecessaryAgent.B1_stmt Toy.W_Nat.M ∧
+            NecessaryAgent.B1'_stmt Toy.W_Nat.M ∧
+              NecessaryAgent.B2_stmt Toy.W_Nat.M ∧
+                NecessaryAgent.P0_stmt Toy.W_Nat.M ∧
+                  NecessaryAgent.P1_stmt Toy.W_Nat.M ∧
+                    NecessaryAgent.P2_stmt Toy.W_Nat.M ∧
+                      NecessaryAgent.P4_stmt Toy.W_Nat.M ∧
+                        NecessaryAgent.P5_stmt Toy.W_Nat.M ∧
+                          NecessaryAgent.FA_stmt Toy.W_Nat.M ∧
+                            NecessaryAgent.P7_stmt Toy.W_Nat.M ∧
+                              NecessaryAgent.P8_stmt Toy.W_Nat.M ∧
+                                NecessaryAgent.P9_stmt Toy.W_Nat.M ∧
+                                  NecessaryAgent.P11_stmt Toy.W_Nat.M ∧
+                                    NecessaryAgent.P12_stmt Toy.W_Nat.M ∧
+                                      NecessaryAgent.L4_stmt Toy.W_Nat.M ∧
+                                        NecessaryAgent.NBL_stmt Toy.W_Nat.M ∧
+                                          NecessaryAgent.GG_stmt Toy.W_Nat.M ∧
+                                            NecessaryAgent.CH_stmt Toy.W_Nat.M ∧
+                                              NecessaryAgent.TR_stmt Toy.W_Nat.M ∧
+                                                NecessaryAgent.P4plus_stmt Toy.W_Nat.M) ∧
+  ¬NecessaryAgent.CE_stmt Toy.W_Nat.M ∧
+    ¬Toy.W_Nat.M.Deterministic ∧
+      ¬Toy.W_Nat.M.HasProp ∧
+        ¬Toy.W_Nat.M.Favored true ∧
+          Toy.W_Nat.M.Bare true ∧
+            (¬∃ t, Toy.W_Nat.M.Mind t) ∧
+              (¬∃ st c, Toy.W_Nat.M.Rep st c) ∧ Toy.W_Nat.M.realOf true ≠ Toy.W_Nat.M.realOf false
+@NecessaryAgent.powers_all_tied : ∀ {M : NecessaryAgent.Model} (Pw : NecessaryAgent.Powers M) {s : M.State},
+  NecessaryAgent.PowersChannel M s →
+    Pw.Directed s M.Maximal → ∀ (r r' : M.Reality), M.InOmega r → M.InOmega r' → M.AtLeast r r' ∧ M.AtLeast r' r
+@NecessaryAgent.powers_fork : ∀ {M : NecessaryAgent.Model} (Pw : NecessaryAgent.Powers M) {s : M.State},
+  NecessaryAgent.PowersChannel M s →
+    ∀ {D : M.Reality → Prop},
+      Pw.Directed s D →
+        (∃ w, (∃ x, M.F w x) ∧ D (M.realOf w) ∧ ¬M.Maximal (M.realOf w)) ∨
+          ∀ (r r' : M.Reality), M.InOmega r → M.InOmega r' → M.AtLeast r r' ∧ M.AtLeast r' r
+Toy.W_Nat.powers_witness : NecessaryAgent.PowersChannel Toy.W_Nat.M Toy.W_Nat.S.s ∧
+  (Toy.W_Nat.Pw.Directed Toy.W_Nat.S.s fun r => ∃ x, r x) ∧
+    (∀ (w : Toy.W_Nat.M.W) (P : NecessaryAgent.Pred (Toy.W_Nat.M.Thing ⊕ Toy.W_Nat.M.State) → Prop)
+        (ch : NecessaryAgent.Chan Toy.W_Nat.M.State), ¬Toy.W_Nat.M.Sens w P ch) ∧
+      ¬NecessaryAgent.CE_stmt Toy.W_Nat.M ∧ ¬∃ Pw', Pw'.Directed Toy.W_Nat.S.s Toy.W_Nat.M.Maximal
+Toy.W_Pref.no_powers_at_maximal : ¬∃ Pw', Pw'.Directed Toy.W_Pref.S.s Toy.W_Pref.M.Maximal
+Toy.NoTR.powers_horn1 : NecessaryAgent.PowersChannel (Toy.Mk Toy.NoTR.P) Toy.S.s ∧
+  Toy.NoTR.Pw.Directed Toy.S.s (Toy.Mk Toy.NoTR.P).Maximal ∧
+    (∀ (r r' : (Toy.Mk Toy.NoTR.P).Reality),
+        (Toy.Mk Toy.NoTR.P).InOmega r →
+          (Toy.Mk Toy.NoTR.P).InOmega r' → (Toy.Mk Toy.NoTR.P).AtLeast r r' ∧ (Toy.Mk Toy.NoTR.P).AtLeast r' r) ∧
+      ¬NecessaryAgent.TR_stmt (Toy.Mk Toy.NoTR.P)
+Toy.W_P4.two_minds : (∀ (w : Toy.W_P4.M.W), Toy.W_P4.M.Fundamental w Toy.W_P4.T.N) ∧
+  (∀ (w : Toy.W_P4.M.W), Toy.W_P4.M.Fundamental w Toy.W_P4.T.N2) ∧
+    Toy.W_P4.T.N ≠ Toy.W_P4.T.N2 ∧ Toy.W_P4.M.Mind Toy.W_P4.T.N ∧ Toy.W_P4.M.Mind Toy.W_P4.T.N2
+Toy.W_P4.IDF_and_not_P4 : NecessaryAgent.IDF_stmt Toy.W_P4.M ∧ ¬NecessaryAgent.P4_stmt Toy.W_P4.M
+NecessaryAgent.fallible_actual_iff : ∀ (M : NecessaryAgent.Model) (s : M.State) (D : M.Reality → Prop),
+  (NecessaryAgent.FalliblePowers.actual M s).Directed s D ↔ D (M.realOf M.w₀)
+NecessaryAgent.natural_directed_nonempty : ∀ (M : NecessaryAgent.Model) (s : M.State),
+  (NecessaryAgent.naturalPowers M s).Directed s fun r => ∃ x, r x
+NecessaryAgent.uniform_countable_refuted : ∀ (M : NecessaryAgent.Model),
+  NecessaryAgent.P11_stmt M →
+    NecessaryAgent.CatOpen_stmt M →
+      NecessaryAgent.L4_stmt M →
+        M.PropGoverned M.w₀ →
+          ∀ (f : Nat → M.Cat),
+            Function.Injective f →
+              (∀ (n : Nat), (M.μ fun φ => M.cat φ = f n) = M.μ fun φ => M.cat φ = M.cat (M.F M.w₀)) → False
+Toy.god_holds : NecessaryAgent.God Toy.M Toy.T.N
+Toy.knows_everything : (∀ (r : Toy.M.Reality), Toy.M.Knows Toy.T.N (NecessaryAgent.Content.alt r)) ∧
+  (∀ (r : Toy.M.Reality), Toy.M.Knows Toy.T.N (NecessaryAgent.Content.act r)) ∧
+    (∀ (r : Toy.M.Reality), Toy.M.Maximal r) ∧
+      Toy.M.Maximal Toy.M.emptyReality ∧ ∀ (r r' : Toy.M.Reality), Toy.M.InOmega r → Toy.M.InOmega r' → r = r'
+Toy.BothChannels.witness : Nonempty (NecessaryAgent.Core (Toy.Mk Toy.BothChannels.P)) ∧
+  NecessaryAgent.CE_stmt (Toy.Mk Toy.BothChannels.P) ∧
+    NecessaryAgent.GG_stmt (Toy.Mk Toy.BothChannels.P) ∧
+      NecessaryAgent.CH_stmt (Toy.Mk Toy.BothChannels.P) ∧
+        NecessaryAgent.TR_stmt (Toy.Mk Toy.BothChannels.P) ∧
+          NecessaryAgent.P4plus_stmt (Toy.Mk Toy.BothChannels.P) ∧
+            ¬NecessaryAgent.NBL_stmt (Toy.Mk Toy.BothChannels.P) ∧
+              (∀ (w : (Toy.Mk Toy.BothChannels.P).W)
+                  (P :
+                    NecessaryAgent.Pred ((Toy.Mk Toy.BothChannels.P).Thing ⊕ (Toy.Mk Toy.BothChannels.P).State) → Prop),
+                  (Toy.Mk Toy.BothChannels.P).Sens w P NecessaryAgent.Chan.law) ∧
+                (Toy.Mk Toy.BothChannels.P).Agential true ∧
+                  (∃ st, (Toy.Mk Toy.BothChannels.P).SelectingRep true st) ∧
+                    NecessaryAgent.God (Toy.Mk Toy.BothChannels.P) Toy.T.N
+Toy.W_Pref.fork_is_residue : (Toy.W_Pref.PwNonempty.Directed Toy.W_Pref.S.s fun r => ∃ x, r x) ∧
+  (∃ w,
+      (∃ x, Toy.W_Pref.M.F w x) ∧
+        (fun r => ∃ x, r x) (Toy.W_Pref.M.realOf w) ∧ ¬Toy.W_Pref.M.Maximal (Toy.W_Pref.M.realOf w)) ∧
+    Toy.W_Pref.M.Sens false Toy.W_Pref.M.Maximal (NecessaryAgent.Chan.state Toy.W_Pref.S.s) ∧
+      ¬Toy.W_Pref.M.Maximal (Toy.W_Pref.M.realOf false)
+Toy.W_Two.Both.position_ii : (∀ (w : (Toy.W_Two.Mk true).W), (Toy.W_Two.Mk true).Fundamental w Toy.W_Two.T.N) ∧
+  (∀ (w : (Toy.W_Two.Mk true).W), (Toy.W_Two.Mk true).Fundamental w Toy.W_Two.T.N2) ∧
+    Toy.W_Two.T.N ≠ Toy.W_Two.T.N2 ∧
+      (Toy.W_Two.Mk true).Mind Toy.W_Two.T.N ∧
+        (Toy.W_Two.Mk true).Mind Toy.W_Two.T.N2 ∧
+          (Toy.W_Two.Mk true).Agent true Toy.W_Two.T.N ∧
+            (Toy.W_Two.Mk true).Agent true Toy.W_Two.T.N2 ∧
+              (∀ (w : (Toy.W_Two.Mk true).W),
+                  (∃ m, (Toy.W_Two.Mk true).F w m ∧ (Toy.W_Two.Mk true).CausesVia w Toy.W_Two.T.N Toy.W_Two.S.s1 m) ∧
+                    ∃ m, (Toy.W_Two.Mk true).F w m ∧ (Toy.W_Two.Mk true).CausesVia w Toy.W_Two.T.N2 Toy.W_Two.S.s2 m) ∧
+                NecessaryAgent.SameProfile (Toy.W_Two.Mk true) Toy.W_Two.T.N Toy.W_Two.T.N2 ∧
+                  ¬NecessaryAgent.IDF_stmt (Toy.W_Two.Mk true) ∧
+                    ¬NecessaryAgent.P4_stmt (Toy.W_Two.Mk true) ∧
+                      ¬NecessaryAgent.P4plus_stmt (Toy.W_Two.Mk true) ∧
+                        (∀ (w : (Toy.W_Two.Mk true).W), ¬(Toy.W_Two.Mk true).Bare w) ∧
+                          (Toy.W_Two.Mk true).realOf true ≠ (Toy.W_Two.Mk true).realOf false ∧
+                            NecessaryAgent.F1_stmt (Toy.W_Two.Mk true) ∧
+                              NecessaryAgent.Src_stmt (Toy.W_Two.Mk true) ∧
+                                NecessaryAgent.E_stmt (Toy.W_Two.Mk true) ∧
+                                  NecessaryAgent.L0_stmt (Toy.W_Two.Mk true) ∧
+                                    NecessaryAgent.B1_stmt (Toy.W_Two.Mk true) ∧
+                                      NecessaryAgent.B1'_stmt (Toy.W_Two.Mk true) ∧
+                                        NecessaryAgent.B2_stmt (Toy.W_Two.Mk true) ∧
+                                          NecessaryAgent.P0_stmt (Toy.W_Two.Mk true) ∧
+                                            NecessaryAgent.P1_stmt (Toy.W_Two.Mk true) ∧
+                                              NecessaryAgent.P2_stmt (Toy.W_Two.Mk true) ∧
+                                                NecessaryAgent.P5_stmt (Toy.W_Two.Mk true) ∧
+                                                  NecessaryAgent.FA_stmt (Toy.W_Two.Mk true) ∧
+                                                    NecessaryAgent.P7_stmt (Toy.W_Two.Mk true) ∧
+                                                      NecessaryAgent.P8_stmt (Toy.W_Two.Mk true) ∧
+                                                        NecessaryAgent.P9_stmt (Toy.W_Two.Mk true) ∧
+                                                          NecessaryAgent.P11_stmt (Toy.W_Two.Mk true) ∧
+                                                            NecessaryAgent.P12_stmt (Toy.W_Two.Mk true) ∧
+                                                              NecessaryAgent.L4_stmt (Toy.W_Two.Mk true) ∧
+                                                                NecessaryAgent.CE_stmt (Toy.W_Two.Mk true) ∧
+                                                                  NecessaryAgent.NBL_stmt (Toy.W_Two.Mk true) ∧
+                                                                    NecessaryAgent.GG_stmt (Toy.W_Two.Mk true) ∧
+                                                                      NecessaryAgent.CH_stmt (Toy.W_Two.Mk true) ∧
+                                                                        NecessaryAgent.TR_stmt (Toy.W_Two.Mk true)
+Toy.W_Two.OneChannel.position_i : NecessaryAgent.IDF_stmt (Toy.W_Two.Mk false) ∧
+  ¬NecessaryAgent.P4_stmt (Toy.W_Two.Mk false) ∧
+    NecessaryAgent.CE_stmt (Toy.W_Two.Mk false) ∧
+      (∀ (w : (Toy.W_Two.Mk false).W), ¬(Toy.W_Two.Mk false).Bare w) ∧
+        (∀ (w : (Toy.W_Two.Mk false).W)
+            (P : NecessaryAgent.Pred ((Toy.W_Two.Mk false).Thing ⊕ (Toy.W_Two.Mk false).State) → Prop),
+            ¬(Toy.W_Two.Mk false).Sens w P (NecessaryAgent.Chan.state Toy.W_Two.S.s2)) ∧
+          (∀ (w : (Toy.W_Two.Mk false).W),
+              ∃ m, (Toy.W_Two.Mk false).F w m ∧ (Toy.W_Two.Mk false).CausesVia w Toy.W_Two.T.N2 Toy.W_Two.S.s2 m) ∧
+            (∀ (w : (Toy.W_Two.Mk false).W), (Toy.W_Two.Mk false).Fundamental w Toy.W_Two.T.N2) ∧
+              (Toy.W_Two.Mk false).Mind Toy.W_Two.T.N2 ∧
+                (∀ (w : (Toy.W_Two.Mk false).W), ¬(Toy.W_Two.Mk false).Agent w Toy.W_Two.T.N2) ∧
+                  (Toy.W_Two.Mk false).Agent true Toy.W_Two.T.N ∧
+                    (Toy.W_Two.Mk false).realOf true ≠ (Toy.W_Two.Mk false).realOf false
