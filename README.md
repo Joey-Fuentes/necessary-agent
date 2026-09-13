@@ -4,7 +4,7 @@ Three files, which must stay in agreement:
 
 | File | Role | Status |
 |---|---|---|
-| `NecessaryAgent.lean` | The formal argument. Definitions, premises, every derivation line as a theorem, a consistency witness, independence witnesses for every premise, and the named conclusion `God` with `god_exists`. | Certified by Lean 4.33.1 (v8.7: 42 results) |
+| `NecessaryAgent.lean` | The formal argument. Definitions, premises, every derivation line as a theorem, a consistency witness, independence witnesses for every premise, and the named conclusion `God` with `god_exists`. | Certified by Lean 4.33.1 (v8.8: 47 results) |
 | `docs/necessary_agent_argument_v8_7.md` | The human-readable argument. **Part I** is the Lean file in words, section for section. **Part II** is informal assessment: exits, ledger, ladder, open problems. **Part III** is the soundness dossier: each premise's case, objections, replies, cost of denial, and ceiling. | Part I inherits the certificate *if it matches the Lean file*; Parts II–III are uncertified |
 | `README.md` | This file: how to verify, how to read, how to change things without breaking them. | — |
 | `expected_axioms.txt`, `scripts/verify.sh`, `.github/workflows/verify.yml`, `lean-toolchain`, `lakefile.toml` | Continuous verification (§0.0). | CI |
@@ -18,7 +18,7 @@ Three files, which must stay in agreement:
 
 No installation: paste `NecessaryAgent.lean` into https://live.lean-lang.org (select a Lean 4 toolchain; Mathlib is not needed). Locally: install `elan` with toolchain `leanprover/lean4:v4.33.1`, then `lean NecessaryAgent.lean`. The file is self-contained (`import Std` only). Last verified 2026-09-13 under Lean 4.33.1 (commit 819816b2): exit 0, no errors, no warnings, ~70 s; MD5 of the verified file `21290ecf4e49ecf77894593cb036cab9`.
 
-Expected output — these forty-two lines and nothing else:
+Expected output — these forty-seven lines and nothing else:
 
 ```
 'NecessaryAgent.main' depends on axioms: [propext, choice, Quot.sound]
@@ -63,6 +63,11 @@ Expected output — these forty-two lines and nothing else:
 'NecessaryAgent.all_tied' depends on axioms: [propext, choice, Quot.sound]
 'Toy.W_Pref.witness' depends on axioms: [propext, Quot.sound]
 'Toy.W_Nat.witness' depends on axioms: [propext, Quot.sound]
+'NecessaryAgent.powers_all_tied' does not depend on any axioms
+'NecessaryAgent.powers_fork' depends on axioms: [propext, choice, Quot.sound]
+'Toy.W_Nat.powers_witness' depends on axioms: [propext, Quot.sound]
+'Toy.W_Pref.no_powers_at_maximal' depends on axioms: [propext, Quot.sound]
+'Toy.NoTR.powers_horn1' depends on axioms: [propext, choice, Quot.sound]
 ```
 
 Anything else — an error, a warning, `sorryAx` in an axiom list, a missing line — means the file is not in the certified state.
@@ -125,6 +130,8 @@ section CoreTheorems   Tier 1, 2.1–2.15, 3.7–3.10 lemmas — typed over Core
 section FullTheorems   2.16–4.6, identity relations, all_worlds_accord — typed over Axioms0
 def God              the conclusion, named (v8.7)
 section WithP4plus     identify, main, god_exists — the only theorems that use P4⁺
+structure Powers     the powers naturalist's primitive (optional extension; v8.8)
+section PowersFork     powers_all_tied, powers_fork — the TR fork
 exists_notin_list, cantor   lemmas for the infinite witnesses
 namespace Toy       model family Mk (Params); per-premise lemmas h_*
   Toy.A             consistency witness
@@ -140,7 +147,7 @@ L2_of_P11           L2 from P11 (via generic L2, ArchOrd, FinMeasure)
 N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_is_neither
   Toy.W_Pref        the theist's residue (`residue`, `witness`)
   Toy.W_Nat         the bare naturalist's package
-#print axioms ×42
+#print axioms ×47
 ```
 
 ### 2.1 Prose line → theorem
@@ -193,6 +200,8 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | the conclusion, named | `God`, `god_exists` | Axioms (via `main`) |
 | the theist's residue | `W_Pref.residue`, `W_Pref.witness` | — (model) |
 | the two naturalist packages | `W_Nat.witness`, `NoTR.witness` | — (models) |
+| the TR fork | `powers_all_tied`, `powers_fork` | `Powers M` only (no `Axioms`) |
+| the fork's horns; inclination ≠ power | `W_Nat.powers_witness`, `NoTR.powers_horn1`, `W_Pref.no_powers_at_maximal` | — (models) |
 
 ---
 
@@ -349,6 +358,15 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | bj | D22: the two exits and their bills; the theist's residue priced with the asymmetry and its scope | header D22; prose §8.3, §III.1, §III.9 |
 | bk | D23: the TR fork stated as the central open burden; III.5 rewritten as a full TR section (nil clause, Dretskean modus tollens, the fork) | header D23; prose §III.5, §10 |
 
+### v8.7 → v8.8 (the TR fork certified)
+
+| # | Change | Where |
+|---|---|---|
+| bl | `Powers M`: optional extension with `Directed s D` and the powers theorist's axiom `manif`; `PowersChannel` | `Powers`, `PowersChannel` |
+| bm | `powers_all_tied` (no axioms): a powers channel directed at maximality ties every possible reality; `powers_fork`: directed at any D, either fails to track the good somewhere or ties everything | `section PowersFork` |
+| bn | `W_Nat.powers_witness` (Horn 2 = the bare naturalist), `NoTR.powers_horn1` (Horn 1 consistent only tied), `W_Nat.no_powers_at_maximal`, `W_Pref.no_powers_at_maximal` (the theist's state is not a power) | `Toy.*`; prose §6.2, §III.5, §10 |
+| bo | `#print axioms` ×47 | — |
+
 ---
 
 ## 4. Workflow for future changes
@@ -359,7 +377,7 @@ Every prior version of this argument was declared fixed by the person who fixed 
 2. **Make the matching change in the Lean file.** If a definition changes, every theorem mentioning it must be re-proved; the compiler will tell you which.
 3. **Run the three checks (§0.1).** If `Toy.A` no longer compiles, either the new premise set is inconsistent or the toy model needs a different instance — find out which before proceeding. If a witness no longer compiles, the corresponding independence claim in the prose must be withdrawn.
 4. **Re-check faithfulness by inspection**: read the changed Lean definition and the changed prose sentence side by side.
-5. **Never accept a "verified" claim from the same session that made the change.** Hand the files to a fresh reader (human or chat) with the three expected outputs and the instruction: reproduce the forty-two `#print axioms` lines, then attack faithfulness, then attack Part II.
+5. **Never accept a "verified" claim from the same session that made the change.** Hand the files to a fresh reader (human or chat) with the three expected outputs and the instruction: reproduce the forty-seven `#print axioms` lines, then attack faithfulness, then attack Part II.
 
 What a fresh reader can still legitimately attack after all this: (i) whether a Lean definition captures the intended notion; (ii) whether a stipulation D1–D12 is reasonable; (iii) whether a premise is true. They cannot legitimately attack the inference from premises to conclusion — if they think they can, the Lean file is the arbiter, and they should produce a compiling counterexample.
 
@@ -373,7 +391,7 @@ What a fresh reader can still legitimately attack after all this: (i) whether a 
 - **No independence witnesses for P7, P8, P11, F1, Src.** Tier 4's vocabulary is abstract so P7/P8 independence is trivial; P11's denial is non-Archimedean chance; F1 and Src are framework. Every other premise, including P4⁺, has one.
 - **The balance is a primitive comparative.** `AtLeast` has no axioms (not even reflexivity or transitivity); nothing in the argument needs them. Reasons themselves are not objects in the model, and MR is not formalized. The certificate says the actual reality is unbeaten on the balance; what the balance *is* remains in the prose.
 - **Downstream claims are out of scope.** Knowledge of the actual world beyond O, and goodness in any act other than O, are not in the Lean file and not claimed.
-- **The TR fork is not formalized.** D23 states what formalizing it requires (`Directed s D` as a primitive distinct from `Sens`; a witness for `Directed ∧ ¬Sens`; a prose argument that `Directed` does not yield `Sens`). Until then the powers naturalist's exit (`NoTR`) stands at the price stated in III.5, and the argument's central open burden is there.
+- **The TR fork is certified on the powers theorist's own axiom, and one position remains.** `powers_fork` and its witnesses close the determinate-type and the necessitating-maximality readings. The fallible reading — an inclination toward the best that may fail at w′ — is not a power (`W_Pref.no_powers_at_maximal`) and is `Sens`-as-inclination; that it is *about* the alternatives it ranges over is Oderberg's abstraction criterion applied, which no theorem does. That is the argument's central open burden (prose §10, item 0).
 - **CatU is modal, not empirical.** The constants of our laws yield about five independent sharply-bounded constraints (D21); uncountably many kinds must be argued over the space of law-structures. The empirical anti-chance point (non-normalizability) is in the prose, not in the Lean.
 - **P4 uniqueness is undeveloped.** The coordination argument is a sentence; `W_P4` shows island universes cost nothing formally.
 - **Nothing in the empirical strand is a probability.** No number in `cosmic_strand_v2.md` is applied to the bare hypothesis, which has none by definition.

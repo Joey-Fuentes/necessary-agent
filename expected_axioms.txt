@@ -40,3 +40,8 @@
 'NecessaryAgent.all_tied' depends on axioms: [propext, choice, Quot.sound]
 'Toy.W_Pref.witness' depends on axioms: [propext, Quot.sound]
 'Toy.W_Nat.witness' depends on axioms: [propext, Quot.sound]
+'NecessaryAgent.powers_all_tied' does not depend on any axioms
+'NecessaryAgent.powers_fork' depends on axioms: [propext, choice, Quot.sound]
+'Toy.W_Nat.powers_witness' depends on axioms: [propext, Quot.sound]
+'Toy.W_Pref.no_powers_at_maximal' depends on axioms: [propext, Quot.sound]
+'Toy.NoTR.powers_horn1' depends on axioms: [propext, choice, Quot.sound]

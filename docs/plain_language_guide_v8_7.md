@@ -1,10 +1,10 @@
-# The Necessary Agent Argument — A Plain-Language Guide (v8.7)
+# The Necessary Agent Argument — A Plain-Language Guide (v8.8)
 
 This is a companion to the full argument and to `NecessaryAgent.lean`. It uses no symbols and no jargon that isn't explained on the spot. Its job is to let you understand each premise well enough to decide whether you accept it, and to understand exactly what follows if you do — no more and no less.
 
 Three things to know before starting.
 
-**The logic has been checked by a computer.** Every step from the premises to the conclusion has been verified by a proof-checking program (Lean 4.33.1; forty-two certified results; zero unproven steps; nothing assumed beyond the three standard axioms of Lean's logic). So the question "does the conclusion really follow?" is settled: it does. The only questions left are whether the premises are true. That's what this guide is for.
+**The logic has been checked by a computer.** Every step from the premises to the conclusion has been verified by a proof-checking program (Lean 4.33.1; forty-seven certified results; zero unproven steps; nothing assumed beyond the three standard axioms of Lean's logic). So the question "does the conclusion really follow?" is settled: it does. The only questions left are whether the premises are true. That's what this guide is for.
 
 **The conclusion is now stated as a single theorem.** The full argument concludes to one thing — a unique necessary being that is a mind, knows every way reality could have been, chose this one, and chose it for the good. Version 8.7 gives that conjunction a name, `God`, and certifies the theorem `god_exists`: *given the premises, God exists and is unique.* Nothing new is assumed in that step; it only names what the argument already proved. Whether the name is apt is discussed in §4.
 
@@ -162,7 +162,13 @@ Those five numbers are the most conservative in the literature; the popular "one
 
 To take this exit you have to believe: something about the outcome *did* matter. The foundation had a built-in lean toward a certain kind of reality, and that lean played a role in what came out. But the lean wasn't *about* anything. The alternatives — including the alternative of producing nothing at all — never figured. The foundation didn't have them in view in any sense; it just did what tendencies do, the way a magnet points north without considering south.
 
-The squeeze on this exit is a question: did the alternatives bear on the outcome or not? If they did, then something had to range over them, and ranging over alternatives you haven't produced is exactly what a mind's state does and a magnet's doesn't. If they didn't, you're not on Exit 2 at all — you're back on Exit 1 with all its bills. This squeeze is the argument's central unfinished piece of work; it is stated but not yet formalized.
+The squeeze on this exit has now been checked by the computer, using the powers theorist's own idea of a tendency: a tendency has a type, and when nothing blocks it, it produces that type. (At the foundation nothing blocks anything.) So ask: what is the foundation's tendency *toward*?
+
+If it's toward some definite kind of thing — "a reality with matter in it," say — then the tendency produces that kind and the alternatives never figure. The computer confirms that this is just Exit 1 wearing a different coat: on the bare naturalist's own model, the foundation's state can be exactly such a tendency, and "something bore on it" is false. You pay Exit 1's bill, and on top of that your tendency doesn't track what's *good*, so you've dropped a second premise, not one.
+
+If it's toward *the best* — so that something did bear on it, and it was the good — then, because a tendency produces its type wherever it's unblocked, the foundation produces the best in every possible world. Which means every possible reality is "the best," which means none is better than any other: the scale has no tilt at all. The computer confirms this too. "Aiming at the best" turns out to mean "aiming at whatever," and "something mattered" collapses.
+
+The only way between the horns is a tendency toward the best that can *fail* — one that leans toward the best but sometimes doesn't get there. But the computer also confirms that this is not a tendency in the powers theorist's sense at all (his own rule says tendencies don't fail when unblocked). It's a lean toward one option among several, that sometimes loses. That is exactly what the argument means by "sensitive to the alternatives" — and a lean toward *whichever is best*, among options you haven't produced, is the thing the argument says only a mind has. So Exit 2 has one door left, and to take it you have to describe a lean toward the best, among alternatives, that isn't about any of them. That description is the last thing the powers naturalist owes.
 
 ### The honest part: the argument's own gap
 

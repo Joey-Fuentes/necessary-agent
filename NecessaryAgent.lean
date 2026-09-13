@@ -40,6 +40,27 @@
     Tier 2–4 premises for all worlds; bears on the evidential argument from
     evil); `realOf` defined, `Accurate` content-indexed, MR removed (D12, D14,
     D15).
+  - v8.8 — THE TR FORK, certified (D23).  The powers naturalist's primitive
+    is formalized as an OPTIONAL extension `Powers M` — `Directed s D` with
+    the powers theorist's own axiom `manif` (an unmasked power manifests its
+    type; nothing masks at the foundation).  Nothing in `Model` or `Axioms`
+    changes.  Certified: `powers_all_tied` — a powers channel directed at
+    maximality ties every possible reality (all_tied with no P7/P8 and no w₀
+    restriction, from `manif` alone); `powers_fork` — a powers channel
+    directed at any D either fails to track the good at some productive
+    world or ties every reality; `W_Nat.powers_witness` (Horn 2: a powers
+    channel directed at a determinate type, no `Sens`, CE false — the bare
+    naturalist); `W_Nat.no_powers_at_maximal` and `W_Pref.no_powers_at_maximal`
+    (on a discriminating balance no powers structure directs the channel
+    state at maximality — the theist's selecting state is an inclination,
+    NOT a power); `NoTR.powers_horn1` (Horn 1 consistent only in a tied
+    world).  Consequence: the powers naturalist who denies TR and nothing
+    else must hold that every possible reality is tied on the balance, or
+    his channel does not track the good and the intra-D contrast is bare.
+    What remains open is the FALLIBLE reading (a directedness at maximality
+    that may fail at w′), which by `W_Pref.no_powers_at_maximal` is not a
+    power and is exactly `Sens`-as-inclination — where TR's question returns.
+    #print axioms ×47.
   - v8.7 — THE CONCLUSION NAMED, and the exits priced.  (i) `God M N` is
     DEFINED as the conjunction `main` concludes about N (unique fundamental,
     brings about every world's contingent reality, mind, knows all of Ω, agent,
@@ -332,20 +353,30 @@
       new one) is the argument's claim over Exit 1.  It bites against a
       naturalist who accepts libertarian agency anywhere; against a
       compatibilist it does not, and the comparison there is content alone.
-  D23 The TR fork (v8.7; open).  `Sens w P (state s)` is primitive, so `NoTR`
-      may stipulate it for a determinate-type disposition.  The `Sens`
-      comment says such a disposition is one in which "no alternatives
-      figure", i.e. ¬CE, not ¬TR.  The powers naturalist therefore faces a
-      question the file does not settle: do the candidate realities bear on
-      the outcome or not?  If they do, the state ranges over them, and ranging
-      over unproduced alternatives is what Oderberg (2017) calls specific
-      indifference/abstraction and reserves for the mental — TR follows.  If
-      they do not, `Sens` is false and the package is `W_Nat` under another
-      name.  Formalizing this requires a primitive `Directed s D` distinct
-      from `Sens`, a witness that `Directed ∧ ¬Sens` is consistent, and an
-      argument (not an axiom) that `Directed` with a discriminating D does not
-      yield `Sens`.  The nil alternative is the lever: a power directed at D
-      is not directed at its own non-manifestation.  Not yet formalized.
+  D23 The TR fork (v8.7; certified v8.8 — see `Powers`, `powers_fork`).
+      `Sens w P (state s)` is primitive, so `NoTR` may stipulate it for a
+      determinate-type disposition.  The `Sens` comment says such a
+      disposition is one in which "no alternatives figure", i.e. ¬CE, not ¬TR.
+      v8.8 gives the powers naturalist his own primitive, `Directed s D`, with
+      his own axiom `manif`, and certifies the fork from it:
+      (i) `W_Nat.powers_witness` — a powers channel directed at a determinate
+      type with no `Sens` is the bare naturalist's model: Horn 2 is ¬CE.
+      (ii) `powers_all_tied` / `powers_fork` — a powers channel directed at
+      MAXIMALITY ties every possible reality, because `manif` necessitates
+      where `Sens` only inclines; so the powers naturalist who keeps GG (his
+      channel tracks the good) inherits `all_tied` with no w₀ escape, and the
+      one who drops it has a channel that does not track the good and a bare
+      contrast among the D-realities.  (iii) `W_Pref.no_powers_at_maximal` —
+      the theist's own selecting state, which fails at w′ (`residue`), is
+      NOT a power on any `Powers` structure: `Sens` is inclination, and the
+      powers naturalist cannot borrow the theist's discriminating balance.
+      What remains open: the FALLIBLE reading — a directedness at maximality
+      that may fail — which (iii) shows is not a power, and which is exactly
+      `Sens`-as-inclination, where the alternatives figure and TR's question
+      returns in full.  Ranging over unproduced alternatives is what Oderberg
+      (2017) calls specific indifference/abstraction and reserves for the
+      mental; the nil alternative is the lever, since a power directed at D
+      is not directed at its own non-manifestation (III.5).
   D19 FA is stated for non-mental ahistorical states only.  Historical
       non-mental states may misrepresent and represent the non-actual —
       that is what selection history buys (Millikan) — so FA does not touch
@@ -1902,6 +1933,118 @@ theorem god_exists : ∃ N, God M N ∧ ∀ N', God M N' → N' = N := by
   exact ⟨N, hN, fun N' hN' => (hN.1 M.w₀).2 N' (hN'.1 M.w₀).1⟩
 
 end WithP4plus
+
+/-! ## The TR fork (v8.8): powers against sensitivity
+
+`Sens` is the argument's primitive: the candidates FIGURE in the producing
+(D20).  The powers naturalist offers a different primitive — a state DIRECTED
+at a determinate manifestation-type D (Molnar 2003; Oderberg 2017): physical
+intentionality without representation.  `Powers M` bundles that primitive with
+the one axiom powers theorists give it: an unmasked power manifests its type.
+At the foundation nothing masks (D3: the ground is invariant across worlds),
+so wherever the bearer produces in virtue of a directed state, the produced
+reality has D.
+
+`Directed` is NOT a field of `Model`.  The extension is optional; every
+theorem below is typed over `Powers M`; nothing in `Axioms` mentions it.
+
+What is certified (D23):
+- `powers_all_tied`: a powers channel directed at MAXIMALITY ties every
+  possible reality on the balance — `all_tied` for the powers naturalist,
+  with no P7/P8 and no w₀ restriction available to him, because a power
+  necessitates its manifestation where an inclination (`Sens`) need not.
+- `powers_fork`: a powers channel directed at any D either fails to track
+  the good at some productive world (D there, maximality not) or ties every
+  possible reality.  So the powers naturalist chooses: a determinate D that
+  is not maximality — his channel does not track the good, GG fails for it,
+  and the contrast among D-realities is bare — or D = maximality with every
+  reality tied — his "directed at the best" is directed at everything.
+- `W_Nat.no_powers_at_maximal`, `W_Pref.no_powers_at_maximal`: on a
+  discriminating balance no powers structure directs the channel state at
+  maximality.  In particular the theist's own selecting state (`W_Pref`,
+  which fails at w′ per `residue`) is an inclination and NOT a power.
+- `W_Nat.powers_witness`: Horn 2 certified — the bare naturalist's model
+  carries a powers channel directed at a determinate type with no `Sens`
+  at all and CE false.  A power directed at a determinate type is
+  `W_Nat` under another name.
+- `NoTR.powers_horn1`: Horn 1 certified consistent — directed at
+  maximality, every field but TR — in the one kind of model where it can
+  be: one in which every reality is tied.
+
+What is NOT certified, and remains the open burden: that a FALLIBLE
+directedness at maximality (one that, like `Sens`, may fail at w′) is not a
+power at all but an inclination whose alternatives figure — the reading on
+which TR's question returns in full.  `Powers.manif` is the powers theorist's
+own axiom; a theorist who drops it has dropped the power. -/
+
+/-- The powers naturalist's primitive, with the powers theorist's own axiom. -/
+structure Powers (M : Model) where
+  /-- state s is directed at manifestation-type D -/
+  Directed : M.State → (M.Reality → Prop) → Prop
+  /-- an unmasked power manifests its type: wherever the bearer produces a
+      first item in virtue of a state directed at D, the produced reality has D -/
+  manif : ∀ s D, Directed s D → ∀ w m, M.F w m → M.CausesVia w (M.bearer s) s m → D (M.realOf w)
+
+/-- A powers channel: a necessary state through which its bearer produces a
+    first item at every world with non-empty output.  `NoTR`, `W_Nat` and
+    `W_Pref` all have one. -/
+def PowersChannel (M : Model) (s : M.State) : Prop :=
+  M.NecState s ∧ ∀ w, (∃ x, M.F w x) → ∃ m, M.F w m ∧ M.CausesVia w (M.bearer s) s m
+
+section PowersFork
+variable {M : Model} (Pw : Powers M)
+
+/-- A powers channel directed at maximality manifests maximality at every
+    productive world. -/
+theorem powers_all_maximal {s : M.State} (hs : PowersChannel M s)
+    (hD : Pw.Directed s M.Maximal) :
+    ∀ w, (∃ x, M.F w x) → M.Maximal (M.realOf w) := by
+  intro w hne
+  obtain ⟨m, hm, hcv⟩ := hs.2 w hne
+  exact Pw.manif s _ hD w m hm hcv
+
+/-- Hence every possible reality is tied on the balance: `all_tied` for the
+    powers naturalist, from `manif` alone — no P7, no P8, no w₀ restriction. -/
+theorem powers_all_tied {s : M.State} (hs : PowersChannel M s)
+    (hD : Pw.Directed s M.Maximal) :
+    ∀ r r', M.InOmega r → M.InOmega r' → M.AtLeast r r' ∧ M.AtLeast r' r := by
+  intro r r' hr hr'
+  obtain ⟨w, hw, hne⟩ := hr
+  obtain ⟨w', hw', hne'⟩ := hr'
+  have h1 := powers_all_maximal Pw hs hD w hne
+  have h2 := powers_all_maximal Pw hs hD w' hne'
+  rw [hw] at h1; rw [hw'] at h2
+  exact ⟨h1.1 r' ⟨w', hw', hne'⟩, h2.1 r ⟨w, hw, hne⟩⟩
+
+/-- A powers channel directed at maximality is inconsistent with a balance
+    that strictly prefers any possible reality to any other. -/
+theorem powers_no_preference {s : M.State} (hs : PowersChannel M s)
+    (hD : Pw.Directed s M.Maximal) :
+    ¬ ∃ r r', M.InOmega r ∧ M.InOmega r' ∧ M.AtLeast r r' ∧ ¬ M.AtLeast r' r := by
+  rintro ⟨r, r', hr, hr', _, hn⟩
+  exact hn (powers_all_tied Pw hs hD r r' hr hr').2
+
+/-- THE FORK.  A powers channel directed at D either fails to track the good
+    at some productive world — D holds there and maximality does not — or
+    ties every possible reality on the balance. -/
+theorem powers_fork {s : M.State} (hs : PowersChannel M s) {D : M.Reality → Prop}
+    (hD : Pw.Directed s D) :
+    (∃ w, (∃ x, M.F w x) ∧ D (M.realOf w) ∧ ¬ M.Maximal (M.realOf w)) ∨
+    (∀ r r', M.InOmega r → M.InOmega r' → M.AtLeast r r' ∧ M.AtLeast r' r) := by
+  by_cases h : ∃ w, (∃ x, M.F w x) ∧ ¬ M.Maximal (M.realOf w)
+  · obtain ⟨w, hne, hnm⟩ := h
+    obtain ⟨m, hm, hcv⟩ := hs.2 w hne
+    exact Or.inl ⟨w, hne, Pw.manif s D hD w m hm hcv, hnm⟩
+  · right
+    intro r r' hr hr'
+    obtain ⟨w, hw, hne⟩ := hr
+    obtain ⟨w', hw', hne'⟩ := hr'
+    have h1 : M.Maximal (M.realOf w) := Classical.byContradiction fun hnm => h ⟨w, hne, hnm⟩
+    have h2 : M.Maximal (M.realOf w') := Classical.byContradiction fun hnm => h ⟨w', hne', hnm⟩
+    rw [hw] at h1; rw [hw'] at h2
+    exact ⟨h1.1 r' ⟨w', hw', hne'⟩, h2.1 r ⟨w, hw, hne⟩⟩
+
+end PowersFork
 
 end NecessaryAgent
 
@@ -4077,6 +4220,89 @@ theorem witness :
     exact absurd (E_c1 this.2) (by decide)
 end W_Nat
 
+/-! ### The TR fork, witnessed (v8.8).  See `Powers`, `powers_fork`. -/
+
+namespace W_Nat
+/-- The natural powers structure on any model: s is directed at D iff every
+    productive world's reality has D.  `manif` is then immediate.  This is
+    the weakest reading of "directed at D" that satisfies the powers
+    theorist's own axiom, so it is the one most favourable to him. -/
+def Pw : Powers M where
+  Directed := fun st D => st = .s ∧ ∀ w, (∃ x, M.F w x) → D (M.realOf w)
+  manif := fun _ _ ⟨_, h⟩ w m hm _ => h w ⟨m, hm⟩
+
+theorem channel : PowersChannel M .s :=
+  ⟨necstate_s, fun w hne => by
+    cases w
+    · exact ⟨.inl .c2, F_c2, rfl, Or.inr ⟨rfl, rfl⟩⟩
+    · exact ⟨.inl .c1, F_c1, rfl, Or.inl ⟨rfl, rfl⟩⟩⟩
+
+/-- s is directed at a determinate type: "a non-empty reality". -/
+theorem directed_nonempty : Pw.Directed .s (fun r => ∃ x, r x) :=
+  ⟨rfl, fun _ ⟨x, hx⟩ => ⟨x, hx.1, hx.2.1⟩⟩
+
+theorem not_maximal_false : ¬ M.Maximal (M.realOf false) := fun hmax => by
+  rcases hmax.1 _ ⟨true, rfl, ⟨_, F_c1⟩⟩ with h | h
+  · exact realOf_false_ne h
+  · exact realOf_true_ne_empty h
+
+/-- On the bare naturalist's discriminating balance, NO powers structure
+    directs s at maximality: `manif` would force maximality at `false`. -/
+theorem no_powers_at_maximal : ¬ ∃ Pw' : Powers M, Pw'.Directed .s M.Maximal :=
+  fun ⟨Pw', hD⟩ => not_maximal_false (powers_all_maximal Pw' channel hD false ⟨_, F_c2⟩)
+
+/-- HORN 2, certified.  On the bare naturalist's own model: s is a powers
+    channel, directed at a determinate type, with no `Sens` through any
+    channel — and CE fails.  A power directed at a determinate type, with
+    the alternatives not figuring, IS the bare naturalist. -/
+theorem powers_witness :
+    PowersChannel M .s ∧ Pw.Directed .s (fun r => ∃ x, r x) ∧
+    (∀ w P ch, ¬ M.Sens w P ch) ∧ ¬ CE_stmt M ∧
+    (¬ ∃ Pw' : Powers M, Pw'.Directed .s M.Maximal) :=
+  ⟨channel, directed_nonempty, fun _ _ _ h => h, witness.2.1, no_powers_at_maximal⟩
+end W_Nat
+
+namespace W_Pref
+theorem channel : PowersChannel M .s :=
+  ⟨necstate_s, fun w hne => by
+    cases w
+    · exact ⟨.inl .c2, F_c2, rfl, Or.inr ⟨rfl, rfl⟩⟩
+    · exact ⟨.inl .c1, F_c1, rfl, Or.inl ⟨rfl, rfl⟩⟩⟩
+
+/-- THE THEIST'S STATE IS NOT A POWER.  In the theist's own model, where the
+    selecting state s is sensitive to maximality at both worlds and produces
+    the worse at w′ (`residue`), no powers structure directs s at maximality.
+    `Sens` is inclination (D20); a power would necessitate.  The powers
+    naturalist cannot borrow the theist's discriminating balance. -/
+theorem no_powers_at_maximal : ¬ ∃ Pw' : Powers M, Pw'.Directed .s M.Maximal :=
+  fun ⟨Pw', hD⟩ => residue.2 (powers_all_maximal Pw' channel hD false ⟨_, F_c2⟩)
+end W_Pref
+
+namespace NoTR
+def Pw : Powers (Mk P) where
+  Directed := fun st D => st = .s ∧ ∀ w, (∃ x, (Mk P).F w x) → D ((Mk P).realOf w)
+  manif := fun _ _ ⟨_, h⟩ w m hm _ => h w ⟨m, hm⟩
+
+theorem channel : PowersChannel (Mk P) .s :=
+  ⟨necstate_s P, fun w hne => by
+    cases w
+    · exact absurd hne (empty_world P)
+    · exact ⟨.inl .c, F_c P, rfl, rfl, rfl, rfl⟩⟩
+
+/-- HORN 1, certified consistent.  `NoTR`'s balance ties everything
+    (`AtLeast := True`), so s IS directed at maximality here, every field but
+    TR holds, and — as `powers_all_tied` says it must — every possible reality
+    is tied.  This is the only kind of model in which a power directed at
+    maximality can live. -/
+theorem powers_horn1 :
+    PowersChannel (Mk P) .s ∧ Pw.Directed .s (Mk P).Maximal ∧
+    (∀ r r', (Mk P).InOmega r → (Mk P).InOmega r' → (Mk P).AtLeast r r' ∧ (Mk P).AtLeast r' r) ∧
+    ¬ TR_stmt (Mk P) :=
+  ⟨channel, ⟨rfl, fun _ _ => ⟨fun _ _ => trivial, trivial⟩⟩,
+   powers_all_tied Pw channel ⟨rfl, fun _ _ => ⟨fun _ _ => trivial, trivial⟩⟩,
+   witness.2.2.2.2.2.2.1⟩
+end NoTR
+
 end Toy
 
 #print axioms NecessaryAgent.main
@@ -4121,3 +4347,8 @@ end Toy
 #print axioms NecessaryAgent.all_tied
 #print axioms Toy.W_Pref.witness
 #print axioms Toy.W_Nat.witness
+#print axioms NecessaryAgent.powers_all_tied
+#print axioms NecessaryAgent.powers_fork
+#print axioms Toy.W_Nat.powers_witness
+#print axioms Toy.W_Pref.no_powers_at_maximal
+#print axioms Toy.NoTR.powers_horn1
