@@ -1,0 +1,6 @@
+name = "NecessaryAgent"
+defaultTargets = ["NecessaryAgent"]
+
+[[lean_lib]]
+name = "NecessaryAgent"
+roots = ["NecessaryAgent"]
