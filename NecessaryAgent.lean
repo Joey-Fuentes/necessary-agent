@@ -40,6 +40,16 @@
     Tier 2–4 premises for all worlds; bears on the evidential argument from
     evil); `realOf` defined, `Accurate` content-indexed, MR removed (D12, D14,
     D15).
+  - v8.12 — IDF, stated and bounded.  `SameProfile` and `IDF_stmt` (identity
+    of indiscernible fundamentals) are defined as an OPTIONAL premise: the
+    refusal of primitive thisness at the foundation, made once, on which
+    P4's uniqueness (III.6) and CE's reply to the haecceitistic exit (III.1)
+    both rest.  `W_P4.IDF_and_not_P4` certifies its limit: the alternation
+    model — two fundamentals, each active at a different world — satisfies
+    IDF vacuously and violates P4.  Uniqueness is IDF plus CE's pricing of
+    bare sources, and III.6 now has four positions for the second being
+    (bare / field-sensitive / mediated / alternating) and names `W_P4` as
+    the fourth.  #print axioms ×51.
   - v8.11 — III.4 REWRITTEN (prose only; no Lean change).  The evil-god reply
     is withdrawn: the certified core is symmetric under inverting `AtLeast`
     (D16), the asymmetry lives in reading the balance as value-grounded
@@ -1152,6 +1162,30 @@ abbrev CatU_stmt : Prop := M.PropGoverned M.w₀ →
 /-- CatOpen: each category is an open region of the similarity topology —
     no output is a limit of outputs of other categories. -/
 abbrev CatOpen_stmt : Prop := M.PropGoverned M.w₀ → ∀ k, M.POpen (fun φ => M.cat φ = k)
+
+/-- Two things share a NECESSARY PROFILE (v8.12): every necessary state of
+    one is matched, in the other, by a necessary state with the same content,
+    mentality, accuracy, and sensitivity profile — and conversely. -/
+def SameProfile (t t' : M.Thing) : Prop :=
+  (∀ s, M.bearer s = t → M.NecState s → ∃ s', M.bearer s' = t' ∧ M.NecState s' ∧
+      (∀ c, M.Rep s c ↔ M.Rep s' c) ∧ (M.Mental s ↔ M.Mental s') ∧
+      (∀ c, M.Accurate s c ↔ M.Accurate s' c) ∧
+      (∀ w P, M.Sens w P (.state s) ↔ M.Sens w P (.state s'))) ∧
+  (∀ s', M.bearer s' = t' → M.NecState s' → ∃ s, M.bearer s = t ∧ M.NecState s ∧
+      (∀ c, M.Rep s c ↔ M.Rep s' c) ∧ (M.Mental s ↔ M.Mental s') ∧
+      (∀ c, M.Accurate s c ↔ M.Accurate s' c) ∧
+      (∀ w P, M.Sens w P (.state s) ↔ M.Sens w P (.state s')))
+
+/-- IDF — identity of indiscernible fundamentals (v8.12; optional; III.6).
+    Fundamental beings that share every necessary feature are one.  This is
+    anti-haecceitism about the foundation, and it is the commitment P4's
+    uniqueness clause rests on.  NOT a field of `Axioms`.  `W_P4.IDF_and_not_P4`
+    certifies that IDF alone does not yield P4: two fundamentals with
+    DIFFERENT profiles — each active at a different world — satisfy IDF
+    vacuously and violate P4.  What closes that gap is the trilemma in III.6
+    (each such being is bare at the world where it is idle). -/
+abbrev IDF_stmt : Prop := ∀ t t', (∀ w, M.Fundamental w t) → (∀ w, M.Fundamental w t') →
+  SameProfile M t t' → t = t'
 end Stmts
 
 /-- L2 from P11. -/
@@ -3170,6 +3204,44 @@ theorem two_minds :
     (∀ w, M.Fundamental w .N) ∧ (∀ w, M.Fundamental w .N2) ∧ (T.N ≠ T.N2) ∧
     M.Mind .N ∧ M.Mind .N2 :=
   ⟨fund_N, fund_N2, by simp, ⟨.s1, rfl, trivial⟩, ⟨.s2, rfl, trivial⟩⟩
+
+/-- IDF DOES NOT YIELD P4 (v8.12).  The two fundamentals here have different
+    necessary profiles — s1 is the channel at `true`, s2 at `false` — so IDF
+    holds vacuously while P4 fails.  This is the ALTERNATION model: at each
+    world one fundamental acts and the other is idle, and which one acts is
+    a contrast to which nothing bears (III.6, horn (iv)). -/
+theorem profile_ne : ¬ SameProfile M .N .N2 := fun hsp => by
+  obtain ⟨s', hb, _, _, _, _, hsens⟩ := hsp.1 .s1 rfl (necstate .s1)
+  cases s' with
+  | s1 => exact nomatch (hb : T.N = T.N2)
+  | s2 =>
+    have h := (hsens true M.Maximal).mp (Or.inl ⟨rfl, rfl⟩)
+    rcases h with ⟨h, _⟩ | ⟨_, h⟩
+    · exact nomatch (Chan.state.inj h : S.s2 = S.s1)
+    · exact nomatch (h : true = false)
+
+theorem profile_ne' : ¬ SameProfile M .N2 .N := fun hsp => by
+  obtain ⟨s', hb, _, _, _, _, hsens⟩ := hsp.1 .s2 rfl (necstate .s2)
+  cases s' with
+  | s2 => exact nomatch (hb : T.N2 = T.N)
+  | s1 =>
+    have h := (hsens false M.Maximal).mp (Or.inr ⟨rfl, rfl⟩)
+    rcases h with ⟨_, h⟩ | ⟨h, _⟩
+    · exact nomatch (h : false = true)
+    · exact nomatch (Chan.state.inj h : S.s1 = S.s2)
+
+theorem fund_cases {t : T} (ht : ∀ w, M.Fundamental w t) : t = .N ∨ t = .N2 :=
+  Classical.byContradiction fun hc =>
+    not_nec (fun h => hc (Or.inl h)) (fun h => hc (Or.inr h)) (ht true).1
+
+theorem IDF_and_not_P4 : IDF_stmt M ∧ ¬ P4_stmt M := by
+  refine ⟨?_, witness.2.1⟩
+  intro t t' ht ht' hsp
+  rcases fund_cases ht with rfl | rfl <;> rcases fund_cases ht' with rfl | rfl
+  · rfl
+  · exact absurd hsp profile_ne
+  · exact absurd hsp profile_ne'
+  · rfl
 end W_P4
 
 /-! ### Independence of P1: an infinite causal chain.
@@ -4478,3 +4550,4 @@ end Toy
 #print axioms Toy.W_Nat.fallible_witness
 #print axioms Toy.W_Pref.fallible_witness
 #print axioms Toy.W_P4.two_minds
+#print axioms Toy.W_P4.IDF_and_not_P4

@@ -1,10 +1,10 @@
-# The Necessary Agent Argument — A Plain-Language Guide (v8.10)
+# The Necessary Agent Argument — A Plain-Language Guide (v8.12)
 
 This is a companion to the full argument and to `NecessaryAgent.lean`. It uses no symbols and no jargon that isn't explained on the spot. Its job is to let you understand each premise well enough to decide whether you accept it, and to understand exactly what follows if you do — no more and no less.
 
 Three things to know before starting.
 
-**The logic has been checked by a computer.** Every step from the premises to the conclusion has been verified by a proof-checking program (Lean 4.33.1; fifty certified results; zero unproven steps; nothing assumed beyond the three standard axioms of Lean's logic). So the question "does the conclusion really follow?" is settled: it does. The only questions left are whether the premises are true. That's what this guide is for.
+**The logic has been checked by a computer.** Every step from the premises to the conclusion has been verified by a proof-checking program (Lean 4.33.1; fifty-one certified results; zero unproven steps; nothing assumed beyond the three standard axioms of Lean's logic). So the question "does the conclusion really follow?" is settled: it does. The only questions left are whether the premises are true. That's what this guide is for.
 
 **The conclusion is now stated as a single theorem.** The full argument concludes to one thing — a unique necessary being that is a mind, knows every way reality could have been, chose this one, and chose it for the good. Version 8.7 gives that conjunction a name, `God`, and certifies the theorem `god_exists`: *given the premises, God exists and is unique.* Nothing new is assumed in that step; it only names what the argument already proved. Whether the name is apt is discussed in §4.
 

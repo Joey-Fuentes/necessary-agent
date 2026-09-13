@@ -1,7 +1,7 @@
-# A Necessary Agent — Handoff (v8.11)
+# A Necessary Agent — Handoff (v8.12)
 
 **Status:** Consolidated as of 2026-09-13. Supersedes `Necessary_Agent_Teleological_Handoff.md`, `teleological_argument_proof.md`, and `teleological_argument_proof__1_.md` in full.
-**Verified:** `NecessaryAgent.lean` compiles under Lean 4.33.1 (core, no Mathlib), exit 0, zero errors, zero warnings, zero `sorry`; 50 `#print axioms` results, every one depending on at most `propext`, `choice`, `Quot.sound`. CI (`scripts/verify.sh`) passes locally on this commit. Output in `NecessaryAgent_v8_7_print_axioms.txt`. MD5 of the verified file: `21290ecf4e49ecf77894593cb036cab9`.
+**Verified:** `NecessaryAgent.lean` compiles under Lean 4.33.1 (core, no Mathlib), exit 0, zero errors, zero warnings, zero `sorry`; 51 `#print axioms` results, every one depending on at most `propext`, `choice`, `Quot.sound`. CI (`scripts/verify.sh`) passes locally on this commit. Output in `NecessaryAgent_v8_7_print_axioms.txt`. MD5 of the verified file: `21290ecf4e49ecf77894593cb036cab9`.
 
 ---
 
@@ -136,7 +136,7 @@ Excluded permanently: biological error rates, the 10⁻³⁸ product, photosynth
 5. **CatU's modal defense.** III.7 now states CatU as a claim about the space of law-structures and concedes the countable-physics objection its standing. What is missing is the *positive* argument that the families of possible law-structures are uncountable in kind, independent of the continuum of parameters within families (which objection (1) contests). Also decide whether non-normalizability (Schiffrin & Wald) becomes a Lean premise — `NoMeasure_stmt : ¬ HasProp`-with-a-reason — with its own witness, or stays in prose. Recommendation: stays in prose; a premise that just asserts `¬HasProp` adds nothing the reader can check.
 6. **P1 against Schmid and Malpass.** The Grim Reaper defense needs to show the paradox motivates causal finitism rather than only the contradiction of the story, and to defend the descent/branching asymmetry. Prose only.
 7. **P11 against Benci–Horsten–Wenmackers.** III.7 acknowledges the dispute; Pruss's side should be argued, not cited. Prose only.
-8. **IDF.** Now the one commitment shared by CE (Objection 9), P4 (uniqueness), and — via the haecceitistic exit — the whole Tier 2 structure. It deserves its own short section rather than living in two replies. A candidate statement: two fundamental beings that share every necessary feature are identical; the argument's cost for it is anti-haecceitism about the foundation only, not globally.
+8. **IDF — done (v8.12).** Stated in the file (`SameProfile`, `IDF_stmt`, optional); its own dossier entry in III.6; its limit certified (`W_P4.IDF_and_not_P4`: alternation satisfies IDF, violates P4). III.6 gained horn (iv), alternation, which is what `W_P4` actually is. Remaining: IDF's defense against a committed foundation-haecceitist is philosophical; the only formal work left on uniqueness is a per-being contribution relation, which would let III.6's four positions be certified.
 
 **Housekeeping:** drop the v8.5 review into `docs/`; bump `actions/*` to `@v5`; rename the docs from `_v8_7` to unversioned names in one commit (git tracks versions); and — per the README's own rule — commission a **fresh external review of v8.11** by someone who did not write it, asked specifically to attack III.5's readings of Mumford–Anjum and Vetter, III.6's IDF, and III.4's relocation of Law.
 
