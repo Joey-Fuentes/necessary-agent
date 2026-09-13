@@ -42,6 +42,27 @@
     Tier 2–4 premises for all worlds; bears on the evidential argument from
     evil); `realOf` defined, `Accurate` content-indexed, MR removed (D12, D14,
     D15).
+  - v8.17 — THE LAST TWO FORMAL BURDENS.  (a) PER-BEING CONTRIBUTION:
+    `Contrib w t` (the first items t causes at w), `ContribDet`, `SensOf`
+    (sensitivity through a state OF t), `BareOf` (t's contribution varies,
+    no state of t is a channel, no chance), `Contributes`; the optional
+    premise CEB (`CEB_stmt`: no fundamental's contribution is bare at a
+    productive world).  Theorems: `contrib_det_empty` (a constant contribution
+    is empty — first items are contingent); `contributors_sensitive` and
+    `contributors_are_minds` (under CEB and no chance, every fundamental that
+    contributes is field-sensitive through its own state and is a MIND);
+    `CEB_of_Axioms` (CEB follows from `Axioms`).  Witnesses: `W_Two.OneChannel.
+    position_i_priced` (N₂'s contribution is bare at every world; ¬CEB),
+    `W_P4.alternation_priced` (each is bare at its idle world; ¬CEB),
+    `W_Two.Both.two_contributors_two_minds` (CEB holds; two minds).  III.6's
+    positions (i) and (iv) now have a formal price, and (ii) is the only
+    position a second contributor can occupy under CEB.  (b) FALLIBLE
+    DIRECTEDNESS WITH CONTENT ABOUT THE STATE: `FallibleDir s D` (s is the
+    channel at every productive world; D at w₀; D fails somewhere).
+    Theorems: `fallible_not_power`, `fallible_maximal_discriminates`,
+    `FallibleDir.toFallible`.  Witnesses: `W_Pref.fallible_dir` (with `Sens`
+    everywhere), `W_Nat.fallible_dir` (with no `Sens`), `NoTR.no_fallible_dir`
+    and `Toy.no_fallible_dir` (none on a tied balance).  77 results.
   - v8.16 — THE DEFERRED DEFINITIONAL CHANGES.  (a) `Mind` and `Knows` now
     require the state to be IN FORCE at some world (`∃ w, E_state w s`); D28
     resolved; every consumer re-threaded through `inground_state_in_force`.
@@ -1104,6 +1125,22 @@ def P7Antecedent (w : M.W) (t : M.Thing) : Prop :=
   (∃ s, M.bearer s = t ∧ M.SelectingRep w s ∧ M.RepAllOmega s ∧ M.AccurateAll s) ∧
   (∀ s, M.MotivState s → M.DependsOn w (.inr s) → M.NecState s)
 
+
+/-! ### Per-being contribution (v8.17) -/
+
+/-- t's CONTRIBUTION to the first stage at w: the first items t causes there. -/
+def Contrib (w : M.W) (t : M.Thing) : M.Reality := fun x => M.F w x ∧ M.Causes w (.inl t) x
+/-- t's contribution is the same at every world. -/
+def ContribDet (t : M.Thing) : Prop := ∀ w w', M.Contrib w t = M.Contrib w' t
+/-- the production at w is sensitive to P through a state OF t. -/
+def SensOf (w : M.W) (t : M.Thing) (P : M.Reality → Prop) : Prop :=
+  ∃ s, M.bearer s = t ∧ M.Sens w P (.state s)
+/-- t's contribution at w is BARE: it varies across worlds, no state of t is a
+    channel at w, and no chance governs it.  The per-being analogue of `Bare`. -/
+def BareOf (w : M.W) (t : M.Thing) : Prop :=
+  ¬ M.ContribDet t ∧ (∀ P, ¬ M.SensOf w t P) ∧ ¬ M.HasProp
+/-- t contributes to the first stage at some world. -/
+def Contributes (t : M.Thing) : Prop := ∃ w x, M.Contrib w t x
 end Model
 
 /-! ## The premises (§2), plus two framework facts
@@ -1261,6 +1298,13 @@ abbrev CatU_stmt : Prop := M.PropGoverned M.w₀ →
     no output is a limit of outputs of other categories. -/
 abbrev CatOpen_stmt : Prop := M.PropGoverned M.w₀ → ∀ k, M.POpen (fun φ => M.cat φ = k)
 
+/-- CEB — per-being contrastive explicability (v8.17; optional; III.6): at every
+    productive world, no fundamental being's contribution is bare.  Follows from
+    `Axioms` for the one being (`CEB_of_Axioms`); as a premise in its own right
+    it is what III.6's positions (i) and (iv) violate (`W_Two.OneChannel.
+    position_i_priced`, `W_P4.alternation_priced`) and what position (ii)
+    satisfies (`W_Two.Both.CEB_holds`). -/
+abbrev CEB_stmt : Prop := ∀ w t, (∃ x, M.F w x) → M.Fundamental w t → ¬ M.BareOf w t
 /-- Two things share a NECESSARY PROFILE (v8.12): every necessary state of
     one is matched, in the other, by a necessary state with the same content,
     mentality, accuracy, and sensitivity profile — and conversely. -/
@@ -1866,6 +1910,54 @@ theorem N_anc_of_nec_concrete {N : M.Thing}
     subst this
     exact hut
 
+/-! ### Per-being contribution: the theorems (v8.17) -/
+
+omit A in
+/-- A constant contribution is empty: first items are contingent, so they are
+    absent at some world, where a constant contribution would still list them. -/
+theorem contrib_det_empty {t : M.Thing} (hd : M.ContribDet t) : ¬ M.Contributes t := by
+  rintro ⟨w, x, hx⟩
+  match x, hx with
+  | .inl u, hx =>
+    have hcont : ¬ M.Nec u := hx.1.1.1
+    obtain ⟨w', hw'⟩ : ∃ w', ¬ M.E_thing w' u :=
+      Classical.byContradiction fun h => hcont fun w' => Classical.byContradiction fun hn => h ⟨w', hn⟩
+    have : M.Contrib w' t (.inl u) := hd w w' ▸ hx
+    exact hw' this.1.2.1
+  | .inr st, hx =>
+    have hcont : ¬ M.NecState st := hx.1.1.1
+    obtain ⟨w', _, hw'⟩ : ∃ w', M.E_thing w' (M.bearer st) ∧ ¬ M.E_state w' st :=
+      Classical.byContradiction fun h => hcont fun w' hb => Classical.byContradiction fun hn => h ⟨w', hb, hn⟩
+    have : M.Contrib w' t (.inr st) := hd w w' ▸ hx
+    exact hw' this.1.2.1
+
+omit A in
+/-- Per-being CE without chance: every fundamental that contributes anywhere is
+    field-sensitive THROUGH ITS OWN STATE at every productive world.  A bare
+    source (III.6, position (i)) is excluded, and so is an idle turn
+    (position (iv)): an idle contribution is a varying contribution to which
+    nothing of the being's bears. -/
+theorem contributors_sensitive (hCEB : CEB_stmt M) (hnp : ¬ M.HasProp) :
+    ∀ w t, (∃ x, M.F w x) → M.Fundamental w t → M.Contributes t → ∃ P, M.SensOf w t P := by
+  intro w t hne hf hc
+  apply Classical.byContradiction
+  intro hns
+  exact hCEB w t hne hf ⟨fun hd => contrib_det_empty hd hc, fun P hP => hns ⟨P, hP⟩, hnp⟩
+
+/-- ...and every such contributor is a MIND (CH, TR, FA).  So per-being CE
+    leaves exactly two options for a second fundamental producer: it is a
+    necessary mind, or it violates CEB.  This is III.6's "denying P4 is
+    polytheism, not naturalism", as a theorem with its premise named. -/
+theorem contributors_are_minds (hCEB : CEB_stmt M) (hnp : ¬ M.HasProp) (hCH : CH_stmt M) (hTR : TR_stmt M) :
+    ∀ w t, (∃ x, M.F w x) → M.Fundamental w t → M.Contributes t → M.Mind t := by
+  intro w t hne hf hc
+  obtain ⟨P, s, hb, hs⟩ := contributors_sensitive hCEB hnp w t hne hf hc
+  have hcv := hCH w s P hs
+  have hnil := (hTR w s P hs).1
+  obtain ⟨hah, hg, _⟩ := selecting_props' A hcv ⟨.nil, hnil⟩
+  have hin : M.E_state w s := inground_state_in_force hg
+  exact ⟨s, hb, ⟨w, hin⟩, mental_of_nonactual A hin hah hnil hne⟩
+
 end CoreTheorems
 
 section FullTheorems
@@ -2154,6 +2246,26 @@ theorem god_exists : ∃ N, God M N ∧ ∀ N', God M N' → N' = N := by
   obtain ⟨_, _, _, _, _, N, hN⟩ := main A
   exact ⟨N, hN, fun N' hN' => (hN.1 M.w₀).2 N' (hN'.1 M.w₀).1⟩
 
+/-- Per-being CE follows from `Axioms` (v8.17): for the one fundamental being,
+    CE + NBL + CH + P4⁺ make its contribution non-bare at every productive
+    world.  So CEB is not an extra commitment for the theist; it is the premise
+    a second fundamental producer must satisfy or pay for. -/
+theorem CEB_of_Axioms : CEB_stmt M := by
+  intro w t hne hf hb
+  obtain ⟨N, hN⟩ := A.P4
+  have ht : t = N := (hN w).2 t hf
+  rw [ht] at hb
+  rcases A.CE w hne with hd | hp | ⟨P, ch, hs⟩
+  · exact T2_4 A.toAxioms0.toCore.toCoreNoP4 hd
+  · exact hb.2.2 hp
+  · cases ch with
+    | law => exact A.NBL w P hs
+    | state s =>
+      have hcv := A.CH w s P hs
+      obtain ⟨_, hg, _⟩ := selecting_props' A.toAxioms0.toCore.toCoreNoP4 hcv ⟨.nil, (A.TR w s P hs).1⟩
+      have e : M.bearer s = N := A.P4plus N (M.bearer s) (fun w => (hN w).1) hg.2.1 hg.2.2
+      exact hb.2.1 P ⟨s, e, hs⟩
+
 end WithP4plus
 
 /-! ## The TR fork (v8.8): powers against sensitivity
@@ -2333,6 +2445,58 @@ theorem fallible_actual_trivial (M : Model) (s : M.State) :
     (FalliblePowers.actual M s).Directed s (fun _ => True) ∧
     (FalliblePowers.actual M s).Directed s (fun r => r = M.realOf M.w₀) :=
   ⟨⟨rfl, trivial⟩, ⟨rfl, rfl⟩⟩
+
+/-! ### Fallible directedness, with content about the state (v8.17)
+
+`FalliblePowers.actual` was content-free (`fallible_actual_iff`).  What a
+fallible directedness of s at D IS, on any reading a powers theorist could
+own: s is the production's channel at every productive world (`PowersChannel`
+— the causal role, a fact about s); its type D is realized at the actual world
+(`manif₀`); and D fails at some productive world (`fails` — otherwise the
+directedness necessitates and `manif` applies).  It mentions `F`,
+`CausesVia`, `bearer`, `E_state`, `realOf`, `w₀` and D, and no field among
+`Sens`, `Rep`, `Mental`.  It sits strictly between `Powers.manif` and
+`FalliblePowers.manif₀`.
+
+What is certified from it: no necessitating power directs s at D
+(`fallible_not_power`, generalizing `no_powers_at_maximal`); a fallible
+directedness at maximality forces a discriminating balance and a productive
+world where the outcome is not best — `W_Pref.residue`'s modal profile
+(`fallible_maximal_discriminates`); on a tied balance it does not exist at all
+(`NoTR.no_fallible_dir`, `Toy.no_fallible_dir`); and the theist's channel
+state on `W_Pref` and the bare naturalist's on `W_Nat` both satisfy it, the
+one with `Sens` at every world and the other with no `Sens` anywhere
+(`W_Pref.fallible_dir`, `W_Nat.fallible_dir`).  That is the v8.9 claim,
+stated with a definition that has content: what separates the two is
+`Sens` — whether the alternatives figure — which is TR's question. -/
+
+/-- s is FALLIBLY DIRECTED at D. -/
+structure FallibleDir (M : Model) (s : M.State) (D : M.Reality → Prop) : Prop where
+  /-- s is the channel at every productive world -/
+  channel : PowersChannel M s
+  /-- the type is realized at the actual world -/
+  manif₀ : D (M.realOf M.w₀)
+  /-- and fails at some productive world -/
+  fails : ∃ w, (∃ x, M.F w x) ∧ ¬ D (M.realOf w)
+
+/-- A fallible directedness is not a power: `manif` would force D at the failure world. -/
+theorem fallible_not_power {M : Model} {s : M.State} {D : M.Reality → Prop} (h : FallibleDir M s D) :
+    ¬ ∃ Pw : Powers M, Pw.Directed s D := fun ⟨Pw, hD⟩ => by
+  obtain ⟨w, hne, hnd⟩ := h.fails
+  obtain ⟨m, hm, hcv⟩ := h.channel.2 w hne
+  exact hnd (Pw.manif s D hD w m hm hcv)
+
+/-- A fallible directedness at maximality entails a productive world whose
+    reality is not maximal — the balance discriminates and the state loses
+    there: the residue. -/
+theorem fallible_maximal_discriminates {M : Model} {s : M.State} (h : FallibleDir M s M.Maximal) :
+    ∃ w, (∃ x, M.F w x) ∧ ¬ M.Maximal (M.realOf w) := h.fails
+
+/-- Every fallible directedness yields a `FalliblePowers` structure (the v8.9
+    notion is recovered, not abandoned): direct exactly s at exactly D. -/
+def FallibleDir.toFallible {M : Model} {s : M.State} {D : M.Reality → Prop} (h : FallibleDir M s D) :
+    FalliblePowers M :=
+  ⟨fun st D' => st = s ∧ D' = D, fun _ _ hd _ _ _ => by obtain ⟨rfl, rfl⟩ := hd; exact h.manif₀⟩
 
 end NecessaryAgent
 
@@ -2682,6 +2846,13 @@ theorem premises_consistent : Nonempty (Axioms M) := ⟨A⟩
     `Axioms` (they hold in the consistency witness). -/
 theorem P8s_holds : P8s_stmt M := fun _ _ => ⟨fun h => h, fun _ => trivial⟩
 theorem SK_holds : SK_stmt M := fun _ _ _ => trivial
+
+/-- v8.17: per-being CE holds in the consistency witness (from `Axioms`); and on
+    a balance that ties everything there is no fallible directedness at the best. -/
+theorem CEB_holds : CEB_stmt M := CEB_of_Axioms A
+theorem no_fallible_dir : ¬ FallibleDir M .s M.Maximal := fun h => by
+  obtain ⟨_, _, hnm⟩ := h.fails
+  exact hnm ⟨fun _ _ => trivial, trivial⟩
 
 /-- v8.14.  `God` holds of N in the consistency witness. -/
 theorem god_holds : God M .N := by
@@ -3449,6 +3620,34 @@ theorem not_det : ¬ M.Deterministic := fun h => by
   · exact nomatch (Sum.inl.inj h2 : T.c1 = T.c2)
 theorem not_ID : ¬ ID_stmt M := fun h => not_det (h type_det)
 theorem IDF_and_not_ID : IDF_stmt M ∧ ¬ ID_stmt M := ⟨IDF_and_not_P4.1, not_ID⟩
+
+/-- v8.17.  ALTERNATION PRICED.  Each fundamental's contribution varies across
+    worlds, and at its idle world no state of it is a channel: N₂'s contribution
+    is bare at `true`, N's at `false`.  So `W_P4` violates per-being CE — the
+    contrast "which fundamental acts at w" now has a formal price. -/
+theorem contrib_N  : M.Contrib true  .N  (.inl .c1) := ⟨F_c1, rfl⟩
+theorem contrib_N2 : M.Contrib false .N2 (.inl .c2) := ⟨F_c2, rfl⟩
+theorem not_contrib_N  : ¬ M.Contrib false .N  (.inl .c1) := fun h => nomatch (E_c1 h.1.2.1 : false = true)
+theorem not_contrib_N2 : ¬ M.Contrib true  .N2 (.inl .c2) := fun h => nomatch (E_c2 h.1.2.1 : true = false)
+theorem not_contribdet_N  : ¬ M.ContribDet .N  := fun hd => not_contrib_N  (hd true false ▸ contrib_N)
+theorem not_contribdet_N2 : ¬ M.ContribDet .N2 := fun hd => not_contrib_N2 (hd false true ▸ contrib_N2)
+theorem no_sensof_N2_true : ∀ P, ¬ M.SensOf true .N2 P := fun _ ⟨s, hb, hs⟩ => by
+  cases s with
+  | s1 => exact nomatch (hb : T.N = T.N2)
+  | s2 =>
+    rcases hs with ⟨h, _⟩ | ⟨_, h⟩
+    · exact nomatch (Chan.state.inj h : S.s2 = S.s1)
+    · exact nomatch (h : true = false)
+theorem no_sensof_N_false : ∀ P, ¬ M.SensOf false .N P := fun _ ⟨s, hb, hs⟩ => by
+  cases s with
+  | s2 => exact nomatch (hb : T.N2 = T.N)
+  | s1 =>
+    rcases hs with ⟨_, h⟩ | ⟨h, _⟩
+    · exact nomatch (h : false = true)
+    · exact nomatch (Chan.state.inj h : S.s1 = S.s2)
+theorem alternation_priced : M.BareOf true .N2 ∧ M.BareOf false .N ∧ ¬ CEB_stmt M :=
+  ⟨⟨not_contribdet_N2, no_sensof_N2_true, id⟩, ⟨not_contribdet_N, no_sensof_N_false, id⟩,
+   fun h => h true .N2 ⟨_, F_c1⟩ (fund_N2 true) ⟨not_contribdet_N2, no_sensof_N2_true, id⟩⟩
 end W_P4
 
 /-! ### Independence of P1: an infinite causal chain.
@@ -4637,6 +4836,13 @@ theorem powers_witness :
     (¬ ∃ Pw' : Powers M, Pw'.Directed .s M.Maximal) :=
   ⟨channel, directed_nonempty, fun _ _ _ h => h, witness.2.1, no_powers_at_maximal⟩
 
+/-- v8.17.  The bare naturalist's channel state is ALSO fallibly directed at
+    maximality — same channel role, same balance, best at w₀, not at w′ — with
+    no `Sens` anywhere.  With `W_Pref.fallible_dir`: a definition with content
+    about the state is satisfied on both sides, and the sides differ in `Sens`. -/
+theorem fallible_dir : FallibleDir M .s M.Maximal ∧ (∀ w P ch, ¬ M.Sens w P ch) :=
+  ⟨⟨channel, ⟨fun _ _ => Or.inl realOf_true, Or.inl realOf_true⟩, ⟨false, ⟨_, F_c2⟩, not_maximal_false⟩⟩,
+   fun _ _ _ h => h⟩
 end W_Nat
 
 namespace W_Pref
@@ -4665,6 +4871,12 @@ theorem fork_is_residue :
     (M.Sens false M.Maximal (.state .s) ∧ ¬ M.Maximal (M.realOf false)) :=
   ⟨natural_directed_nonempty M .s, ⟨false, ⟨_, F_c2⟩, ⟨.inl .c2, cont_c2, rfl⟩, residue.2⟩, ⟨rfl, residue.2⟩⟩
 
+/-- v8.17.  The theist's selecting state IS fallibly directed at maximality
+    (channel everywhere; best at w₀; not best at w′), and `Sens` holds at
+    every world.  Per-being CE holds here (from `Axioms`). -/
+theorem fallible_dir : FallibleDir M .s M.Maximal ∧ (∀ w, M.Sens w M.Maximal (.state .s)) :=
+  ⟨⟨channel, ⟨fun _ _ => Or.inl realOf_true, Or.inl realOf_true⟩, ⟨false, ⟨_, F_c2⟩, residue.2⟩⟩, fun _ => rfl⟩
+theorem CEB_holds : CEB_stmt M := CEB_of_Axioms axioms
 end W_Pref
 
 namespace NoTR
@@ -4690,6 +4902,12 @@ theorem powers_horn1 :
   ⟨channel, ⟨rfl, fun _ _ => ⟨fun _ _ => trivial, trivial⟩⟩,
    powers_all_tied Pw channel ⟨rfl, fun _ _ => ⟨fun _ _ => trivial, trivial⟩⟩,
    witness.2.2.2.2.2.2.1⟩
+
+/-- v8.17.  On a tied balance no state is fallibly directed at the best: Horn 1
+    of the fork admits only the NECESSITATING reading. -/
+theorem no_fallible_dir : ¬ FallibleDir (Mk P) .s (Mk P).Maximal := fun h => by
+  obtain ⟨_, _, hnm⟩ := h.fails
+  exact hnm ⟨fun _ _ => trivial, trivial⟩
 end NoTR
 
 /-! ### v8.14: denying NBL with the state channel ON.  Every field of `Axioms`
@@ -4990,6 +5208,17 @@ theorem realities_differ : (M).realOf true ≠ (M).realOf false := fun h => by
   have this : (M).realOf true (.inl .a) := ⟨cont_a both kd, rfl⟩
   rw [h] at this
   exact Bool.false_ne_true this.2
+/-- a fundamental at any world is N or N₂ -/
+theorem fund_of {w : Bool} {t : T} (ht : (M).Fundamental w t) : t = .N ∨ t = .N2 :=
+  Classical.byContradiction fun hc =>
+    not_nec both kd (fun h => hc (Or.inl h)) (fun h => hc (Or.inr h)) ht.1
+theorem contrib_N  : (M).Contrib true .N  (.inl .a) := ⟨F_a both kd, rfl⟩
+theorem contrib_N2 : (M).Contrib true .N2 (.inl .b) := ⟨F_b both kd, rfl⟩
+theorem not_contrib_N  : ¬ (M).Contrib false .N  (.inl .a) := fun h => Bool.false_ne_true (h.1.2.1 : ethingB false .a = true)
+theorem not_contrib_N2 : ¬ (M).Contrib false .N2 (.inl .b) := fun h => Bool.false_ne_true (h.1.2.1 : ethingB false .b = true)
+theorem not_contribdet_N  : ¬ (M).ContribDet .N  := fun hd => not_contrib_N  both kd (hd true false ▸ contrib_N  both kd)
+theorem not_contribdet_N2 : ¬ (M).ContribDet .N2 := fun hd => not_contrib_N2 both kd (hd true false ▸ contrib_N2 both kd)
+theorem contributes_N2 : (M).Contributes .N2 := ⟨true, .inl .b, contrib_N2 both kd⟩
 end generic
 
 /-! III.6 position (ii): two fundamentals, both channels, both active everywhere. -/
@@ -5042,6 +5271,16 @@ theorem not_type_det : ¬ (Mk true true).TypeDeterministic := fun h => by
   · exact Bool.false_ne_true hk
 theorem ID_holds : ID_stmt (Mk true true) := fun h => absurd h not_type_det
 theorem ID_and_not_IDF : ID_stmt (Mk true true) ∧ ¬ IDF_stmt (Mk true true) := ⟨ID_holds, not_IDF true⟩
+
+/-- v8.17.  Position (ii) SATISFIES per-being CE: both fundamentals' contributions
+    run through their own channel states.  With `contributors_are_minds`, that
+    is why the second being here is a mind: two contributors, two minds. -/
+theorem CEB_holds : CEB_stmt M := fun _ t _ hf hb => by
+  rcases fund_of true kd hf with rfl | rfl
+  · exact hb.2.1 (M).Maximal ⟨.s1, rfl, Or.inl rfl⟩
+  · exact hb.2.1 (M).Maximal ⟨.s2, rfl, Or.inr ⟨rfl, rfl⟩⟩
+theorem two_contributors_two_minds : CEB_stmt M ∧ (M).Mind .N ∧ (M).Mind .N2 ∧ ¬ P4_stmt M :=
+  ⟨CEB_holds kd, mind_N true kd, mind_N2 kd, not_P4 true kd⟩
 end Both
 
 /-! III.6 position (i): N₂ produces at every world, no state of N₂ is a channel;
@@ -5081,6 +5320,19 @@ theorem profile_ne' : ¬ SameProfile M .N2 .N := fun hsp => by
 theorem fund_cases {t : T} (ht : ∀ w, (M).Fundamental w t) : t = .N ∨ t = .N2 :=
   Classical.byContradiction fun hc =>
     not_nec false false (fun h => hc (Or.inl h)) (fun h => hc (Or.inr h)) (ht true).1
+/-- v8.17.  POSITION (i) PRICED.  N₂'s contribution is bare at every world (it
+    varies; no state of N₂ is a channel; no chance), N's is not, and per-being
+    CE fails.  The "bare source" of III.6 now has a formal price: ¬CEB. -/
+theorem N2_bare (w : Bool) : (M).BareOf w .N2 :=
+  ⟨not_contribdet_N2 false false, fun P ⟨s, hb, hs⟩ => by
+    cases s with
+    | s1 => exact nomatch (hb : T.N = T.N2)
+    | s2 => exact N2_no_channel w P hs, id⟩
+theorem N_not_bare (w : Bool) : ¬ (M).BareOf w .N := fun h => h.2.1 (M).Maximal ⟨.s1, rfl, Or.inl rfl⟩
+theorem not_CEB : ¬ CEB_stmt M := fun h => h true .N2 ⟨_, F_a false false⟩ (fund_N2 false false true) (N2_bare true)
+theorem position_i_priced :
+    (∀ w, (M).BareOf w .N2) ∧ (∀ w, ¬ (M).BareOf w .N) ∧ ¬ CEB_stmt M ∧ (M).Contributes .N2 :=
+  ⟨N2_bare, N_not_bare, not_CEB, contributes_N2 false false⟩
 theorem IDF_holds : IDF_stmt M := by
   intro t t' ht ht' hsp
   rcases fund_cases ht with rfl | rfl <;> rcases fund_cases ht' with rfl | rfl
@@ -5165,6 +5417,19 @@ end Toy
 #print axioms Toy.W_Two.Both.position_ii
 #print axioms Toy.W_Two.OneChannel.position_i
 #print axioms Toy.W_Two.Both.ID_and_not_IDF
+#print axioms NecessaryAgent.contrib_det_empty
+#print axioms NecessaryAgent.contributors_are_minds
+#print axioms NecessaryAgent.CEB_of_Axioms
+#print axioms NecessaryAgent.fallible_not_power
+#print axioms NecessaryAgent.fallible_maximal_discriminates
+#print axioms Toy.CEB_holds
+#print axioms Toy.no_fallible_dir
+#print axioms Toy.W_P4.alternation_priced
+#print axioms Toy.W_Pref.fallible_dir
+#print axioms Toy.W_Nat.fallible_dir
+#print axioms Toy.NoTR.no_fallible_dir
+#print axioms Toy.W_Two.Both.two_contributors_two_minds
+#print axioms Toy.W_Two.OneChannel.position_i_priced
 #print axioms NecessaryAgent.L0_of_P1
 #print axioms NecessaryAgent.fallible_actual_trivial
 #print axioms Toy.P8s_holds
@@ -5231,6 +5496,19 @@ end Toy
 #check @Toy.W_Two.Both.position_ii
 #check @Toy.W_Two.OneChannel.position_i
 #check @Toy.W_Two.Both.ID_and_not_IDF
+#check @NecessaryAgent.contrib_det_empty
+#check @NecessaryAgent.contributors_are_minds
+#check @NecessaryAgent.CEB_of_Axioms
+#check @NecessaryAgent.fallible_not_power
+#check @NecessaryAgent.fallible_maximal_discriminates
+#check @Toy.CEB_holds
+#check @Toy.no_fallible_dir
+#check @Toy.W_P4.alternation_priced
+#check @Toy.W_Pref.fallible_dir
+#check @Toy.W_Nat.fallible_dir
+#check @Toy.NoTR.no_fallible_dir
+#check @Toy.W_Two.Both.two_contributors_two_minds
+#check @Toy.W_Two.OneChannel.position_i_priced
 #check @NecessaryAgent.L0_of_P1
 #check @NecessaryAgent.fallible_actual_trivial
 #check @Toy.P8s_holds
@@ -5258,6 +5536,7 @@ end Toy
 #print NecessaryAgent.FalliblePowers
 #print NecessaryAgent.Powers.fallible
 #print NecessaryAgent.FalliblePowers.actual
+#print NecessaryAgent.FallibleDir
 #print NecessaryAgent.Model.Item
 #print NecessaryAgent.Model.Region
 #print NecessaryAgent.Model.E
@@ -5300,6 +5579,11 @@ end Toy
 #print NecessaryAgent.Model.Knows
 #print NecessaryAgent.Model.Agent
 #print NecessaryAgent.Model.P7Antecedent
+#print NecessaryAgent.Model.Contrib
+#print NecessaryAgent.Model.ContribDet
+#print NecessaryAgent.Model.SensOf
+#print NecessaryAgent.Model.BareOf
+#print NecessaryAgent.Model.Contributes
 #print NecessaryAgent.F1_stmt
 #print NecessaryAgent.Src_stmt
 #print NecessaryAgent.E_stmt
@@ -5336,5 +5620,6 @@ end Toy
 #print NecessaryAgent.P8all_stmt
 #print NecessaryAgent.CatU_stmt
 #print NecessaryAgent.CatOpen_stmt
+#print NecessaryAgent.CEB_stmt
 #print NecessaryAgent.IDF_stmt
 #print NecessaryAgent.SameProfile

@@ -539,6 +539,37 @@ Toy.W_Two.OneChannel.position_i : NecessaryAgent.IDF_stmt (Toy.W_Two.Mk false fa
                       (Toy.W_Two.Mk false false).realOf true ≠ (Toy.W_Two.Mk false false).realOf false
 Toy.W_Two.Both.ID_and_not_IDF : NecessaryAgent.ID_stmt (Toy.W_Two.Mk true true) ∧
   ¬NecessaryAgent.IDF_stmt (Toy.W_Two.Mk true true)
+@NecessaryAgent.contrib_det_empty : ∀ {M : NecessaryAgent.Model} {t : M.Thing}, M.ContribDet t → ¬M.Contributes t
+@NecessaryAgent.contributors_are_minds : ∀ {M : NecessaryAgent.Model},
+  NecessaryAgent.CoreNoP4 M →
+    NecessaryAgent.CEB_stmt M →
+      ¬M.HasProp →
+        NecessaryAgent.CH_stmt M →
+          NecessaryAgent.TR_stmt M →
+            ∀ (w : M.W) (t : M.Thing), (∃ x, M.F w x) → M.Fundamental w t → M.Contributes t → M.Mind t
+@NecessaryAgent.CEB_of_Axioms : ∀ {M : NecessaryAgent.Model}, NecessaryAgent.Axioms M → NecessaryAgent.CEB_stmt M
+@NecessaryAgent.fallible_not_power : ∀ {M : NecessaryAgent.Model} {s : M.State} {D : M.Reality → Prop},
+  NecessaryAgent.FallibleDir M s D → ¬∃ Pw, Pw.Directed s D
+@NecessaryAgent.fallible_maximal_discriminates : ∀ {M : NecessaryAgent.Model} {s : M.State},
+  NecessaryAgent.FallibleDir M s M.Maximal → ∃ w, (∃ x, M.F w x) ∧ ¬M.Maximal (M.realOf w)
+Toy.CEB_holds : NecessaryAgent.CEB_stmt Toy.M
+Toy.no_fallible_dir : ¬NecessaryAgent.FallibleDir Toy.M Toy.S.s Toy.M.Maximal
+Toy.W_P4.alternation_priced : Toy.W_P4.M.BareOf true Toy.W_P4.T.N2 ∧
+  Toy.W_P4.M.BareOf false Toy.W_P4.T.N ∧ ¬NecessaryAgent.CEB_stmt Toy.W_P4.M
+Toy.W_Pref.fallible_dir : NecessaryAgent.FallibleDir Toy.W_Pref.M Toy.W_Pref.S.s Toy.W_Pref.M.Maximal ∧
+  ∀ (w : Toy.W_Pref.M.W), Toy.W_Pref.M.Sens w Toy.W_Pref.M.Maximal (NecessaryAgent.Chan.state Toy.W_Pref.S.s)
+Toy.W_Nat.fallible_dir : NecessaryAgent.FallibleDir Toy.W_Nat.M Toy.W_Nat.S.s Toy.W_Nat.M.Maximal ∧
+  ∀ (w : Toy.W_Nat.M.W) (P : NecessaryAgent.Pred (Toy.W_Nat.M.Thing ⊕ Toy.W_Nat.M.State) → Prop)
+    (ch : NecessaryAgent.Chan Toy.W_Nat.M.State), ¬Toy.W_Nat.M.Sens w P ch
+Toy.NoTR.no_fallible_dir : ¬NecessaryAgent.FallibleDir (Toy.Mk Toy.NoTR.P) Toy.S.s (Toy.Mk Toy.NoTR.P).Maximal
+Toy.W_Two.Both.two_contributors_two_minds : ∀ (kd : Bool),
+  NecessaryAgent.CEB_stmt (Toy.W_Two.Mk true kd) ∧
+    (Toy.W_Two.Mk true kd).Mind Toy.W_Two.T.N ∧
+      (Toy.W_Two.Mk true kd).Mind Toy.W_Two.T.N2 ∧ ¬NecessaryAgent.P4_stmt (Toy.W_Two.Mk true kd)
+Toy.W_Two.OneChannel.position_i_priced : (∀ (w : (Toy.W_Two.Mk false false).W),
+    (Toy.W_Two.Mk false false).BareOf w Toy.W_Two.T.N2) ∧
+  (∀ (w : (Toy.W_Two.Mk false false).W), ¬(Toy.W_Two.Mk false false).BareOf w Toy.W_Two.T.N) ∧
+    ¬NecessaryAgent.CEB_stmt (Toy.W_Two.Mk false false) ∧ (Toy.W_Two.Mk false false).Contributes Toy.W_Two.T.N2
 NecessaryAgent.L0_of_P1 : ∀ (M : NecessaryAgent.Model), NecessaryAgent.P1_stmt M → NecessaryAgent.L0_stmt M
 NecessaryAgent.fallible_actual_trivial : ∀ (M : NecessaryAgent.Model) (s : M.State),
   ((NecessaryAgent.FalliblePowers.actual M s).Directed s fun x => True) ∧

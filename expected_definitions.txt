@@ -285,6 +285,16 @@ def NecessaryAgent.Powers.fallible : {M : NecessaryAgent.Model} →
 fun {M} Pw => { Directed := Pw.Directed, manif₀ := ⋯ }
 def NecessaryAgent.FalliblePowers.actual : (M : NecessaryAgent.Model) → M.State → NecessaryAgent.FalliblePowers M :=
 fun M s => { Directed := fun st D => st = s ∧ D (M.realOf M.w₀), manif₀ := ⋯ }
+structure NecessaryAgent.FallibleDir (M : NecessaryAgent.Model) (s : M.State) (D : M.Reality → Prop) : Prop
+number of parameters: 3
+fields:
+  NecessaryAgent.FallibleDir.channel : NecessaryAgent.PowersChannel M s
+  NecessaryAgent.FallibleDir.manif₀ : D (M.realOf M.w₀)
+  NecessaryAgent.FallibleDir.fails : ∃ w, (∃ x, M.F w x) ∧ ¬D (M.realOf w)
+constructor:
+  NecessaryAgent.FallibleDir.mk {M : NecessaryAgent.Model} {s : M.State} {D : M.Reality → Prop}
+    (channel : NecessaryAgent.PowersChannel M s) (manif₀ : D (M.realOf M.w₀))
+    (fails : ∃ w, (∃ x, M.F w x) ∧ ¬D (M.realOf w)) : NecessaryAgent.FallibleDir M s D
 @[reducible] def NecessaryAgent.Model.Item : NecessaryAgent.Model → Type :=
 fun M => M.Thing ⊕ M.State
 @[reducible] def NecessaryAgent.Model.Region : NecessaryAgent.Model → Type :=
@@ -389,6 +399,16 @@ def NecessaryAgent.Model.P7Antecedent : (M : NecessaryAgent.Model) → M.W → M
 fun M w t =>
   (∃ s, M.bearer s = t ∧ M.SelectingRep w s ∧ M.RepAllOmega s ∧ M.AccurateAll s) ∧
     ∀ (s : M.State), M.MotivState s → M.DependsOn w (Sum.inr s) → M.NecState s
+def NecessaryAgent.Model.Contrib : (M : NecessaryAgent.Model) → M.W → M.Thing → M.Reality :=
+fun M w t x => M.F w x ∧ M.Causes w (Sum.inl t) x
+def NecessaryAgent.Model.ContribDet : (M : NecessaryAgent.Model) → M.Thing → Prop :=
+fun M t => ∀ (w w' : M.W), M.Contrib w t = M.Contrib w' t
+def NecessaryAgent.Model.SensOf : (M : NecessaryAgent.Model) → M.W → M.Thing → (M.Reality → Prop) → Prop :=
+fun M w t P => ∃ s, M.bearer s = t ∧ M.Sens w P (NecessaryAgent.Chan.state s)
+def NecessaryAgent.Model.BareOf : (M : NecessaryAgent.Model) → M.W → M.Thing → Prop :=
+fun M w t => ¬M.ContribDet t ∧ (∀ (P : M.Reality → Prop), ¬M.SensOf w t P) ∧ ¬M.HasProp
+def NecessaryAgent.Model.Contributes : (M : NecessaryAgent.Model) → M.Thing → Prop :=
+fun M t => ∃ w x, M.Contrib w t x
 @[reducible] def NecessaryAgent.F1_stmt : NecessaryAgent.Model → Prop :=
 fun M => ∀ (w : M.W) (x y : M.Thing ⊕ M.State), M.Causes w x y → M.E w x ∧ M.E w y
 @[reducible] def NecessaryAgent.Src_stmt : NecessaryAgent.Model → Prop :=
@@ -497,6 +517,8 @@ fun M => ∀ (w : M.W) (t : M.Thing), M.P7Antecedent w t → ¬M.EssOutweighs t 
 fun M => M.PropGoverned M.w₀ → NecessaryAgent.Uncountable { k // ∃ φ, M.InPhi φ ∧ M.cat φ = k }
 @[reducible] def NecessaryAgent.CatOpen_stmt : NecessaryAgent.Model → Prop :=
 fun M => M.PropGoverned M.w₀ → ∀ (k : M.Cat), M.POpen fun φ => M.cat φ = k
+@[reducible] def NecessaryAgent.CEB_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W) (t : M.Thing), (∃ x, M.F w x) → M.Fundamental w t → ¬M.BareOf w t
 @[reducible] def NecessaryAgent.IDF_stmt : NecessaryAgent.Model → Prop :=
 fun M =>
   ∀ (t t' : M.Thing),

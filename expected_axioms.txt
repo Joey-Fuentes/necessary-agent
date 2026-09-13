@@ -57,6 +57,19 @@
 'Toy.W_Two.Both.position_ii' depends on axioms: [propext, choice, Quot.sound]
 'Toy.W_Two.OneChannel.position_i' depends on axioms: [propext, choice, Quot.sound]
 'Toy.W_Two.Both.ID_and_not_IDF' depends on axioms: [propext, Quot.sound]
+'NecessaryAgent.contrib_det_empty' depends on axioms: [propext, choice, Quot.sound]
+'NecessaryAgent.contributors_are_minds' depends on axioms: [propext, choice, Quot.sound]
+'NecessaryAgent.CEB_of_Axioms' depends on axioms: [propext, choice, Quot.sound]
+'NecessaryAgent.fallible_not_power' does not depend on any axioms
+'NecessaryAgent.fallible_maximal_discriminates' does not depend on any axioms
+'Toy.CEB_holds' depends on axioms: [propext, choice, Quot.sound]
+'Toy.no_fallible_dir' depends on axioms: [propext, Quot.sound]
+'Toy.W_P4.alternation_priced' depends on axioms: [propext, Quot.sound]
+'Toy.W_Pref.fallible_dir' depends on axioms: [propext, Quot.sound]
+'Toy.W_Nat.fallible_dir' depends on axioms: [propext, Quot.sound]
+'Toy.NoTR.no_fallible_dir' depends on axioms: [propext, Quot.sound]
+'Toy.W_Two.Both.two_contributors_two_minds' depends on axioms: [propext, choice, Quot.sound]
+'Toy.W_Two.OneChannel.position_i_priced' depends on axioms: [propext, Quot.sound]
 'NecessaryAgent.L0_of_P1' does not depend on any axioms
 'NecessaryAgent.fallible_actual_trivial' does not depend on any axioms
 'Toy.P8s_holds' depends on axioms: [propext, Quot.sound]
