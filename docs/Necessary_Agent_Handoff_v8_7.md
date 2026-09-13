@@ -1,4 +1,4 @@
-# A Necessary Agent — Handoff (v8.10)
+# A Necessary Agent — Handoff (v8.11)
 
 **Status:** Consolidated as of 2026-09-13. Supersedes `Necessary_Agent_Teleological_Handoff.md`, `teleological_argument_proof.md`, and `teleological_argument_proof__1_.md` in full.
 **Verified:** `NecessaryAgent.lean` compiles under Lean 4.33.1 (core, no Mathlib), exit 0, zero errors, zero warnings, zero `sorry`; 50 `#print axioms` results, every one depending on at most `propext`, `choice`, `Quot.sound`. CI (`scripts/verify.sh`) passes locally on this commit. Output in `NecessaryAgent_v8_7_print_axioms.txt`. MD5 of the verified file: `21290ecf4e49ecf77894593cb036cab9`.
@@ -116,23 +116,29 @@ Excluded permanently: biological error rates, the 10⁻³⁸ product, photosynth
 | B.11.6 | D7: defend the w₀ restriction or price it | **Done (v8.6/8.7)** — priced in D20/D22 and §6.4 |
 | B.11.7 | Flag `Favored` gloss | **Done (v8.7)** |
 | B.2 (NoTR mindless as filed) | — | **Done (v8.6)** |
-| B.4, B.5, B.8 | GG evil-god, Dasgupta, Smith; NBL's relabeler; CH on the powers view | **Partially** — CH note added to III.5; the relabeler is routed to the TR fork; III.4's evil-god and Smith replies not yet rewritten |
-| B.6 (P4 "undeveloped") | — | **Open** — burden 2 |
+| B.4, B.5, B.8 | GG evil-god, Dasgupta, Smith; NBL's relabeler; CH on the powers view | **Done (v8.11)** — III.4 rewritten; the relabeler routed to the TR fork; CH note in III.5 |
+| B.6 (P4 "undeveloped") | — | **Done (v8.10)** — III.6 rewritten; uniqueness at IDF |
 | B.7 (CatU cheap for discrete physics) | — | **Done (v8.7)** — conceded in III.7, Objection 4; CatU restated as modal |
 
 ---
 
-## 9. Open burdens, ranked
+## 9. Burdens — status as of v8.11
 
-1. **TR — done as far as formal work can take it (D23; III.5).** v8.8 certified the fork on the powers theorist's own axiom; v8.9 finished the fallible reading: `FalliblePowers`, `FalliblePowers.actual`, `W_Nat.fallible_witness`, `W_Pref.fallible_witness` — the same structure on both sides, differing only in `Sens` — and III.5 closes it on Mumford–Anjum (no interference at the foundation), Vetter (degree is a propensity; no degree is bare), Bird (no stimulus). What remains is one sentence the powers naturalist must assert as a primitive — "the alternatives figure and the state is about none of them" — and the reply is Oderberg's criterion. Nothing further to formalize. *Next:* send v8.9 for a fresh external review before starting P4; the reviewer should be asked specifically to attack III.5's readings of Mumford–Anjum and Vetter, since the argument now leans on them.
-2. **P4 — narrowed to uniqueness (v8.10).** Certified: `Core` = `CoreNoP4` + P4; `mind_of_CE_NBL` and the whole of Tier 2–3 are typed over `CoreNoP4`; `W_P4.two_minds` shows the ¬P4 model has two necessary minds. III.6 rewritten: the coordination argument is a trilemma for the second being (bare source → Exit 1's bill; field-sensitive → a second mind; mediated → P4⁺), and uniqueness rests on IDF — identity of indiscernible fundamentals — which is the anti-haecceitism CE already carries (III.1, Obj. 9). Denying P4 is polytheism, not naturalism. Remaining: IDF's own defense (shared with III.1) and parsimony against primitive thisness; nothing further to formalize unless a per-being notion of "contribution to F_w" is added to the model, which would let the trilemma itself be certified.
-3. **CE dossier rewrite.** Incorporate: the residue conceded; the kind/scope asymmetry with its libertarian/compatibilist scope; the Past-Hypothesis routing (§5); Norton's dome as unmeasured indeterminism — either expand CE's disjunction or argue it collapses into bare; the haecceitistic exit (token-vs-type non-determinism via `T2_4'`/ID). Done = III.1 answers Attacks 1–7 of the review by name.
-4. **CatU's modal defense.** State CatU as a claim about possible law-structures; give the positive argument; note that P11/L4 do the work for any supplied measure and non-normalizability does it for none.
-5. **P1 against Schmid/Malpass.** The branching/descent asymmetry needs a defense that the Grim Reaper motivates causal finitism and not merely the contradiction of the story.
-6. **P11 against Benci–Horsten–Wenmackers.** Acknowledge the open dispute; argue Pruss's side explicitly.
-7. **III.4 (GG/P8).** Rewrite the evil-god reply so it does not assume the guise of the good; answer Smith's Humean theory for necessary states directly; state that the residue at w′ is what GG+P8 leave open. (Review B.4.)
+**Closed as far as formal work can close them:**
 
----
+1. **TR** (v8.8–8.9). The fork certified on the powers theorist's own axiom (`powers_fork`, `powers_all_tied`); the fallible reading certified as the same structure on both sides (`W_Nat.fallible_witness`, `W_Pref.fallible_witness`) and closed in prose on Mumford–Anjum, Vetter, Bird. Remaining: one sentence for the powers naturalist to assert as a primitive — "the alternatives figure and the state is about none of them" — answered by Oderberg's abstraction criterion. Philosophical, and stays so.
+2. **P4** (v8.10). `Core` = `CoreNoP4` + P4; the mind conclusion is typed free of P4; `W_P4.two_minds`. III.6 rewritten: trilemma for the second being; uniqueness located at IDF. Remaining: IDF's defense, shared with III.1's Objection 9.
+3. **CE dossier** (v8.7). III.1 answers the review's Attacks 1–7 by name: the residue conceded and the asymmetry stated with scope; Past Hypothesis routed; Norton's dome classified as bare with the dome's own critics; the haecceitistic exit priced as necessitarianism about the constants. Remaining: IDF/anti-haecceitism as the one shared commitment.
+4. **III.4** (v8.11). Smith satisfied by the `Rep`/`Sens` split; evil-god relocated to the interpretation of `AtLeast` and priced; Dasgupta answered by a count; the residue named. Remaining: the problem of evil at P8/w₀, located and not answered — by design (§8.4).
+
+**Open:**
+
+5. **CatU's modal defense.** III.7 now states CatU as a claim about the space of law-structures and concedes the countable-physics objection its standing. What is missing is the *positive* argument that the families of possible law-structures are uncountable in kind, independent of the continuum of parameters within families (which objection (1) contests). Also decide whether non-normalizability (Schiffrin & Wald) becomes a Lean premise — `NoMeasure_stmt : ¬ HasProp`-with-a-reason — with its own witness, or stays in prose. Recommendation: stays in prose; a premise that just asserts `¬HasProp` adds nothing the reader can check.
+6. **P1 against Schmid and Malpass.** The Grim Reaper defense needs to show the paradox motivates causal finitism rather than only the contradiction of the story, and to defend the descent/branching asymmetry. Prose only.
+7. **P11 against Benci–Horsten–Wenmackers.** III.7 acknowledges the dispute; Pruss's side should be argued, not cited. Prose only.
+8. **IDF.** Now the one commitment shared by CE (Objection 9), P4 (uniqueness), and — via the haecceitistic exit — the whole Tier 2 structure. It deserves its own short section rather than living in two replies. A candidate statement: two fundamental beings that share every necessary feature are identical; the argument's cost for it is anti-haecceitism about the foundation only, not globally.
+
+**Housekeeping:** drop the v8.5 review into `docs/`; bump `actions/*` to `@v5`; rename the docs from `_v8_7` to unversioned names in one commit (git tracks versions); and — per the README's own rule — commission a **fresh external review of v8.11** by someone who did not write it, asked specifically to attack III.5's readings of Mumford–Anjum and Vetter, III.6's IDF, and III.4's relocation of Law.
 
 ## 10. Rules for every subsequent pass
 

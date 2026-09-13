@@ -392,6 +392,12 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | bv | III.6 P4 rewritten: trilemma for the second being; uniqueness located at IDF; island universes and the aggregate move answered; literature placed | prose §III.6, §10, §11, §III.9, D24 |
 | bw | `#print axioms` ×50 | — |
 
+### v8.10 → v8.11 (III.4 rewritten; prose only)
+
+| # | Change | Where |
+|---|---|---|
+| bx | Case (c) corrected (no "represents that D does not favor"); Smith answered via the `Rep`/`Sens` split; evil-god reply withdrawn and relocated to the interpretation of `AtLeast`; Dasgupta conceded and answered by a count; the residue named in III.4 | prose §III.4, §11, §III.9; Lean header only |
+
 ---
 
 ## 4. Workflow for future changes

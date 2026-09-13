@@ -40,6 +40,15 @@
     Tier 2–4 premises for all worlds; bears on the evidential argument from
     evil); `realOf` defined, `Accurate` content-indexed, MR removed (D12, D14,
     D15).
+  - v8.11 — III.4 REWRITTEN (prose only; no Lean change).  The evil-god reply
+    is withdrawn: the certified core is symmetric under inverting `AtLeast`
+    (D16), the asymmetry lives in reading the balance as value-grounded
+    reasons (D15), and inverting it costs a theory of practical reason on
+    which the bad is a reason for.  Smith's distinct-existences thesis is
+    SATISFIED by the `Rep`/`Sens` split (`NoTR`, `NoMind`), and GG is a claim
+    about the content of the essential `Sens`.  The cost of ¬GG is counted
+    (`DState`: a second essential feature unconnected to the first), and the
+    residue (`W_Pref.residue`) is named in III.4 as shared.
   - v8.10 — P4 NARROWED TO UNIQUENESS.  `Core` is now `CoreNoP4` + P4, and
     `section CoreTheorems` is typed over `CoreNoP4` (only `T2_8` takes
     `Core`).  The types therefore certify which results use uniqueness:
