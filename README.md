@@ -4,7 +4,7 @@ Three files, which must stay in agreement:
 
 | File | Role | Status |
 |---|---|---|
-| `NecessaryAgent.lean` | The formal argument. Definitions, premises, every derivation line as a theorem, a consistency witness, independence witnesses for every premise, and the named conclusion `God` with `god_exists`. | Certified by Lean 4.33.1 (v8.9: 49 results) |
+| `NecessaryAgent.lean` | The formal argument. Definitions, premises, every derivation line as a theorem, a consistency witness, independence witnesses for every premise, and the named conclusion `God` with `god_exists`. | Certified by Lean 4.33.1 (v8.10: 50 results) |
 | `docs/necessary_agent_argument_v8_7.md` | The human-readable argument. **Part I** is the Lean file in words, section for section. **Part II** is informal assessment: exits, ledger, ladder, open problems. **Part III** is the soundness dossier: each premise's case, objections, replies, cost of denial, and ceiling. | Part I inherits the certificate *if it matches the Lean file*; Parts II–III are uncertified |
 | `README.md` | This file: how to verify, how to read, how to change things without breaking them. | — |
 | `expected_axioms.txt`, `scripts/verify.sh`, `.github/workflows/verify.yml`, `lean-toolchain`, `lakefile.toml` | Continuous verification (§0.0). | CI |
@@ -18,7 +18,7 @@ Three files, which must stay in agreement:
 
 No installation: paste `NecessaryAgent.lean` into https://live.lean-lang.org (select a Lean 4 toolchain; Mathlib is not needed). Locally: install `elan` with toolchain `leanprover/lean4:v4.33.1`, then `lean NecessaryAgent.lean`. The file is self-contained (`import Std` only). Last verified 2026-09-13 under Lean 4.33.1 (commit 819816b2): exit 0, no errors, no warnings, ~70 s; MD5 of the verified file `21290ecf4e49ecf77894593cb036cab9`.
 
-Expected output — these forty-nine lines and nothing else:
+Expected output — these fifty lines and nothing else:
 
 ```
 'NecessaryAgent.main' depends on axioms: [propext, choice, Quot.sound]
@@ -70,6 +70,7 @@ Expected output — these forty-nine lines and nothing else:
 'Toy.NoTR.powers_horn1' depends on axioms: [propext, choice, Quot.sound]
 'Toy.W_Nat.fallible_witness' depends on axioms: [propext, Quot.sound]
 'Toy.W_Pref.fallible_witness' depends on axioms: [propext, Quot.sound]
+'Toy.W_P4.two_minds' depends on axioms: [propext, Quot.sound]
 ```
 
 Anything else — an error, a warning, `sorryAx` in an axiom list, a missing line — means the file is not in the certified state.
@@ -122,13 +123,14 @@ namespace Model     all §1 definitions
 iterAdd, ArchOrd, FinMeasure, L2   axiomatized value structure; L2 proved (prose D9, Appendix A.1)
 RatArch, archRat, zeroMeasureRat    ℚ satisfies ArchOrd, in core Lean
 section Stmts       every premise as a named proposition X_stmt (prose §2)
-structure Core      every premise except P3, P10, P4⁺ (prose §2.1)
+structure CoreNoP4  every framework and Tier 1–2 premise except P4 (v8.10)
+structure Core      CoreNoP4 + P4 (prose §2.1)
 structure Core      … includes FA (factivity of ahistorical non-mental content) in place of P6
 structure Axioms0   extends Core with CE, NBL, GG, CH, TR (P3, NI, P10 derived: P3_of, NI_of_NBL, P10_of)
 structure Axioms    extends Axioms0 with P4⁺ (prose §2.2)
                     optional: P6'_stmt, ID_stmt, CatU/CatOpen (prose §2.3)
 exists_minimal      generic: finite strict partial orders have minimal elements
-section CoreTheorems   Tier 1, 2.1–2.15, 3.7–3.10 lemmas — typed over Core
+section CoreTheorems   Tier 1, 2.1–2.15, 3.7–3.10 lemmas, mind_of_CE_NBL — typed over CoreNoP4 (T2_8 over Core)
 section FullTheorems   2.16–4.6, identity relations, all_worlds_accord — typed over Axioms0
 def God              the conclusion, named (v8.7)
 section WithP4plus     identify, main, god_exists — the only theorems that use P4⁺
@@ -150,7 +152,7 @@ L2_of_P11           L2 from P11 (via generic L2, ArchOrd, FinMeasure)
 N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_is_neither
   Toy.W_Pref        the theist's residue (`residue`, `witness`)
   Toy.W_Nat         the bare naturalist's package
-#print axioms ×49
+#print axioms ×50
 ```
 
 ### 2.1 Prose line → theorem
@@ -180,7 +182,7 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | P3 derivation | `P3_of` | CE + NBL + GG only |
 | P10 derivation | `P10_of` | NI + CH + TR only |
 | no modal collapse | `no_modal_collapse` | Core |
-| mind without value | `mind_of_CE_NBL` | Core + CE + NBL + CH + TR |
+| mind without value | `mind_of_CE_NBL` | CoreNoP4 + CE + NBL + CH + TR (no P4: v8.10) |
 | 3.3–3.4 | `T3_4` | Axioms0 (via derived P10) |
 | 3.6 | `T3_6` | Axioms (P5) |
 | 3.7 | `T3_7` | Core (Src, P1, L0, B1) |
@@ -206,6 +208,7 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | the TR fork | `powers_all_tied`, `powers_fork` | `Powers M` only (no `Axioms`) |
 | the fork's horns; inclination ≠ power | `W_Nat.powers_witness`, `NoTR.powers_horn1`, `W_Pref.no_powers_at_maximal` | — (models) |
 | the fallible reading, both sides | `W_Nat.fallible_witness`, `W_Pref.fallible_witness` | — (models) |
+| denying P4 is polytheism | `W_P4.two_minds` | — (model) |
 
 ---
 
@@ -380,6 +383,15 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | br | III.5 closes the fallible reading on Mumford–Anjum, Vetter, and Bird; open problem 0 narrowed to one sentence with nothing further to formalize | prose §III.5, §10 |
 | bs | `#print axioms` ×49 | — |
 
+### v8.9 → v8.10 (P4 narrowed to uniqueness)
+
+| # | Change | Where |
+|---|---|---|
+| bt | `Core` = `CoreNoP4` + P4; `CoreTheorems` typed over `CoreNoP4`; only `T2_8` takes `Core`; `mind_of_CE_NBL` certified free of P4 | `CoreNoP4`, `Core`, `section CoreTheorems` |
+| bu | `W_P4.two_minds`: both fundamental beings in the ¬P4 model are necessary minds | `Toy.W_P4` |
+| bv | III.6 P4 rewritten: trilemma for the second being; uniqueness located at IDF; island universes and the aggregate move answered; literature placed | prose §III.6, §10, §11, §III.9, D24 |
+| bw | `#print axioms` ×50 | — |
+
 ---
 
 ## 4. Workflow for future changes
@@ -390,7 +402,7 @@ Every prior version of this argument was declared fixed by the person who fixed 
 2. **Make the matching change in the Lean file.** If a definition changes, every theorem mentioning it must be re-proved; the compiler will tell you which.
 3. **Run the three checks (§0.1).** If `Toy.A` no longer compiles, either the new premise set is inconsistent or the toy model needs a different instance — find out which before proceeding. If a witness no longer compiles, the corresponding independence claim in the prose must be withdrawn.
 4. **Re-check faithfulness by inspection**: read the changed Lean definition and the changed prose sentence side by side.
-5. **Never accept a "verified" claim from the same session that made the change.** Hand the files to a fresh reader (human or chat) with the three expected outputs and the instruction: reproduce the forty-nine `#print axioms` lines, then attack faithfulness, then attack Part II.
+5. **Never accept a "verified" claim from the same session that made the change.** Hand the files to a fresh reader (human or chat) with the three expected outputs and the instruction: reproduce the fifty `#print axioms` lines, then attack faithfulness, then attack Part II.
 
 What a fresh reader can still legitimately attack after all this: (i) whether a Lean definition captures the intended notion; (ii) whether a stipulation D1–D12 is reasonable; (iii) whether a premise is true. They cannot legitimately attack the inference from premises to conclusion — if they think they can, the Lean file is the arbiter, and they should produce a compiling counterexample.
 
@@ -406,6 +418,6 @@ What a fresh reader can still legitimately attack after all this: (i) whether a 
 - **Downstream claims are out of scope.** Knowledge of the actual world beyond O, and goodness in any act other than O, are not in the Lean file and not claimed.
 - **The TR fork is certified on the powers theorist's own axiom, and the fallible reading is closed on the powers theorists' own accounts (v8.9). One sentence remains.** `powers_fork` and its witnesses close the determinate-type and the necessitating-maximality readings. `W_Nat.fallible_witness` and `W_Pref.fallible_witness` show the fallible reading is the same structure on both sides, differing only in `Sens`; III.5 shows it is not a tendency (Mumford–Anjum), potentiality (Vetter), or disposition (Bird) at the foundation. What remains is the assertion that a state favoring the best among unproduced alternatives is about none of them; the reply is Oderberg's abstraction criterion, applied, which is philosophical (prose §10, item 0).
 - **CatU is modal, not empirical.** The constants of our laws yield about five independent sharply-bounded constraints (D21); uncountably many kinds must be argued over the space of law-structures. The empirical anti-chance point (non-normalizability) is in the prose, not in the Lean.
-- **P4 uniqueness is undeveloped.** The coordination argument is a sentence; `W_P4` shows island universes cost nothing formally.
+- **P4 is for uniqueness only (v8.10).** The mind conclusion is typed over `CoreNoP4`; `W_P4.two_minds` shows denying P4 gives several necessary minds. Uniqueness rests on IDF (identity of indiscernible fundamentals), defended in prose III.6 and priced as the anti-haecceitism CE already needs.
 - **Nothing in the empirical strand is a probability.** No number in `cosmic_strand_v2.md` is applied to the bare hypothesis, which has none by definition.
 - **Sandbox note.** This was checked in a container without Mathlib. The file imports only `Std`.

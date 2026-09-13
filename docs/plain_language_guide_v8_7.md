@@ -1,10 +1,10 @@
-# The Necessary Agent Argument — A Plain-Language Guide (v8.9)
+# The Necessary Agent Argument — A Plain-Language Guide (v8.10)
 
 This is a companion to the full argument and to `NecessaryAgent.lean`. It uses no symbols and no jargon that isn't explained on the spot. Its job is to let you understand each premise well enough to decide whether you accept it, and to understand exactly what follows if you do — no more and no less.
 
 Three things to know before starting.
 
-**The logic has been checked by a computer.** Every step from the premises to the conclusion has been verified by a proof-checking program (Lean 4.33.1; forty-nine certified results; zero unproven steps; nothing assumed beyond the three standard axioms of Lean's logic). So the question "does the conclusion really follow?" is settled: it does. The only questions left are whether the premises are true. That's what this guide is for.
+**The logic has been checked by a computer.** Every step from the premises to the conclusion has been verified by a proof-checking program (Lean 4.33.1; fifty certified results; zero unproven steps; nothing assumed beyond the three standard axioms of Lean's logic). So the question "does the conclusion really follow?" is settled: it does. The only questions left are whether the premises are true. That's what this guide is for.
 
 **The conclusion is now stated as a single theorem.** The full argument concludes to one thing — a unique necessary being that is a mind, knows every way reality could have been, chose this one, and chose it for the good. Version 8.7 gives that conjunction a name, `God`, and certifies the theorem `god_exists`: *given the premises, God exists and is unique.* Nothing new is assumed in that step; it only names what the argument already proved. Whether the name is apt is discussed in §4.
 
@@ -43,7 +43,7 @@ Each premise comes with three things: what it says, why someone would accept it,
 **There's exactly one uncaused necessary thing, and it's the same one in every possible world.** [P4]
 *Why accept it:* If there were two, something would have to coordinate them into producing one consistent reality — and that something would be a cause of them, so they weren't uncaused after all.
 *If you reject it:* You accept two or more independent foundations of reality that happen to fit together for no reason — or two foundations producing two disconnected realities ("island universes").
-*Honest status:* this is the least-developed premise. The coordination argument is a sentence, and the island-universe reply costs the skeptic nothing formally. It needs building.
+*Honest status (v8.10):* the computer now confirms this premise does only one job — it makes the mind *one*. Everything up to "there is a necessary mind that chose this world" holds without it, and in the model where it fails there are *two* necessary minds. So rejecting it doesn't get you out of a mind at the foundation; it gets you more than one. What keeps the count at one is that two such minds — same nature, same complete knowledge of every possibility, same lean toward the good — would differ in nothing except a bare "this one, not that one," which is the same move the skeptic already had to make to escape the key premise. The argument pays for refusing that move once.
 
 *From these four it follows (and has been machine-checked) that there is exactly one necessary, uncaused, concrete thing that every contingent thing ultimately comes from. Call it N. Notably, the argument's most prominent naturalist critic — Graham Oppy — accepts all of this. He just thinks N is the initial state of the universe.*
 
@@ -193,7 +193,7 @@ Go through the premises and mark each one. If you mark every box "accept," the c
 | Something contingent exists | ☐ | …everything is necessary (including "the universe follows uniquely from its foundation") |
 | Everything contingent has a cause | ☐ | …something came from nothing, once, where it can't be checked |
 | Causes don't regress forever | ☐ | …an infinite backward chain, paradoxes and all |
-| One uncaused necessary source, same in every world | ☐ | …independent foundations that fit together for no reason, or island universes |
+| One uncaused necessary source, same in every world | ☐ | …*several* necessary minds, told apart by nothing but "this one, not that one" — not fewer |
 | No ordinary chance at the origin | ☐ | …infinitesimal chance, or one seamless continuum of all possible realities (against the physics), or outcomes with zero tendency |
 | **Something about the outcome mattered** (CE) | ☐ | …nothing whatsoever bore on which reality came out — **Exit 1, the bare naturalist** |
 | It mattered through a state of the source, not a free-floating law | ☐ | …a law belonging to nothing that chooses (axiarchism) |

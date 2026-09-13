@@ -47,3 +47,4 @@
 'Toy.NoTR.powers_horn1' depends on axioms: [propext, choice, Quot.sound]
 'Toy.W_Nat.fallible_witness' depends on axioms: [propext, Quot.sound]
 'Toy.W_Pref.fallible_witness' depends on axioms: [propext, Quot.sound]
+'Toy.W_P4.two_minds' depends on axioms: [propext, Quot.sound]

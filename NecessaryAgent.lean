@@ -40,6 +40,19 @@
     Tier 2–4 premises for all worlds; bears on the evidential argument from
     evil); `realOf` defined, `Accurate` content-indexed, MR removed (D12, D14,
     D15).
+  - v8.10 — P4 NARROWED TO UNIQUENESS.  `Core` is now `CoreNoP4` + P4, and
+    `section CoreTheorems` is typed over `CoreNoP4` (only `T2_8` takes
+    `Core`).  The types therefore certify which results use uniqueness:
+    `no_modal_collapse`, `T2_4`, `T2_15`, `mental_of_nonactual`, and
+    `mind_of_CE_NBL` (with CE, NBL, CH, TR explicit) do NOT; `T2_8`,
+    `identify`, `main`, `god_exists`, and the originator theorems do.
+    `W_P4.two_minds`: in the ¬P4 model both fundamental beings are
+    necessary minds — denying P4 is polytheism, not naturalism.  The prose
+    (III.6) develops the coordination argument as a trilemma for the second
+    being and locates uniqueness at IDF, identity of indiscernible
+    fundamentals — anti-haecceitism at the foundation, the commitment CE
+    already carries against its haecceitistic exit.  All 49 prior results
+    unchanged; #print axioms ×50.
   - v8.9 — THE FALLIBLE READING, finished.  `FalliblePowers` states the
     powers naturalist's escape from `powers_all_tied` with the only axiom it
     can keep (`manif₀`: manifests at w₀).  `FalliblePowers.actual` shows it
@@ -1180,7 +1193,13 @@ theorem P3_of (M : Model) (hCE : CE_stmt M) (hNBL : NBL_stmt M) (hGG : GG_stmt M
     | law => exact hNBL w P hs
     | state s => exact hb.2.1 ⟨.state s, hGG w s P hs⟩
 
-structure Core (M : Model) where
+/-- `Core` without P4 (v8.10): what the island-universe skeptic grants.
+    Every theorem in `section CoreTheorems` except `T2_8` is typed over this
+    structure, and `mind_of_CE_NBL` is typed over it plus CE, NBL, CH, TR.
+    Their types therefore certify that the necessary-mind conclusion does not
+    use uniqueness: denying P4 yields several necessary grounds, each subject
+    to Tiers 2–3, not none. -/
+structure CoreNoP4 (M : Model) where
   F1  : F1_stmt M
   Src : Src_stmt M
   E   : E_stmt M
@@ -1191,7 +1210,6 @@ structure Core (M : Model) where
   P0  : P0_stmt M
   P1  : P1_stmt M
   P2  : P2_stmt M
-  P4  : P4_stmt M
   P5  : P5_stmt M
   FA  : FA_stmt M
   P7  : P7_stmt M
@@ -1200,6 +1218,11 @@ structure Core (M : Model) where
   P11 : P11_stmt M
   P12 : P12_stmt M
   L4  : L4_stmt M
+
+/-- `CoreNoP4` plus P4.  Field access through the parent is transparent
+    (`A.P1`, `A.E`, …); positional constructors list P4 last. -/
+structure Core (M : Model) extends CoreNoP4 M where
+  P4  : P4_stmt M
 
 /-- Core plus the two premises the prose identifies as the live disagreement. -/
 structure Axioms0 (M : Model) extends Core M where
@@ -1242,7 +1265,7 @@ theorem exists_minimal {α : Type} (r : α → α → Prop) (wf : WellFounded r)
 /-! ## Tier 1 -/
 
 section CoreTheorems
-variable {M : Model} (A : Core M)
+variable {M : Model} (A : CoreNoP4 M)
 include A
 
 theorem anc_exists {w : M.W} {x y : M.Item} (h : M.Anc w y x) : M.E w y ∧ M.E w x := by
@@ -1447,9 +1470,11 @@ theorem brings_about_of_P4 {N : M.Thing}
     have : u = N := (hN w).2 u hu
     subst this; exact hux
 
-theorem T2_8 : ∃ N, ∀ w, (∃ x, M.ContingentItem x ∧ M.E w x) → M.BringsAbout w N := by
-  obtain ⟨N, hN⟩ := A.P4
-  exact ⟨N, brings_about_of_P4 A hN⟩
+omit A in
+/-- The one theorem in this section that uses P4.  Typed over `Core`. -/
+theorem T2_8 (C : Core M) : ∃ N, ∀ w, (∃ x, M.ContingentItem x ∧ M.E w x) → M.BringsAbout w N := by
+  obtain ⟨N, hN⟩ := C.P4
+  exact ⟨N, brings_about_of_P4 C.toCoreNoP4 hN⟩
 
 omit A in
 /-- 2.9: every member of Φ is a possible outcome of O (definitional under D2). -/
@@ -1678,14 +1703,14 @@ variable {M : Model} (A : Axioms0 M)
 include A
 
 /-- 2.16 -/
-theorem T2_16 : ¬ M.Bare M.w₀ := A.P3 M.w₀ (F_nonempty A.toCore)
+theorem T2_16 : ¬ M.Bare M.w₀ := A.P3 M.w₀ (F_nonempty A.toCore.toCoreNoP4)
 
 /-- 2.17 -/
 theorem T2_17 : M.Agential M.w₀ ∨ M.Teleological M.w₀ := by
-  rcases L_tax_exhaustive (T2_4 A.toCore) M.w₀ with h | h | h | h
+  rcases L_tax_exhaustive (T2_4 A.toCore.toCoreNoP4) M.w₀ with h | h | h | h
   · exact Or.inl h
   · exact Or.inr h
-  · exact absurd h (T2_15 A.toCore)
+  · exact absurd h (T2_15 A.toCore.toCoreNoP4)
   · exact absurd h (T2_16 A)
 
 /-- 2.18 -/
@@ -1698,7 +1723,7 @@ theorem T2_18 : M.Favored M.w₀ := by
 
 /-- 3.3–3.4: O is agential. -/
 theorem T3_4 : M.Agential M.w₀ :=
-  ⟨T2_18 A, A.P10 M.w₀ (F_nonempty A.toCore) (fun _ hx => causes_in_ground A.toCore hx) (T2_18 A)⟩
+  ⟨T2_18 A, A.P10 M.w₀ (F_nonempty A.toCore.toCoreNoP4) (fun _ hx => causes_in_ground A.toCore.toCoreNoP4 hx) (T2_18 A)⟩
 
 /-- 3.6 -/
 theorem T3_6 : ∃ s, M.SelectingRep M.w₀ s ∧ M.RepAllOmega s := by
@@ -1724,14 +1749,14 @@ theorem T3_11 :
     (∃ Nstar : M.Thing, M.Nec Nstar ∧ M.Concrete Nstar ∧ M.Mind Nstar ∧ KnowsAll M Nstar) ∧
     (∃ Ag : M.Thing, M.Nec Ag ∧ M.Concrete Ag ∧ M.Agent M.w₀ Ag ∧ M.Mind Ag ∧ KnowsAll M Ag) := by
   obtain ⟨s, hs, hall⟩ := T3_6 A
-  have hne := F_nonempty A.toCore
-  obtain ⟨s', _, _, hcont, hrep, hah, hg⟩ := T3_7 A.toCore hs
-  have hacc' : M.AccurateAll s' := T3_10 A.toCore hrep hah hg
-  obtain ⟨hahs, hgs, haccs⟩ := selecting_props A.toCore hs
+  have hne := F_nonempty A.toCore.toCoreNoP4
+  obtain ⟨s', _, _, hcont, hrep, hah, hg⟩ := T3_7 A.toCore.toCoreNoP4 hs
+  have hacc' : M.AccurateAll s' := T3_10 A.toCore.toCoreNoP4 hrep hah hg
+  obtain ⟨hahs, hgs, haccs⟩ := selecting_props A.toCore.toCoreNoP4 hs
   have hall' : M.RepAllOmega s' :=
     ⟨hcont _ hall.1, fun r hr => ⟨hcont _ (hall.2 r hr).1, fun c hc => hcont _ ((hall.2 r hr).2 c hc)⟩⟩
-  exact ⟨⟨M.bearer s', hg.2.1, hg.2.2, (T3_8 A.toCore hah hall'.1 hne).2, knowsAll_of_rep rfl hall' hacc'⟩,
-         ⟨M.bearer s, hgs.2.1, hgs.2.2, ⟨s, rfl, hs⟩, (T3_8 A.toCore hahs hall.1 hne).2,
+  exact ⟨⟨M.bearer s', hg.2.1, hg.2.2, (T3_8 A.toCore.toCoreNoP4 hah hall'.1 hne).2, knowsAll_of_rep rfl hall' hacc'⟩,
+         ⟨M.bearer s, hgs.2.1, hgs.2.2, ⟨s, rfl, hs⟩, (T3_8 A.toCore.toCoreNoP4 hahs hall.1 hne).2,
           knowsAll_of_rep rfl hall haccs⟩⟩
 
 /-- 3.11′: the agent itself is a mind — now a corollary of FA, with no regress
@@ -1756,10 +1781,10 @@ theorem originator_produces_mind_and_agent :
   refine ⟨N, fun w => (hN w).1, ⟨Ns, hmind, hk1, ?_⟩, ⟨Ag, hag, hk2, ?_⟩⟩
   · by_cases h : Ns = N
     · exact Or.inl h
-    · exact Or.inr fun w => N_anc_of_nec_concrete A.toCore hN w Ns hn1 hn2 h
+    · exact Or.inr fun w => N_anc_of_nec_concrete A.toCore.toCoreNoP4 hN w Ns hn1 hn2 h
   · by_cases h : Ag = N
     · exact Or.inl h
-    · exact Or.inr fun w => N_anc_of_nec_concrete A.toCore hN w Ag ha1 ha2 h
+    · exact Or.inr fun w => N_anc_of_nec_concrete A.toCore.toCoreNoP4 hN w Ag ha1 ha2 h
 
 /-- If the originator bears no states at all (a "simplicity" premise), then it
     is neither the mind nor the agent.  Stated as a hypothesis, not adopted. -/
@@ -1774,12 +1799,12 @@ theorem stateless_originator_is_neither (hS : ∀ N, (∀ w, M.Fundamental w N) 
 
 /-- 4.2: no contingent motivational state bears on O. -/
 theorem T4_2 (w : M.W) : ∀ s, M.MotivState s → M.DependsOn w (.inr s) → M.NecState s :=
-  fun _ _ hd => (T2_1 A.toCore hd).1
+  fun _ _ hd => (T2_1 A.toCore.toCoreNoP4 hd).1
 
 /-- 4.1: the agent in O satisfies P7's antecedent. -/
 theorem T4_1 : ∃ Ag, M.Agent M.w₀ Ag ∧ M.P7Antecedent M.w₀ Ag := by
   obtain ⟨s, hs, hall⟩ := T3_6 A
-  obtain ⟨_, _, hacc⟩ := selecting_props A.toCore hs
+  obtain ⟨_, _, hacc⟩ := selecting_props A.toCore.toCoreNoP4 hs
   exact ⟨M.bearer s, ⟨s, rfl, hs⟩, ⟨s, rfl, hs, hall, hacc⟩, T4_2 A M.w₀⟩
 
 /-- 4.3–4.6: O's outcome accords with the balance of value-grounded reasons,
@@ -1804,7 +1829,7 @@ theorem T4_6 : ∃ Ag, M.Agent M.w₀ Ag ∧ M.P7Antecedent M.w₀ Ag ∧ M.Acts
     take the satisficing form P8s (`T4_6s`). -/
 theorem exists_maximal : ∃ r, M.InOmega r ∧ M.Maximal r :=
   let ⟨_, _, _, _, hacc⟩ := T4_6 A
-  ⟨M.realOf M.w₀, ⟨M.w₀, rfl, F_nonempty A.toCore⟩, hacc⟩
+  ⟨M.realOf M.w₀, ⟨M.w₀, rfl, F_nonempty A.toCore.toCoreNoP4⟩, hacc⟩
 
 /-- Satisficing Tier 4: with P8s in place of P8, the actual reality is good
     enough rather than maximal.  Takes P8s as an explicit hypothesis. -/
@@ -1825,7 +1850,7 @@ theorem T4_6s (P8s : P8s_stmt M) : ∃ Ag, M.Agent M.w₀ Ag ∧ M.P7Antecedent 
 theorem knows_actual (SK : SK_stmt M) :
     ∃ Ag, M.Agent M.w₀ Ag ∧ M.Knows Ag (.act (M.realOf M.w₀)) := by
   obtain ⟨s, hs, _⟩ := T3_6 A
-  obtain ⟨_, _, hacc⟩ := selecting_props A.toCore hs
+  obtain ⟨_, _, hacc⟩ := selecting_props A.toCore.toCoreNoP4 hs
   have hr := SK _ s hs
   exact ⟨M.bearer s, ⟨s, rfl, hs⟩, ⟨s, rfl, hr, hacc _ hr⟩⟩
 
@@ -1843,12 +1868,12 @@ theorem all_worlds_accord (P7all : P7all_stmt M) (P8all : P8all_stmt M) :
     have hfav : M.Favored w := by
       apply Classical.byContradiction
       intro hf
-      exact A.P3 w hne ⟨T2_4 A.toCore, hf, hp⟩
-    obtain ⟨s, hs⟩ := A.P10 w hne (fun _ hx => causes_in_ground A.toCore hx) hfav
+      exact A.P3 w hne ⟨T2_4 A.toCore.toCoreNoP4, hf, hp⟩
+    obtain ⟨s, hs⟩ := A.P10 w hne (fun _ hx => causes_in_ground A.toCore.toCoreNoP4 hx) hfav
     have hall := A.P5 w s hs
-    obtain ⟨_, _, hacc⟩ := selecting_props A.toCore hs
+    obtain ⟨_, _, hacc⟩ := selecting_props A.toCore.toCoreNoP4 hs
     have hant : M.P7Antecedent w (M.bearer s) :=
-      ⟨⟨s, rfl, hs, hall, hacc⟩, fun _ _ hd => (T2_1 A.toCore hd).1⟩
+      ⟨⟨s, rfl, hs, hall, hacc⟩, fun _ _ hd => (T2_1 A.toCore.toCoreNoP4 hd).1⟩
     have h7 := P7all w _ hant
     obtain ⟨h8a, h8b⟩ := P8all w _ hant
     rcases h7 with h | h
@@ -1929,13 +1954,13 @@ theorem main :
   have e : N = N0 := (hN0 M.w₀).2 N (hNf M.w₀)
   subst e
   obtain ⟨Ag, ⟨st, hb, hs⟩, hant, hbest, hacc⟩ := T4_6 A.toAxioms0
-  obtain ⟨_, hg, _⟩ := selecting_props A.toAxioms0.toCore hs
+  obtain ⟨_, hg, _⟩ := selecting_props A.toAxioms0.toCore.toCoreNoP4 hs
   have eAg : Ag = N := by
     have := A.P4plus N Ag hNf (hb ▸ hg.2.1) (hb ▸ hg.2.2)
     exact this
   subst eAg
-  exact ⟨fundamental_exists A.toAxioms0.toCore, T2_4 A.toAxioms0.toCore, T2_15 A.toAxioms0.toCore, T2_18 A.toAxioms0, T3_4 A.toAxioms0,
-    ⟨Ag, hN0, brings_about_of_P4 A.toAxioms0.toCore hN0, hmind, hknow, hag, hant, hbest, hacc⟩⟩
+  exact ⟨fundamental_exists A.toAxioms0.toCore.toCoreNoP4, T2_4 A.toAxioms0.toCore.toCoreNoP4, T2_15 A.toAxioms0.toCore.toCoreNoP4, T2_18 A.toAxioms0, T3_4 A.toAxioms0,
+    ⟨Ag, hN0, brings_about_of_P4 A.toAxioms0.toCore.toCoreNoP4 hN0, hmind, hknow, hag, hant, hbest, hacc⟩⟩
 
 /-- THE CONCLUSION, named (v8.7).  Given `Axioms`, God exists and is unique.
     The proof is `main` plus the uniqueness clause `main` already carries.
@@ -2476,7 +2501,7 @@ theorem witness : Nonempty (Core (Mk P)) ∧ CE_stmt (Mk P) ∧ GG_stmt (Mk P) �
    (fun h => h true (Mk P).Maximal ⟨rfl, rfl⟩), (fun h => h true ⟨rfl, rfl⟩), ⟨.law, ⟨rfl, rfl⟩⟩,
    (fun h => by
       obtain ⟨_, _, _, hs⟩ := h true ⟨_, F_c P⟩ (fun _ hx => causes_in_ground
-        (core_of P (fun _ => trivial) trivial trivial (Or.inl ⟨.law, fun _ => ⟨rfl, rfl⟩⟩)) hx)
+        (core_of P (fun _ => trivial) trivial trivial (Or.inl ⟨.law, fun _ => ⟨rfl, rfl⟩⟩)).toCoreNoP4 hx)
         ⟨.law, ⟨rfl, rfl⟩⟩
       cases hs.1),
    (fun h => by obtain ⟨_, _, _, hs⟩ := h.2; cases hs.1)⟩
@@ -2506,9 +2531,9 @@ def P : Params := ⟨viaState, fun _ => False, False, True, False, true⟩
 theorem witness : Nonempty (Core (Mk P)) ∧ CE_stmt (Mk P) ∧ NBL_stmt (Mk P) ∧ GG_stmt (Mk P) ∧ CH_stmt (Mk P) ∧
     P4plus_stmt (Mk P) ∧ ¬ TR_stmt (Mk P) ∧ ¬ (Mk P).Agential true ∧
     (¬ ∃ t, (Mk P).Mind t) ∧ (¬ ∃ st c, (Mk P).Rep st c) ∧ (Mk P).Favored true := by
-  refine ⟨⟨⟨h_F1 P, h_Src P, h_E P, h_L0 P, h_B1 P, h_B1' P, h_B2 P, h_P0 P, h_P1 P, h_P2 P, h_P4 P,
+  refine ⟨⟨⟨⟨h_F1 P, h_Src P, h_E P, h_L0 P, h_B1 P, h_B1' P, h_B2 P, h_P0 P, h_P1 P, h_P2 P,
       fun _ _ hs => absurd hs.2.1 (fun ⟨_, h⟩ => h), fun _ _ _ _ => ⟨fun _ h => h.elim, fun h => h.elim⟩,
-      h_P7 P, h_P8 P, fun _ _ ⟨_, h⟩ => h.elim, h_P11 P, h_P12 P (Or.inl viaState_true), h_L4 P⟩⟩,
+      h_P7 P, h_P8 P, fun _ _ ⟨_, h⟩ => h.elim, h_P11 P, h_P12 P (Or.inl viaState_true), h_L4 P⟩, h_P4 P⟩⟩,
     h_CE P viaState_true, h_NBL P viaState_law, h_GG P (fun _ _ _ h => h), h_CH P rfl viaState_w, h_P4plus P,
     fun h => (h true .s (fun _ => True) ⟨rfl, rfl⟩).1,
     fun h => by obtain ⟨_, _, ⟨_, hr⟩, _⟩ := h.2; exact hr,
@@ -2732,7 +2757,7 @@ theorem witness :
    (fun h => D_ne_max (h true .s D ⟨rfl, rfl, rfl⟩).2.2),
    (fun ⟨_, h⟩ => D_ne_max h.2.2),
    (fun h => h true ⟨_, F_c P⟩ ⟨not_det P, fun ⟨_, h⟩ => D_ne_max h.2.2, id⟩),
-   (by obtain ⟨_, _, _, _, _, _, _, _, t, ht⟩ := mind_of_CE_NBL core hCE hNBL hCH hTR; exact ⟨t, ht⟩)⟩
+   (by obtain ⟨_, _, _, _, _, _, _, _, t, ht⟩ := mind_of_CE_NBL core.toCoreNoP4 hCE hNBL hCH hTR; exact ⟨t, ht⟩)⟩
 end DState
 
 /-! ### Independence of P2: an uncaused first contingent item.
@@ -3127,6 +3152,15 @@ theorem witness :
     have hb2 := (hN false ⟨.inl .c2, cont_c2, rfl⟩).2 _ cont_c2 rfl
     rcases anc_c1 hb1 with h | h <;> rcases anc_c2 hb2 with h' | h' <;>
       cases h <;> cases h'
+
+/-- DENYING P4 IS NOT A NATURALIST EXIT (v8.10).  In the ¬P4 model there are
+    two fundamental beings, and each is a necessary concrete mind.  With
+    `mind_of_CE_NBL` typed over `CoreNoP4`, this is what the island-universe
+    skeptic gets by denying uniqueness: several necessary minds, not none. -/
+theorem two_minds :
+    (∀ w, M.Fundamental w .N) ∧ (∀ w, M.Fundamental w .N2) ∧ (T.N ≠ T.N2) ∧
+    M.Mind .N ∧ M.Mind .N2 :=
+  ⟨fund_N, fund_N2, by simp, ⟨.s1, rfl, trivial⟩, ⟨.s2, rfl, trivial⟩⟩
 end W_P4
 
 /-! ### Independence of P1: an infinite causal chain.
@@ -4434,3 +4468,4 @@ end Toy
 #print axioms Toy.NoTR.powers_horn1
 #print axioms Toy.W_Nat.fallible_witness
 #print axioms Toy.W_Pref.fallible_witness
+#print axioms Toy.W_P4.two_minds
