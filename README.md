@@ -409,6 +409,14 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | ca | III.6: horn (iv) alternation added and `W_P4` named as it; IDF given its own dossier entry; D25; §2.3, §10, §11, §III.9 | prose |
 | cb | `#print axioms` ×51 | — |
 
+### v8.12 → v8.13 (CatU, P1, P11 argued; prose only)
+
+| # | Change | Where |
+|---|---|---|
+| cc | CatU: parameter-continuum argument withdrawn; positive argument from infinitely many independent discrete respects; the propensity fork for the countable case (prose) | prose §III.7, §10, §11, §III.9 |
+| cd | P1: the Grim Reaper diagnosis argued against the unsatisfiable-pair reading and the endless-future symmetry | prose §III.6 |
+| ce | P11: argued against Benci–Horsten–Wenmackers (ultrafilter, relabeling, infinitesimal explanation) | prose §III.7 |
+
 ---
 
 ## 4. Workflow for future changes
@@ -434,7 +442,7 @@ What a fresh reader can still legitimately attack after all this: (i) whether a 
 - **The balance is a primitive comparative.** `AtLeast` has no axioms (not even reflexivity or transitivity); nothing in the argument needs them. Reasons themselves are not objects in the model, and MR is not formalized. The certificate says the actual reality is unbeaten on the balance; what the balance *is* remains in the prose.
 - **Downstream claims are out of scope.** Knowledge of the actual world beyond O, and goodness in any act other than O, are not in the Lean file and not claimed.
 - **The TR fork is certified on the powers theorist's own axiom, and the fallible reading is closed on the powers theorists' own accounts (v8.9). One sentence remains.** `powers_fork` and its witnesses close the determinate-type and the necessitating-maximality readings. `W_Nat.fallible_witness` and `W_Pref.fallible_witness` show the fallible reading is the same structure on both sides, differing only in `Sens`; III.5 shows it is not a tendency (Mumford–Anjum), potentiality (Vetter), or disposition (Bird) at the foundation. What remains is the assertion that a state favoring the best among unproduced alternatives is about none of them; the reply is Oderberg's abstraction criterion, applied, which is philosophical (prose §10, item 0).
-- **CatU is modal, not empirical.** The constants of our laws yield about five independent sharply-bounded constraints (D21); uncountably many kinds must be argued over the space of law-structures. The empirical anti-chance point (non-normalizability) is in the prose, not in the Lean.
+- **CatU is modal, not empirical, and has a positive argument (v8.13).** The constants of our laws yield about five independent sharply-bounded constraints (D21); uncountably many isolated kinds come from infinitely many independent discrete structural respects (III.7), with one contestable premise. The countable-kinds case is met by the propensity fork, which is prose: the model has no notion of what a propensity's weights track. The empirical anti-chance point (non-normalizability) is also prose.
 - **P4 is for uniqueness only (v8.10), and uniqueness is IDF plus CE (v8.12).** The mind conclusion is typed over `CoreNoP4`; `W_P4.two_minds` shows denying P4 gives several necessary minds. IDF is stated in the file as an optional premise and `W_P4.IDF_and_not_P4` certifies it is not sufficient alone: the alternation model satisfies it and violates P4. The remaining formal work on uniqueness is a per-being notion of contribution to F_w.
 - **Nothing in the empirical strand is a probability.** No number in `cosmic_strand_v2.md` is applied to the bare hypothesis, which has none by definition.
 - **Sandbox note.** This was checked in a container without Mathlib. The file imports only `Std`.

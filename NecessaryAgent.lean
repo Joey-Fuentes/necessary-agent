@@ -40,6 +40,18 @@
     Tier 2–4 premises for all worlds; bears on the evidential argument from
     evil); `realOf` defined, `Accurate` content-indexed, MR removed (D12, D14,
     D15).
+  - v8.13 — THE THREE REMAINING PROSE BURDENS (no Lean change).  CatU: the
+    v8.5 argument from parameter continua is withdrawn (manifolds are
+    second-countable); the positive argument is from infinitely many
+    independent DISCRETE structural respects, giving 2^ℵ₀ isolated kinds;
+    the countable-kinds skeptic meets the propensity fork (uniform → L4;
+    property-tracking → NBL; bare weights → III.4's count) — prose.  P1: the
+    Grim Reaper contradiction lives in the ungrounded chain (finite
+    truncations consistent), so the unsatisfiable-pair diagnosis and causal
+    finitism are not rivals; the endless-future symmetry needs backward
+    causation.  P11: NAP's ultrafilter-dependence is fatal for the objective
+    propensity of a one-off; NAP is not invariant under relabeling kinds;
+    infinitesimal chance for every alternative explains nothing.
   - v8.12 — IDF, stated and bounded.  `SameProfile` and `IDF_stmt` (identity
     of indiscernible fundamentals) are defined as an OPTIONAL premise: the
     refusal of primitive thisness at the foundation, made once, on which

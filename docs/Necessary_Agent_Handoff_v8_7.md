@@ -1,4 +1,4 @@
-# A Necessary Agent — Handoff (v8.12)
+# A Necessary Agent — Handoff (v8.13)
 
 **Status:** Consolidated as of 2026-09-13. Supersedes `Necessary_Agent_Teleological_Handoff.md`, `teleological_argument_proof.md`, and `teleological_argument_proof__1_.md` in full.
 **Verified:** `NecessaryAgent.lean` compiles under Lean 4.33.1 (core, no Mathlib), exit 0, zero errors, zero warnings, zero `sorry`; 51 `#print axioms` results, every one depending on at most `propext`, `choice`, `Quot.sound`. CI (`scripts/verify.sh`) passes locally on this commit. Output in `NecessaryAgent_v8_7_print_axioms.txt`. MD5 of the verified file: `21290ecf4e49ecf77894593cb036cab9`.
@@ -131,14 +131,16 @@ Excluded permanently: biological error rates, the 10⁻³⁸ product, photosynth
 3. **CE dossier** (v8.7). III.1 answers the review's Attacks 1–7 by name: the residue conceded and the asymmetry stated with scope; Past Hypothesis routed; Norton's dome classified as bare with the dome's own critics; the haecceitistic exit priced as necessitarianism about the constants. Remaining: IDF/anti-haecceitism as the one shared commitment.
 4. **III.4** (v8.11). Smith satisfied by the `Rep`/`Sens` split; evil-god relocated to the interpretation of `AtLeast` and priced; Dasgupta answered by a count; the residue named. Remaining: the problem of evil at P8/w₀, located and not answered — by design (§8.4).
 
-**Open:**
+**Argued in prose (v8.13); nothing further to formalize without model extension:**
 
-5. **CatU's modal defense.** III.7 now states CatU as a claim about the space of law-structures and concedes the countable-physics objection its standing. What is missing is the *positive* argument that the families of possible law-structures are uncountable in kind, independent of the continuum of parameters within families (which objection (1) contests). Also decide whether non-normalizability (Schiffrin & Wald) becomes a Lean premise — `NoMeasure_stmt : ¬ HasProp`-with-a-reason — with its own witness, or stays in prose. Recommendation: stays in prose; a premise that just asserts `¬HasProp` adds nothing the reader can check.
-6. **P1 against Schmid and Malpass.** The Grim Reaper defense needs to show the paradox motivates causal finitism rather than only the contradiction of the story, and to defend the descent/branching asymmetry. Prose only.
-7. **P11 against Benci–Horsten–Wenmackers.** III.7 acknowledges the dispute; Pruss's side should be argued, not cited. Prose only.
-8. **IDF — done (v8.12).** Stated in the file (`SameProfile`, `IDF_stmt`, optional); its own dossier entry in III.6; its limit certified (`W_P4.IDF_and_not_P4`: alternation satisfies IDF, violates P4). III.6 gained horn (iv), alternation, which is what `W_P4` actually is. Remaining: IDF's defense against a committed foundation-haecceitist is philosophical; the only formal work left on uniqueness is a per-being contribution relation, which would let III.6's four positions be certified.
+5. **CatU.** Positive argument from infinitely many independent discrete structural respects (III.7); one contestable premise, that a law-structure with infinitely many independent features is possible. The countable-kinds skeptic meets the propensity fork (uniform → refuted by L4; property-tracking → NBL; bare weights → III.4's count). Certifying the fork would need a notion of what a propensity's weights track — a real model extension; recommendation: leave it prose unless a reviewer presses it.
+6. **P1.** Argued: the contradiction lives in the ungrounded chain (finite truncations consistent); the unsatisfiable-pair diagnosis is explained, not rivaled; the endless-future symmetry needs backward causation. Open only for a theorist who denies causation has a direction.
+7. **P11.** Argued against NAP: ultrafilter-dependence is fatal for a one-off's objective propensity; non-invariance under relabeling; infinitesimal chance for every alternative. Open only for an NAP account of objective chance, which the literature does not offer.
+8. **IDF** — done (v8.12); see 2.
 
-**Housekeeping:** drop the v8.5 review into `docs/`; bump `actions/*` to `@v5`; rename the docs from `_v8_7` to unversioned names in one commit (git tracks versions); and — per the README's own rule — commission a **fresh external review of v8.11** by someone who did not write it, asked specifically to attack III.5's readings of Mumford–Anjum and Vetter, III.6's IDF, and III.4's relocation of Law.
+**Remaining open, all philosophical:** Oderberg's abstraction criterion applied to the fallible inclination (TR); IDF against a committed foundation-haecceitist (P4, CE); the possibility of infinite independent structure (CatU); the problem of evil at P8/w₀ (located, not answered, by design).
+
+**Housekeeping:** drop the v8.5 review into `docs/`; bump `actions/*` to `@v5`; rename the docs from `_v8_7` to unversioned names in one commit (git tracks versions); and — per the README's own rule — commission a **fresh external review of v8.13** by someone who did not write it, asked specifically to attack: III.5's readings of Mumford–Anjum and Vetter; III.6's IDF and the four-position analysis; III.4's relocation of Law to the theory of reasons; III.7's positive argument for CatU and the propensity fork; and III.6's reply to the endless-future symmetry. Those are the places where v8.8–8.13 leaned on readings of the literature, and where a hostile referee will go first. **This is now the highest-value next step; the burden list is empty of formal work.**
 
 ## 10. Rules for every subsequent pass
 
