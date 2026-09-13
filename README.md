@@ -15,6 +15,7 @@ Three files, which must stay in agreement:
 | `docs/REVIEW_BRIEF_v8_13.md` | The brief handed to the third reviewer. | — |
 | `docs/Necessary_Agent_Handoff_v8_7.md` | Status: certified / priced / open; review-item tables; burdens. | — |
 | `expected_statements.txt`, `expected_definitions.txt` | Pinned `#check` types and `#print` definitions (checks 5–6). | CI |
+| `scripts/build_site.py`, `.github/workflows/pages.yml` | The website (§3a): built and deployed only after `verify` succeeds. | Pages |
 | `docs/necessary_agent_v8_5_review.md` | External review of v8.5 — **not in the repository** (`docs/NOTE_review_file.md`). | — |
 
 ---
@@ -530,6 +531,14 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | dd | `FallibleDir`; `fallible_not_power`, `fallible_maximal_discriminates`, `FallibleDir.toFallible` | after `FalliblePowers`; prose III.5, D30 |
 | de | `W_Pref.fallible_dir`, `W_Nat.fallible_dir`, `NoTR.no_fallible_dir`, `Toy.no_fallible_dir` | `Toy.*` |
 | df | The handoff's formal burden list is empty; what remains is philosophical | handoff §9 |
+
+## 3a. The website
+
+`.github/workflows/pages.yml` publishes a GitHub Pages site — the argument, the plain-language guide, the handoff, the cosmic strand, the review brief, both external reviews, this README, a verification page listing all certified results with their axioms, and the full formal proof rendered with line anchors and a declaration index and downloadable as a file, together with the three pinned expected files and a source archive of the commit.
+
+It runs **only** on a successful completion of the `verify` workflow on `main` (`on: workflow_run`, `conclusion == 'success'`), checks out the exact commit that run certified (`workflow_run.head_sha`), and — before deploying — `cmp`s the published `NecessaryAgent.lean` and expected files against the checked-out ones. So the site can never show an unverified state: a push that fails `verify` leaves the previous certified site in place. The footer of every page names the commit and the verify run it came from.
+
+Build locally with `python3 scripts/build_site.py` (needs `pandoc`); output in `site/` (ignored by git). One-time setup in the repository: Settings → Pages → Source: **GitHub Actions**.
 
 ## 4. Workflow for future changes
 

@@ -1,0 +1,72 @@
+name: pages
+
+# Publishes the site ONLY after the `verify` workflow has succeeded on main,
+# and builds the exact commit that run certified — so what the site shows is
+# always the certified state, never an unverified push.
+on:
+  workflow_run:
+    workflows: ["verify"]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build site from the certified commit
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+
+      - name: Install pandoc
+        run: |
+          set -euo pipefail
+          sudo apt-get update -q
+          sudo apt-get install -y -q pandoc
+          pandoc --version | head -1
+
+      - name: Build
+        env:
+          SITE_COMMIT: ${{ github.event.workflow_run.head_sha }}
+          SITE_RUN_ID: ${{ github.event.workflow_run.id }}
+          SITE_RUN_URL: ${{ github.event.workflow_run.html_url }}
+          SITE_REPO: ${{ github.repository }}
+        run: python3 scripts/build_site.py
+
+      - name: Check the published proof is byte-identical to the certified source
+        run: |
+          set -euo pipefail
+          cmp NecessaryAgent.lean site/downloads/NecessaryAgent.lean
+          cmp expected_axioms.txt site/downloads/expected_axioms.txt
+          cmp expected_statements.txt site/downloads/expected_statements.txt
+          cmp expected_definitions.txt site/downloads/expected_definitions.txt
+          echo "published files identical to the certified commit"
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
