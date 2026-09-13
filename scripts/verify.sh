@@ -13,6 +13,15 @@
 #      is byte-identical to expected_statements.txt.  Without this, a theorem
 #      whose statement was weakened (e.g. to `… ∨ (1 = 1)`) while keeping the
 #      same proof term passed checks 1–4 unchanged.
+#   6. (v8.15) The `#print` output of every DEFINITION those statements name
+#      (the `Model` structure and its definitions, every `X_stmt`, the premise
+#      structures, `God`, `KnowsAll`, the powers structures) is byte-identical
+#      to expected_definitions.txt.  Check 5 pins types BY NAME; without check
+#      6, `def AccordsValue … := True` with patched proofs passed checks 1–5.
+#
+# What green means after all six: the file declares these results, with these
+# axiom sets, these printed types, and these printed definitions.  It does not
+# and cannot mean the definitions are the right ones; that is read, not run.
 #
 # Any change to the premise set, the theorems, or the witnesses that alters
 # what is certified will change the output and fail this check; that is the
@@ -25,9 +34,11 @@ cd "$(dirname "$0")/.."
 SRC=NecessaryAgent.lean
 EXPECTED=expected_axioms.txt
 EXPECTED_STMTS=expected_statements.txt
+EXPECTED_DEFS=expected_definitions.txt
 RAW=build/raw_output.txt
 OUT=build/actual_axioms.txt
 STMTS=build/actual_statements.txt
+DEFS=build/actual_definitions.txt
 ERR=build/stderr.txt
 mkdir -p build
 
@@ -52,9 +63,11 @@ if ! lean "$SRC" > "$RAW" 2> "$ERR"; then
   echo "--- stderr ---"; cat "$ERR"; echo "--- stdout ---"; cat "$RAW"
   fail "lean exited non-zero"
 fi
-# `#print axioms` lines begin with a quote; everything else is `#check` output
+# `#print axioms` lines begin with a quote; `#check` output follows; the
+# `#print` of definitions follows the marker line emitted by `#eval`.
 grep "^'" "$RAW" > "$OUT" || true
-grep -v "^'" "$RAW" > "$STMTS" || true
+awk '/^-- definitions --$/{exit} !/^'"'"'/' "$RAW" > "$STMTS"
+awk '/^-- definitions --$/{f=1;next} f' "$RAW" > "$DEFS"
 if [ -s "$ERR" ]; then
   echo "--- stderr ---"; cat "$ERR"
   fail "lean wrote to stderr"
@@ -76,8 +89,13 @@ if ! diff -u "$EXPECTED_STMTS" "$STMTS"; then
   fail "#check statement output differs from $EXPECTED_STMTS"
 fi
 
+echo "== check 6: definitions identical to $EXPECTED_DEFS =="
+if ! diff -u "$EXPECTED_DEFS" "$DEFS"; then
+  fail "#print definition output differs from $EXPECTED_DEFS"
+fi
+
 N=$(wc -l < "$OUT")
-echo "OK: $N certified results, axioms identical to $EXPECTED, statements identical to $EXPECTED_STMTS"
+echo "OK: $N certified results; axioms, statements and definitions identical to the expected files"
 grep -c 'depends on axioms: \[propext, choice, Quot.sound\]' "$OUT" | sed 's/^/  [propext, choice, Quot.sound]: /'
 grep -c 'depends on axioms: \[propext, Quot.sound\]' "$OUT"          | sed 's/^/  [propext, Quot.sound]:         /'
 grep -c 'does not depend on any axioms' "$OUT"                        | sed 's/^/  no axioms:                     /'

@@ -1,0 +1,535 @@
+inductive NecessaryAgent.Content : Type → Type → Type
+number of parameters: 2
+constructors:
+NecessaryAgent.Content.alt : {R C : Type} → R → NecessaryAgent.Content R C
+NecessaryAgent.Content.cons : {R C : Type} → C → R → NecessaryAgent.Content R C
+NecessaryAgent.Content.nil : {R C : Type} → NecessaryAgent.Content R C
+NecessaryAgent.Content.act : {R C : Type} → R → NecessaryAgent.Content R C
+inductive NecessaryAgent.Chan : Type → Type
+number of parameters: 1
+constructors:
+NecessaryAgent.Chan.law : {S : Type} → NecessaryAgent.Chan S
+NecessaryAgent.Chan.state : {S : Type} → S → NecessaryAgent.Chan S
+structure NecessaryAgent.Model : Type 1
+number of parameters: 0
+fields:
+  NecessaryAgent.Model.W : Type
+  NecessaryAgent.Model.w₀ : self.W
+  NecessaryAgent.Model.Thing : Type
+  NecessaryAgent.Model.State : Type
+  NecessaryAgent.Model.bearer : self.State → self.Thing
+  NecessaryAgent.Model.Consideration : Type
+  NecessaryAgent.Model.V : Type
+  NecessaryAgent.Model.vzero : self.V
+  NecessaryAgent.Model.K : Type
+  NecessaryAgent.Model.kind : self.Thing ⊕ self.State → self.K
+  NecessaryAgent.Model.E_thing : self.W → self.Thing → Prop
+  NecessaryAgent.Model.E_state : self.W → self.State → Prop
+  NecessaryAgent.Model.Causes : self.W → self.Thing ⊕ self.State → self.Thing ⊕ self.State → Prop
+  NecessaryAgent.Model.CausesVia : self.W → self.Thing → self.State → self.Thing ⊕ self.State → Prop
+  NecessaryAgent.Model.DependsOn : self.W → self.Thing ⊕ self.State → Prop
+  NecessaryAgent.Model.Bears : self.Consideration → NecessaryAgent.Pred (self.Thing ⊕ self.State) → Prop
+  NecessaryAgent.Model.Rep : self.State →
+      NecessaryAgent.Content (NecessaryAgent.Pred (self.Thing ⊕ self.State)) self.Consideration → Prop
+  NecessaryAgent.Model.Source : self.W → self.State → self.State → Prop
+  NecessaryAgent.Model.Mental : self.State → Prop
+  NecessaryAgent.Model.Accurate : self.State →
+      NecessaryAgent.Content (NecessaryAgent.Pred (self.Thing ⊕ self.State)) self.Consideration → Prop
+  NecessaryAgent.Model.Sens : self.W →
+      (NecessaryAgent.Pred (self.Thing ⊕ self.State) → Prop) → NecessaryAgent.Chan self.State → Prop
+  NecessaryAgent.Model.HasProp : Prop
+  NecessaryAgent.Model.POpen : NecessaryAgent.Pred (NecessaryAgent.Pred (self.Thing ⊕ self.State)) → Prop
+  NecessaryAgent.Model.μ : NecessaryAgent.Pred (NecessaryAgent.Pred (self.Thing ⊕ self.State)) → self.V
+  NecessaryAgent.Model.Cat : Type
+  NecessaryAgent.Model.cat : NecessaryAgent.Pred (self.Thing ⊕ self.State) → self.Cat
+  NecessaryAgent.Model.MotivState : self.State → Prop
+  NecessaryAgent.Model.ActsOnBest : self.W → self.Thing → Prop
+  NecessaryAgent.Model.EssOutweighs : self.Thing → Prop
+  NecessaryAgent.Model.AtLeast : NecessaryAgent.Pred (self.Thing ⊕ self.State) →
+      NecessaryAgent.Pred (self.Thing ⊕ self.State) → Prop
+  NecessaryAgent.Model.Good : NecessaryAgent.Pred (self.Thing ⊕ self.State) → Prop
+constructor:
+  NecessaryAgent.Model.mk (W : Type) (w₀ : W) (Thing State : Type) (bearer : State → Thing) (Consideration V : Type)
+    (vzero : V) (K : Type) (kind : Thing ⊕ State → K) (E_thing : W → Thing → Prop) (E_state : W → State → Prop)
+    (Causes : W → Thing ⊕ State → Thing ⊕ State → Prop) (CausesVia : W → Thing → State → Thing ⊕ State → Prop)
+    (DependsOn : W → Thing ⊕ State → Prop) (Bears : Consideration → NecessaryAgent.Pred (Thing ⊕ State) → Prop)
+    (Rep : State → NecessaryAgent.Content (NecessaryAgent.Pred (Thing ⊕ State)) Consideration → Prop)
+    (Source : W → State → State → Prop) (Mental : State → Prop)
+    (Accurate : State → NecessaryAgent.Content (NecessaryAgent.Pred (Thing ⊕ State)) Consideration → Prop)
+    (Sens : W → (NecessaryAgent.Pred (Thing ⊕ State) → Prop) → NecessaryAgent.Chan State → Prop) (HasProp : Prop)
+    (POpen : NecessaryAgent.Pred (NecessaryAgent.Pred (Thing ⊕ State)) → Prop)
+    (μ : NecessaryAgent.Pred (NecessaryAgent.Pred (Thing ⊕ State)) → V) (Cat : Type)
+    (cat : NecessaryAgent.Pred (Thing ⊕ State) → Cat) (MotivState : State → Prop) (ActsOnBest : W → Thing → Prop)
+    (EssOutweighs : Thing → Prop)
+    (AtLeast : NecessaryAgent.Pred (Thing ⊕ State) → NecessaryAgent.Pred (Thing ⊕ State) → Prop)
+    (Good : NecessaryAgent.Pred (Thing ⊕ State) → Prop) : NecessaryAgent.Model
+def NecessaryAgent.Uncountable : Type → Prop :=
+fun ι => ¬∃ f, Function.Injective f
+def NecessaryAgent.iterAdd : {V : Type} → (V → V → V) → V → V → Nat → V :=
+fun {V} add zero v x => Nat.brecOn x (NecessaryAgent.iterAdd._f add zero v)
+structure NecessaryAgent.ArchOrd (V : Type) : Type
+number of parameters: 1
+fields:
+  NecessaryAgent.ArchOrd.le : V → V → Prop
+  NecessaryAgent.ArchOrd.add : V → V → V
+  NecessaryAgent.ArchOrd.zero : V
+  NecessaryAgent.ArchOrd.one : V
+  NecessaryAgent.ArchOrd.le_refl : ∀ (a : V), self.le a a
+  NecessaryAgent.ArchOrd.le_trans : ∀ (a b c : V), self.le a b → self.le b c → self.le a c
+  NecessaryAgent.ArchOrd.add_assoc : ∀ (a b c : V), self.add (self.add a b) c = self.add a (self.add b c)
+  NecessaryAgent.ArchOrd.add_comm : ∀ (a b : V), self.add a b = self.add b a
+  NecessaryAgent.ArchOrd.zero_add : ∀ (a : V), self.add self.zero a = a
+  NecessaryAgent.ArchOrd.add_le_add : ∀ (a b c d : V), self.le a b → self.le c d → self.le (self.add a c) (self.add b d)
+  NecessaryAgent.ArchOrd.arch : ∀ (v : V), ∃ m, ¬self.le (NecessaryAgent.iterAdd self.add self.zero self.one m) v
+  NecessaryAgent.ArchOrd.arch_pos : ∀ (v : V),
+      self.le self.zero v → v ≠ self.zero → ∃ n, self.le self.one (NecessaryAgent.iterAdd self.add self.zero v n)
+constructor:
+  NecessaryAgent.ArchOrd.mk {V : Type} (le : V → V → Prop) (add : V → V → V) (zero one : V)
+    (le_refl : ∀ (a : V), le a a) (le_trans : ∀ (a b c : V), le a b → le b c → le a c)
+    (add_assoc : ∀ (a b c : V), add (add a b) c = add a (add b c)) (add_comm : ∀ (a b : V), add a b = add b a)
+    (zero_add : ∀ (a : V), add zero a = a) (add_le_add : ∀ (a b c d : V), le a b → le c d → le (add a c) (add b d))
+    (arch : ∀ (v : V), ∃ m, ¬le (NecessaryAgent.iterAdd add zero one m) v)
+    (arch_pos : ∀ (v : V), le zero v → v ≠ zero → ∃ n, le one (NecessaryAgent.iterAdd add zero v n)) :
+    NecessaryAgent.ArchOrd V
+structure NecessaryAgent.FinMeasure {V X : Type} (A : NecessaryAgent.ArchOrd V) (μ : (X → Prop) → V)
+  (Open : (X → Prop) → Prop) : Type
+number of parameters: 5
+fields:
+  NecessaryAgent.FinMeasure.Meas : (X → Prop) → Prop
+  NecessaryAgent.FinMeasure.meas_open : ∀ (G : X → Prop), Open G → self.Meas G
+  NecessaryAgent.FinMeasure.meas_empty : self.Meas fun x => False
+  NecessaryAgent.FinMeasure.meas_top : self.Meas fun x => True
+  NecessaryAgent.FinMeasure.meas_union : ∀ (G H : X → Prop), self.Meas G → self.Meas H → self.Meas fun x => G x ∨ H x
+  NecessaryAgent.FinMeasure.nonneg : ∀ (G : X → Prop), A.le A.zero (μ G)
+  NecessaryAgent.FinMeasure.additive : ∀ (G H : X → Prop),
+      self.Meas G → self.Meas H → (∀ (x : X), ¬(G x ∧ H x)) → (μ fun x => G x ∨ H x) = A.add (μ G) (μ H)
+  NecessaryAgent.FinMeasure.mono : ∀ (G H : X → Prop),
+      self.Meas G → self.Meas H → (∀ (x : X), G x → H x) → A.le (μ G) (μ H)
+constructor:
+  NecessaryAgent.FinMeasure.mk {V X : Type} {A : NecessaryAgent.ArchOrd V} {μ : (X → Prop) → V}
+    {Open : (X → Prop) → Prop} (Meas : (X → Prop) → Prop) (meas_open : ∀ (G : X → Prop), Open G → Meas G)
+    (meas_empty : Meas fun x => False) (meas_top : Meas fun x => True)
+    (meas_union : ∀ (G H : X → Prop), Meas G → Meas H → Meas fun x => G x ∨ H x)
+    (nonneg : ∀ (G : X → Prop), A.le A.zero (μ G))
+    (additive :
+      ∀ (G H : X → Prop), Meas G → Meas H → (∀ (x : X), ¬(G x ∧ H x)) → (μ fun x => G x ∨ H x) = A.add (μ G) (μ H))
+    (mono : ∀ (G H : X → Prop), Meas G → Meas H → (∀ (x : X), G x → H x) → A.le (μ G) (μ H)) :
+    NecessaryAgent.FinMeasure A μ Open
+structure NecessaryAgent.CoreNoP4 (M : NecessaryAgent.Model) : Prop
+number of parameters: 1
+fields:
+  NecessaryAgent.CoreNoP4.F1 : NecessaryAgent.F1_stmt M
+  NecessaryAgent.CoreNoP4.Src : NecessaryAgent.Src_stmt M
+  NecessaryAgent.CoreNoP4.E : NecessaryAgent.E_stmt M
+  NecessaryAgent.CoreNoP4.L0 : NecessaryAgent.L0_stmt M
+  NecessaryAgent.CoreNoP4.B1 : NecessaryAgent.B1_stmt M
+  NecessaryAgent.CoreNoP4.B1' : NecessaryAgent.B1'_stmt M
+  NecessaryAgent.CoreNoP4.B2 : NecessaryAgent.B2_stmt M
+  NecessaryAgent.CoreNoP4.P0 : NecessaryAgent.P0_stmt M
+  NecessaryAgent.CoreNoP4.P1 : NecessaryAgent.P1_stmt M
+  NecessaryAgent.CoreNoP4.P2 : NecessaryAgent.P2_stmt M
+  NecessaryAgent.CoreNoP4.P5 : NecessaryAgent.P5_stmt M
+  NecessaryAgent.CoreNoP4.FA : NecessaryAgent.FA_stmt M
+  NecessaryAgent.CoreNoP4.P7 : NecessaryAgent.P7_stmt M
+  NecessaryAgent.CoreNoP4.P8 : NecessaryAgent.P8_stmt M
+  NecessaryAgent.CoreNoP4.P9 : NecessaryAgent.P9_stmt M
+  NecessaryAgent.CoreNoP4.P11 : NecessaryAgent.P11_stmt M
+  NecessaryAgent.CoreNoP4.P12 : NecessaryAgent.P12_stmt M
+  NecessaryAgent.CoreNoP4.L4 : NecessaryAgent.L4_stmt M
+constructor:
+  NecessaryAgent.CoreNoP4.mk {M : NecessaryAgent.Model} (F1 : NecessaryAgent.F1_stmt M)
+    (Src : NecessaryAgent.Src_stmt M) (E : NecessaryAgent.E_stmt M) (L0 : NecessaryAgent.L0_stmt M)
+    (B1 : NecessaryAgent.B1_stmt M) (B1' : NecessaryAgent.B1'_stmt M) (B2 : NecessaryAgent.B2_stmt M)
+    (P0 : NecessaryAgent.P0_stmt M) (P1 : NecessaryAgent.P1_stmt M) (P2 : NecessaryAgent.P2_stmt M)
+    (P5 : NecessaryAgent.P5_stmt M) (FA : NecessaryAgent.FA_stmt M) (P7 : NecessaryAgent.P7_stmt M)
+    (P8 : NecessaryAgent.P8_stmt M) (P9 : NecessaryAgent.P9_stmt M) (P11 : NecessaryAgent.P11_stmt M)
+    (P12 : NecessaryAgent.P12_stmt M) (L4 : NecessaryAgent.L4_stmt M) : NecessaryAgent.CoreNoP4 M
+structure NecessaryAgent.Core (M : NecessaryAgent.Model) : Prop
+number of parameters: 1
+parents:
+  NecessaryAgent.Core.toCoreNoP4 : NecessaryAgent.CoreNoP4 M
+fields:
+  NecessaryAgent.CoreNoP4.F1 : NecessaryAgent.F1_stmt M
+  NecessaryAgent.CoreNoP4.Src : NecessaryAgent.Src_stmt M
+  NecessaryAgent.CoreNoP4.E : NecessaryAgent.E_stmt M
+  NecessaryAgent.CoreNoP4.L0 : NecessaryAgent.L0_stmt M
+  NecessaryAgent.CoreNoP4.B1 : NecessaryAgent.B1_stmt M
+  NecessaryAgent.CoreNoP4.B1' : NecessaryAgent.B1'_stmt M
+  NecessaryAgent.CoreNoP4.B2 : NecessaryAgent.B2_stmt M
+  NecessaryAgent.CoreNoP4.P0 : NecessaryAgent.P0_stmt M
+  NecessaryAgent.CoreNoP4.P1 : NecessaryAgent.P1_stmt M
+  NecessaryAgent.CoreNoP4.P2 : NecessaryAgent.P2_stmt M
+  NecessaryAgent.CoreNoP4.P5 : NecessaryAgent.P5_stmt M
+  NecessaryAgent.CoreNoP4.FA : NecessaryAgent.FA_stmt M
+  NecessaryAgent.CoreNoP4.P7 : NecessaryAgent.P7_stmt M
+  NecessaryAgent.CoreNoP4.P8 : NecessaryAgent.P8_stmt M
+  NecessaryAgent.CoreNoP4.P9 : NecessaryAgent.P9_stmt M
+  NecessaryAgent.CoreNoP4.P11 : NecessaryAgent.P11_stmt M
+  NecessaryAgent.CoreNoP4.P12 : NecessaryAgent.P12_stmt M
+  NecessaryAgent.CoreNoP4.L4 : NecessaryAgent.L4_stmt M
+  NecessaryAgent.Core.P4 : NecessaryAgent.P4_stmt M
+constructor:
+  NecessaryAgent.Core.mk {M : NecessaryAgent.Model} (toCoreNoP4 : NecessaryAgent.CoreNoP4 M)
+    (P4 : NecessaryAgent.P4_stmt M) : NecessaryAgent.Core M
+field notation resolution order:
+  NecessaryAgent.Core, NecessaryAgent.CoreNoP4
+structure NecessaryAgent.Axioms0 (M : NecessaryAgent.Model) : Prop
+number of parameters: 1
+parents:
+  NecessaryAgent.Axioms0.toCore : NecessaryAgent.Core M
+fields:
+  NecessaryAgent.CoreNoP4.F1 : NecessaryAgent.F1_stmt M
+  NecessaryAgent.CoreNoP4.Src : NecessaryAgent.Src_stmt M
+  NecessaryAgent.CoreNoP4.E : NecessaryAgent.E_stmt M
+  NecessaryAgent.CoreNoP4.L0 : NecessaryAgent.L0_stmt M
+  NecessaryAgent.CoreNoP4.B1 : NecessaryAgent.B1_stmt M
+  NecessaryAgent.CoreNoP4.B1' : NecessaryAgent.B1'_stmt M
+  NecessaryAgent.CoreNoP4.B2 : NecessaryAgent.B2_stmt M
+  NecessaryAgent.CoreNoP4.P0 : NecessaryAgent.P0_stmt M
+  NecessaryAgent.CoreNoP4.P1 : NecessaryAgent.P1_stmt M
+  NecessaryAgent.CoreNoP4.P2 : NecessaryAgent.P2_stmt M
+  NecessaryAgent.CoreNoP4.P5 : NecessaryAgent.P5_stmt M
+  NecessaryAgent.CoreNoP4.FA : NecessaryAgent.FA_stmt M
+  NecessaryAgent.CoreNoP4.P7 : NecessaryAgent.P7_stmt M
+  NecessaryAgent.CoreNoP4.P8 : NecessaryAgent.P8_stmt M
+  NecessaryAgent.CoreNoP4.P9 : NecessaryAgent.P9_stmt M
+  NecessaryAgent.CoreNoP4.P11 : NecessaryAgent.P11_stmt M
+  NecessaryAgent.CoreNoP4.P12 : NecessaryAgent.P12_stmt M
+  NecessaryAgent.CoreNoP4.L4 : NecessaryAgent.L4_stmt M
+  NecessaryAgent.Core.P4 : NecessaryAgent.P4_stmt M
+  NecessaryAgent.Axioms0.CE : NecessaryAgent.CE_stmt M
+  NecessaryAgent.Axioms0.NBL : NecessaryAgent.NBL_stmt M
+  NecessaryAgent.Axioms0.GG : NecessaryAgent.GG_stmt M
+  NecessaryAgent.Axioms0.CH : NecessaryAgent.CH_stmt M
+  NecessaryAgent.Axioms0.TR : NecessaryAgent.TR_stmt M
+constructor:
+  NecessaryAgent.Axioms0.mk {M : NecessaryAgent.Model} (toCore : NecessaryAgent.Core M) (CE : NecessaryAgent.CE_stmt M)
+    (NBL : NecessaryAgent.NBL_stmt M) (GG : NecessaryAgent.GG_stmt M) (CH : NecessaryAgent.CH_stmt M)
+    (TR : NecessaryAgent.TR_stmt M) : NecessaryAgent.Axioms0 M
+field notation resolution order:
+  NecessaryAgent.Axioms0, NecessaryAgent.Core, NecessaryAgent.CoreNoP4
+structure NecessaryAgent.Axioms (M : NecessaryAgent.Model) : Prop
+number of parameters: 1
+parents:
+  NecessaryAgent.Axioms.toAxioms0 : NecessaryAgent.Axioms0 M
+fields:
+  NecessaryAgent.CoreNoP4.F1 : NecessaryAgent.F1_stmt M
+  NecessaryAgent.CoreNoP4.Src : NecessaryAgent.Src_stmt M
+  NecessaryAgent.CoreNoP4.E : NecessaryAgent.E_stmt M
+  NecessaryAgent.CoreNoP4.L0 : NecessaryAgent.L0_stmt M
+  NecessaryAgent.CoreNoP4.B1 : NecessaryAgent.B1_stmt M
+  NecessaryAgent.CoreNoP4.B1' : NecessaryAgent.B1'_stmt M
+  NecessaryAgent.CoreNoP4.B2 : NecessaryAgent.B2_stmt M
+  NecessaryAgent.CoreNoP4.P0 : NecessaryAgent.P0_stmt M
+  NecessaryAgent.CoreNoP4.P1 : NecessaryAgent.P1_stmt M
+  NecessaryAgent.CoreNoP4.P2 : NecessaryAgent.P2_stmt M
+  NecessaryAgent.CoreNoP4.P5 : NecessaryAgent.P5_stmt M
+  NecessaryAgent.CoreNoP4.FA : NecessaryAgent.FA_stmt M
+  NecessaryAgent.CoreNoP4.P7 : NecessaryAgent.P7_stmt M
+  NecessaryAgent.CoreNoP4.P8 : NecessaryAgent.P8_stmt M
+  NecessaryAgent.CoreNoP4.P9 : NecessaryAgent.P9_stmt M
+  NecessaryAgent.CoreNoP4.P11 : NecessaryAgent.P11_stmt M
+  NecessaryAgent.CoreNoP4.P12 : NecessaryAgent.P12_stmt M
+  NecessaryAgent.CoreNoP4.L4 : NecessaryAgent.L4_stmt M
+  NecessaryAgent.Core.P4 : NecessaryAgent.P4_stmt M
+  NecessaryAgent.Axioms0.CE : NecessaryAgent.CE_stmt M
+  NecessaryAgent.Axioms0.NBL : NecessaryAgent.NBL_stmt M
+  NecessaryAgent.Axioms0.GG : NecessaryAgent.GG_stmt M
+  NecessaryAgent.Axioms0.CH : NecessaryAgent.CH_stmt M
+  NecessaryAgent.Axioms0.TR : NecessaryAgent.TR_stmt M
+  NecessaryAgent.Axioms.P4plus : NecessaryAgent.P4plus_stmt M
+constructor:
+  NecessaryAgent.Axioms.mk {M : NecessaryAgent.Model} (toAxioms0 : NecessaryAgent.Axioms0 M)
+    (P4plus : NecessaryAgent.P4plus_stmt M) : NecessaryAgent.Axioms M
+field notation resolution order:
+  NecessaryAgent.Axioms, NecessaryAgent.Axioms0, NecessaryAgent.Core, NecessaryAgent.CoreNoP4
+def NecessaryAgent.KnowsAll : (M : NecessaryAgent.Model) → M.Thing → Prop :=
+fun M t =>
+  M.Knows t NecessaryAgent.Content.nil ∧
+    ∀ (r : M.Reality),
+      M.InOmega r →
+        M.Knows t (NecessaryAgent.Content.alt r) ∧
+          ∀ (c : M.Consideration), M.Bears c r → M.Knows t (NecessaryAgent.Content.cons c r)
+def NecessaryAgent.God : (M : NecessaryAgent.Model) → M.Thing → Prop :=
+fun M N =>
+  (∀ (w : M.W), M.Fundamental w N ∧ ∀ (t : M.Thing), M.Fundamental w t → t = N) ∧
+    (∀ (w : M.W), (∃ x, M.ContingentItem x ∧ M.E w x) → M.BringsAbout w N) ∧
+      M.Mind N ∧
+        NecessaryAgent.KnowsAll M N ∧ M.Agent M.w₀ N ∧ M.P7Antecedent M.w₀ N ∧ M.ActsOnBest M.w₀ N ∧ M.AccordsValue M.w₀
+structure NecessaryAgent.Powers (M : NecessaryAgent.Model) : Type
+number of parameters: 1
+fields:
+  NecessaryAgent.Powers.Directed : M.State → (M.Reality → Prop) → Prop
+  NecessaryAgent.Powers.manif : ∀ (s : M.State) (D : M.Reality → Prop),
+      self.Directed s D → ∀ (w : M.W) (m : M.Item), M.F w m → M.CausesVia w (M.bearer s) s m → D (M.realOf w)
+constructor:
+  NecessaryAgent.Powers.mk {M : NecessaryAgent.Model} (Directed : M.State → (M.Reality → Prop) → Prop)
+    (manif :
+      ∀ (s : M.State) (D : M.Reality → Prop),
+        Directed s D → ∀ (w : M.W) (m : M.Item), M.F w m → M.CausesVia w (M.bearer s) s m → D (M.realOf w)) :
+    NecessaryAgent.Powers M
+def NecessaryAgent.PowersChannel : (M : NecessaryAgent.Model) → M.State → Prop :=
+fun M s => M.NecState s ∧ ∀ (w : M.W), (∃ x, M.F w x) → ∃ m, M.F w m ∧ M.CausesVia w (M.bearer s) s m
+def NecessaryAgent.naturalPowers : (M : NecessaryAgent.Model) → M.State → NecessaryAgent.Powers M :=
+fun M s => { Directed := fun st D => st = s ∧ ∀ (w : M.W), (∃ x, M.F w x) → D (M.realOf w), manif := ⋯ }
+structure NecessaryAgent.FalliblePowers (M : NecessaryAgent.Model) : Type
+number of parameters: 1
+fields:
+  NecessaryAgent.FalliblePowers.Directed : M.State → (M.Reality → Prop) → Prop
+  NecessaryAgent.FalliblePowers.manif₀ : ∀ (s : M.State) (D : M.Reality → Prop),
+      self.Directed s D → ∀ (m : M.Item), M.F M.w₀ m → M.CausesVia M.w₀ (M.bearer s) s m → D (M.realOf M.w₀)
+constructor:
+  NecessaryAgent.FalliblePowers.mk {M : NecessaryAgent.Model} (Directed : M.State → (M.Reality → Prop) → Prop)
+    (manif₀ :
+      ∀ (s : M.State) (D : M.Reality → Prop),
+        Directed s D → ∀ (m : M.Item), M.F M.w₀ m → M.CausesVia M.w₀ (M.bearer s) s m → D (M.realOf M.w₀)) :
+    NecessaryAgent.FalliblePowers M
+def NecessaryAgent.Powers.fallible : {M : NecessaryAgent.Model} →
+  NecessaryAgent.Powers M → NecessaryAgent.FalliblePowers M :=
+fun {M} Pw => { Directed := Pw.Directed, manif₀ := ⋯ }
+def NecessaryAgent.FalliblePowers.actual : (M : NecessaryAgent.Model) → M.State → NecessaryAgent.FalliblePowers M :=
+fun M s => { Directed := fun st D => st = s ∧ D (M.realOf M.w₀), manif₀ := ⋯ }
+@[reducible] def NecessaryAgent.Model.Item : NecessaryAgent.Model → Type :=
+fun M => M.Thing ⊕ M.State
+@[reducible] def NecessaryAgent.Model.Region : NecessaryAgent.Model → Type :=
+fun M => NecessaryAgent.Pred (NecessaryAgent.Pred M.Item)
+def NecessaryAgent.Model.E : (M : NecessaryAgent.Model) → M.W → M.Item → Prop :=
+fun M w x =>
+  match x with
+  | Sum.inl t => M.E_thing w t
+  | Sum.inr s => M.E_state w s
+def NecessaryAgent.Model.Anc : (M : NecessaryAgent.Model) → M.W → M.Item → M.Item → Prop :=
+fun M w => Relation.TransGen (M.Causes w)
+def NecessaryAgent.Model.Nec : (M : NecessaryAgent.Model) → M.Thing → Prop :=
+fun M t => ∀ (w : M.W), M.E_thing w t
+def NecessaryAgent.Model.NecState : (M : NecessaryAgent.Model) → M.State → Prop :=
+fun M s => ∀ (w : M.W), M.E_thing w (M.bearer s) → M.E_state w s
+def NecessaryAgent.Model.Concrete : (M : NecessaryAgent.Model) → M.Thing → Prop :=
+fun M t => ∃ w y, M.Causes w (Sum.inl t) y
+def NecessaryAgent.Model.ContingentItem : (M : NecessaryAgent.Model) → M.Item → Prop :=
+fun M x =>
+  match x with
+  | Sum.inl t => ¬M.Nec t ∧ M.Concrete t
+  | Sum.inr s => ¬M.NecState s ∧ M.Concrete (M.bearer s)
+def NecessaryAgent.Model.FirstCont : (M : NecessaryAgent.Model) → M.W → M.Item → Prop :=
+fun M w x => M.ContingentItem x ∧ M.E w x ∧ ∀ (y : M.Item), M.Anc w y x → ¬M.ContingentItem y
+def NecessaryAgent.Model.F : (M : NecessaryAgent.Model) → M.W → NecessaryAgent.Pred M.Item :=
+fun M w x => M.FirstCont w x
+def NecessaryAgent.Model.Fundamental : (M : NecessaryAgent.Model) → M.W → M.Thing → Prop :=
+fun M w t => M.Nec t ∧ M.Concrete t ∧ ∀ (y : M.Thing ⊕ M.State), ¬M.Causes w y (Sum.inl t)
+def NecessaryAgent.Model.InGround : (M : NecessaryAgent.Model) → M.Item → Prop :=
+fun M x =>
+  match x with
+  | Sum.inl t => M.Nec t ∧ M.Concrete t
+  | Sum.inr s => M.NecState s ∧ M.Nec (M.bearer s) ∧ M.Concrete (M.bearer s)
+def NecessaryAgent.Model.CauseOfF : (M : NecessaryAgent.Model) → M.W → M.Item → Prop :=
+fun M w x => ∃ m, M.F w m ∧ M.Causes w x m
+@[reducible] def NecessaryAgent.Model.Reality : NecessaryAgent.Model → Type :=
+fun M => NecessaryAgent.Pred M.Item
+def NecessaryAgent.Model.realOf : (M : NecessaryAgent.Model) → M.W → M.Reality :=
+fun M w x => M.ContingentItem x ∧ M.E w x
+def NecessaryAgent.Model.InOmega : (M : NecessaryAgent.Model) → M.Reality → Prop :=
+fun M r => ∃ w, M.realOf w = r ∧ ∃ x, M.F w x
+def NecessaryAgent.Model.InPhi : (M : NecessaryAgent.Model) → NecessaryAgent.Pred M.Item → Prop :=
+fun M φ => ∃ w, M.F w = φ ∧ ∃ x, φ x
+def NecessaryAgent.Model.emptyReality : (M : NecessaryAgent.Model) → M.Reality :=
+fun M x => False
+def NecessaryAgent.Model.Maximal : (M : NecessaryAgent.Model) → M.Reality → Prop :=
+fun M r => (∀ (r' : M.Reality), M.InOmega r' → M.AtLeast r r') ∧ M.AtLeast r M.emptyReality
+def NecessaryAgent.Model.AccordsValue : (M : NecessaryAgent.Model) → M.W → Prop :=
+fun M w => M.Maximal (M.realOf w)
+def NecessaryAgent.Model.Favored : (M : NecessaryAgent.Model) → M.W → Prop :=
+fun M w => ∃ ch, M.Sens w M.Maximal ch
+def NecessaryAgent.Model.SelectedBecause : (M : NecessaryAgent.Model) → M.W → M.State → Prop :=
+fun M w s => M.Sens w M.Maximal (NecessaryAgent.Chan.state s)
+def NecessaryAgent.Model.BringsAbout : (M : NecessaryAgent.Model) → M.W → M.Thing → Prop :=
+fun M w t =>
+  (∀ (y : M.Item), ¬M.Anc w y (Sum.inl t)) ∧ ∀ (x : M.Item), M.ContingentItem x → M.E w x → M.Anc w (Sum.inl t) x
+def NecessaryAgent.Model.DeterministicWrt : (M : NecessaryAgent.Model) → {C : Type} → (M.W → C) → Prop :=
+fun M {C} cfg => ∀ (w w' : M.W), cfg w = cfg w' → M.F w = M.F w'
+def NecessaryAgent.Model.groundConfig : (M : NecessaryAgent.Model) →
+  NecessaryAgent.Pred M.Thing × NecessaryAgent.Pred M.State :=
+fun M => (fun t => M.Nec t ∧ M.Concrete t, fun s => M.InGround (Sum.inr s))
+def NecessaryAgent.Model.Deterministic : NecessaryAgent.Model → Prop :=
+fun M => M.DeterministicWrt fun x => M.groundConfig
+def NecessaryAgent.Model.kindsOf : (M : NecessaryAgent.Model) → M.W → NecessaryAgent.Pred M.K :=
+fun M w k => ∃ x, M.F w x ∧ M.kind x = k
+def NecessaryAgent.Model.TypeDeterministic : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w w' : M.W), M.kindsOf w = M.kindsOf w'
+def NecessaryAgent.Model.RepState : (M : NecessaryAgent.Model) → M.State → Prop :=
+fun M s => ∃ c, M.Rep s c
+def NecessaryAgent.Model.SelectingRep : (M : NecessaryAgent.Model) → M.W → M.State → Prop :=
+fun M w s => (∃ m, M.F w m ∧ M.CausesVia w (M.bearer s) s m) ∧ M.RepState s ∧ M.SelectedBecause w s
+def NecessaryAgent.Model.Agential : (M : NecessaryAgent.Model) → M.W → Prop :=
+fun M w => M.Favored w ∧ ∃ s, M.SelectingRep w s
+def NecessaryAgent.Model.Teleological : (M : NecessaryAgent.Model) → M.W → Prop :=
+fun M w => M.Favored w ∧ ¬M.Agential w
+def NecessaryAgent.Model.PropGoverned : (M : NecessaryAgent.Model) → M.W → Prop :=
+fun M w => ¬M.Deterministic ∧ ¬M.Favored w ∧ M.HasProp
+def NecessaryAgent.Model.Bare : (M : NecessaryAgent.Model) → M.W → Prop :=
+fun M w => ¬M.Deterministic ∧ ¬M.Favored w ∧ ¬M.HasProp
+def NecessaryAgent.Model.Derived : (M : NecessaryAgent.Model) → M.W → M.State → Prop :=
+fun M w s => ∃ s', M.Source w s s'
+def NecessaryAgent.Model.Historical : (M : NecessaryAgent.Model) → M.W → M.State → Prop :=
+fun M w s => ∃ x, M.Anc w x (Sum.inr s) ∧ M.ContingentItem x
+def NecessaryAgent.Model.RepAllOmega : (M : NecessaryAgent.Model) → M.State → Prop :=
+fun M s =>
+  M.Rep s NecessaryAgent.Content.nil ∧
+    ∀ (r : M.Reality),
+      M.InOmega r →
+        M.Rep s (NecessaryAgent.Content.alt r) ∧
+          ∀ (c : M.Consideration), M.Bears c r → M.Rep s (NecessaryAgent.Content.cons c r)
+def NecessaryAgent.Model.Mind : (M : NecessaryAgent.Model) → M.Thing → Prop :=
+fun M t => ∃ s, M.bearer s = t ∧ M.Mental s
+def NecessaryAgent.Model.AccurateAll : (M : NecessaryAgent.Model) → M.State → Prop :=
+fun M s =>
+  ∀ (c : NecessaryAgent.Content (NecessaryAgent.Pred (M.Thing ⊕ M.State)) M.Consideration), M.Rep s c → M.Accurate s c
+def NecessaryAgent.Model.Knows : (M : NecessaryAgent.Model) →
+  M.Thing → NecessaryAgent.Content M.Reality M.Consideration → Prop :=
+fun M t c => ∃ s, M.bearer s = t ∧ M.Rep s c ∧ M.Accurate s c
+def NecessaryAgent.Model.Agent : (M : NecessaryAgent.Model) → M.W → M.Thing → Prop :=
+fun M w t => ∃ s, M.bearer s = t ∧ M.SelectingRep w s
+def NecessaryAgent.Model.P7Antecedent : (M : NecessaryAgent.Model) → M.W → M.Thing → Prop :=
+fun M w t =>
+  (∃ s, M.bearer s = t ∧ M.SelectingRep w s ∧ M.RepAllOmega s ∧ M.AccurateAll s) ∧
+    ∀ (s : M.State), M.MotivState s → M.DependsOn w (Sum.inr s) → M.NecState s
+@[reducible] def NecessaryAgent.F1_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W) (x y : M.Thing ⊕ M.State), M.Causes w x y → M.E w x ∧ M.E w y
+@[reducible] def NecessaryAgent.Src_stmt : NecessaryAgent.Model → Prop :=
+fun M =>
+  ∀ (w : M.W) (s s' : M.State),
+    M.Source w s s' →
+      M.Anc w (Sum.inr s') (Sum.inr s) ∧
+        M.RepState s' ∧
+          ∀ (c : NecessaryAgent.Content (NecessaryAgent.Pred (M.Thing ⊕ M.State)) M.Consideration),
+            M.Rep s c → M.Rep s' c
+@[reducible] def NecessaryAgent.E_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∃ x, M.ContingentItem x ∧ M.E M.w₀ x
+@[reducible] def NecessaryAgent.L0_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W) (x : M.Item), ¬M.Anc w x x
+@[reducible] def NecessaryAgent.B1_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W) (s : M.State) (z : M.Thing ⊕ M.State), M.Causes w (Sum.inr s) z ↔ M.CausesVia w (M.bearer s) s z
+@[reducible] def NecessaryAgent.B2_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W) (s : M.State), M.E_state w s → M.Causes w (Sum.inl (M.bearer s)) (Sum.inr s)
+@[reducible] def NecessaryAgent.P0_stmt : NecessaryAgent.Model → Prop :=
+fun M =>
+  ∀ (w : M.W) (x : M.Thing ⊕ M.State),
+    M.DependsOn w x →
+      match x with
+      | Sum.inl t => ∃ m, M.F w m ∧ M.Causes w (Sum.inl t) m
+      | Sum.inr s => ∃ m, M.F w m ∧ M.CausesVia w (M.bearer s) s m
+@[reducible] def NecessaryAgent.P1_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W), WellFounded fun y x => M.Anc w y x
+@[reducible] def NecessaryAgent.P2_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W) (x : M.Item), M.ContingentItem x → M.E w x → ∃ y, M.Causes w y x
+@[reducible] def NecessaryAgent.P3_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W), (∃ x, M.F w x) → ¬M.Bare w
+@[reducible] def NecessaryAgent.P4_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∃ N, ∀ (w : M.W), M.Fundamental w N ∧ ∀ (t : M.Thing), M.Fundamental w t → t = N
+@[reducible] def NecessaryAgent.P5_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W) (s : M.State), M.SelectingRep w s → M.RepAllOmega s
+@[reducible] def NecessaryAgent.FA_stmt : NecessaryAgent.Model → Prop :=
+fun M =>
+  ∀ (w : M.W) (s : M.State),
+    M.E_state w s →
+      ¬M.Mental s →
+        ¬M.Historical w s →
+          (∀ (r : NecessaryAgent.Pred (M.Thing ⊕ M.State)), M.Rep s (NecessaryAgent.Content.alt r) → r = M.realOf w) ∧
+            (M.Rep s NecessaryAgent.Content.nil → ∀ (x : M.Item), ¬M.realOf w x)
+@[reducible] def NecessaryAgent.P6_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W) (s : M.State), M.RepState s → ¬M.Derived w s → ¬M.Historical w s → M.Mental s
+@[reducible] def NecessaryAgent.P7_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (t : M.Thing), M.P7Antecedent M.w₀ t → M.ActsOnBest M.w₀ t ∨ M.EssOutweighs t
+@[reducible] def NecessaryAgent.P8_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (t : M.Thing), M.P7Antecedent M.w₀ t → ¬M.EssOutweighs t ∧ (M.ActsOnBest M.w₀ t → M.AccordsValue M.w₀)
+@[reducible] def NecessaryAgent.P9_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W) (s : M.State), M.E_state w s → M.RepState s → ¬M.Historical w s → M.NecState s → M.AccurateAll s
+@[reducible] def NecessaryAgent.NI_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W), ¬M.Sens w M.Maximal NecessaryAgent.Chan.law
+@[reducible] def NecessaryAgent.CH_stmt : NecessaryAgent.Model → Prop :=
+fun M =>
+  ∀ (w : M.W) (s : M.State) (P : M.Reality → Prop),
+    M.Sens w P (NecessaryAgent.Chan.state s) → ∃ m, M.F w m ∧ M.CausesVia w (M.bearer s) s m
+@[reducible] def NecessaryAgent.TR_stmt : NecessaryAgent.Model → Prop :=
+fun M =>
+  ∀ (w : M.W) (s : M.State) (P : M.Reality → Prop),
+    M.Sens w P (NecessaryAgent.Chan.state s) →
+      M.Rep s NecessaryAgent.Content.nil ∧ ∀ (r : M.Reality), M.InOmega r → M.Rep s (NecessaryAgent.Content.alt r)
+@[reducible] def NecessaryAgent.CE_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W), (∃ x, M.F w x) → M.Deterministic ∨ M.HasProp ∨ ∃ P ch, M.Sens w P ch
+@[reducible] def NecessaryAgent.NBL_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W) (P : M.Reality → Prop), ¬M.Sens w P NecessaryAgent.Chan.law
+@[reducible] def NecessaryAgent.GG_stmt : NecessaryAgent.Model → Prop :=
+fun M =>
+  ∀ (w : M.W) (s : M.State) (P : M.Reality → Prop),
+    M.Sens w P (NecessaryAgent.Chan.state s) → M.Sens w M.Maximal (NecessaryAgent.Chan.state s)
+@[reducible] def NecessaryAgent.P10_stmt : NecessaryAgent.Model → Prop :=
+fun M =>
+  ∀ (w : M.W), (∃ x, M.F w x) → (∀ (x : M.Item), M.CauseOfF w x → M.InGround x) → M.Favored w → ∃ s, M.SelectingRep w s
+@[reducible] def NecessaryAgent.P11_stmt : NecessaryAgent.Model → Prop :=
+fun M => M.PropGoverned M.w₀ → ∃ A, A.zero = M.vzero ∧ Nonempty (NecessaryAgent.FinMeasure A M.μ M.POpen)
+@[reducible] def NecessaryAgent.L2P11_stmt : NecessaryAgent.Model → Prop :=
+fun M =>
+  M.PropGoverned M.w₀ →
+    ∀ (ι : Type) (G : ι → M.Region),
+      NecessaryAgent.Uncountable ι →
+        (∀ (i : ι), M.POpen (G i)) →
+          (∀ (i j : ι), i ≠ j → ∀ (φ : NecessaryAgent.Pred M.Item), ¬(G i φ ∧ G j φ)) → ∃ i, M.μ (G i) = M.vzero
+@[reducible] def NecessaryAgent.P12_stmt : NecessaryAgent.Model → Prop :=
+fun M =>
+  M.PropGoverned M.w₀ →
+    ∃ ι G,
+      NecessaryAgent.Uncountable ι ∧
+        (∀ (i : ι), M.POpen (G i)) ∧
+          (∀ (i : ι), ∃ φ, M.InPhi φ ∧ G i φ) ∧
+            ∀ (i j : ι), i ≠ j → ∀ (φ : NecessaryAgent.Pred M.Item), ¬(G i φ ∧ G j φ)
+@[reducible] def NecessaryAgent.L4_stmt : NecessaryAgent.Model → Prop :=
+fun M => M.PropGoverned M.w₀ → ∀ (G : M.Region), M.POpen G → M.μ G = M.vzero → ∀ (w : M.W), ¬G (M.F w)
+@[reducible] def NecessaryAgent.ID_stmt : NecessaryAgent.Model → Prop :=
+fun M => M.TypeDeterministic → M.Deterministic
+@[reducible] def NecessaryAgent.P4plus_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (N t : M.Thing), (∀ (w : M.W), M.Fundamental w N) → M.Nec t → M.Concrete t → t = N
+@[reducible] def NecessaryAgent.SK_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W) (s : M.State), M.SelectingRep w s → M.Rep s (NecessaryAgent.Content.act (M.realOf w))
+@[reducible] def NecessaryAgent.P8s_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (t : M.Thing), M.P7Antecedent M.w₀ t → ¬M.EssOutweighs t ∧ (M.ActsOnBest M.w₀ t → M.Good (M.realOf M.w₀))
+@[reducible] def NecessaryAgent.P7all_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W) (t : M.Thing), M.P7Antecedent w t → M.ActsOnBest w t ∨ M.EssOutweighs t
+@[reducible] def NecessaryAgent.P8all_stmt : NecessaryAgent.Model → Prop :=
+fun M => ∀ (w : M.W) (t : M.Thing), M.P7Antecedent w t → ¬M.EssOutweighs t ∧ (M.ActsOnBest w t → M.AccordsValue w)
+@[reducible] def NecessaryAgent.CatU_stmt : NecessaryAgent.Model → Prop :=
+fun M => M.PropGoverned M.w₀ → NecessaryAgent.Uncountable { k // ∃ φ, M.InPhi φ ∧ M.cat φ = k }
+@[reducible] def NecessaryAgent.CatOpen_stmt : NecessaryAgent.Model → Prop :=
+fun M => M.PropGoverned M.w₀ → ∀ (k : M.Cat), M.POpen fun φ => M.cat φ = k
+@[reducible] def NecessaryAgent.IDF_stmt : NecessaryAgent.Model → Prop :=
+fun M =>
+  ∀ (t t' : M.Thing),
+    (∀ (w : M.W), M.Fundamental w t) → (∀ (w : M.W), M.Fundamental w t') → NecessaryAgent.SameProfile M t t' → t = t'
+def NecessaryAgent.SameProfile : (M : NecessaryAgent.Model) → M.Thing → M.Thing → Prop :=
+fun M t t' =>
+  (∀ (s : M.State),
+      M.bearer s = t →
+        M.NecState s →
+          ∃ s',
+            M.bearer s' = t' ∧
+              M.NecState s' ∧
+                (∀ (c : NecessaryAgent.Content (NecessaryAgent.Pred (M.Thing ⊕ M.State)) M.Consideration),
+                    M.Rep s c ↔ M.Rep s' c) ∧
+                  (M.Mental s ↔ M.Mental s') ∧
+                    (∀ (c : NecessaryAgent.Content (NecessaryAgent.Pred (M.Thing ⊕ M.State)) M.Consideration),
+                        M.Accurate s c ↔ M.Accurate s' c) ∧
+                      ∀ (w : M.W) (P : NecessaryAgent.Pred (M.Thing ⊕ M.State) → Prop),
+                        M.Sens w P (NecessaryAgent.Chan.state s) ↔ M.Sens w P (NecessaryAgent.Chan.state s')) ∧
+    ∀ (s' : M.State),
+      M.bearer s' = t' →
+        M.NecState s' →
+          ∃ s,
+            M.bearer s = t ∧
+              M.NecState s ∧
+                (∀ (c : NecessaryAgent.Content (NecessaryAgent.Pred (M.Thing ⊕ M.State)) M.Consideration),
+                    M.Rep s c ↔ M.Rep s' c) ∧
+                  (M.Mental s ↔ M.Mental s') ∧
+                    (∀ (c : NecessaryAgent.Content (NecessaryAgent.Pred (M.Thing ⊕ M.State)) M.Consideration),
+                        M.Accurate s c ↔ M.Accurate s' c) ∧
+                      ∀ (w : M.W) (P : NecessaryAgent.Pred (M.Thing ⊕ M.State) → Prop),
+                        M.Sens w P (NecessaryAgent.Chan.state s) ↔ M.Sens w P (NecessaryAgent.Chan.state s')

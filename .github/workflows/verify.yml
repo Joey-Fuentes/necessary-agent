@@ -43,5 +43,6 @@ jobs:
           path: |
             build/actual_axioms.txt
             build/actual_statements.txt
+            build/actual_definitions.txt
             build/stderr.txt
           if-no-files-found: ignore

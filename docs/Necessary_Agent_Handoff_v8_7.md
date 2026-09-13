@@ -1,7 +1,7 @@
-# A Necessary Agent — Handoff (v8.14)
+# A Necessary Agent — Handoff (v8.15)
 
 **Status:** Consolidated as of 2026-09-13. Supersedes `Necessary_Agent_Teleological_Handoff.md`, `teleological_argument_proof.md`, and `teleological_argument_proof__1_.md` in full.
-**Verified:** `NecessaryAgent.lean` compiles under Lean 4.33.1 (core, no Mathlib), exit 0, zero errors, zero warnings, zero `sorry`; 58 `#print axioms` results, every one depending on at most `propext`, `choice`, `Quot.sound`; the statement of each pinned in `expected_statements.txt`. CI (`scripts/verify.sh`, checks 1–5) passes locally on this commit. **Produced by the session that reviewed v8.13; not independently verified** (README §4, step 5).
+**Verified:** `NecessaryAgent.lean` compiles under Lean 4.33.1 (core, no Mathlib), exit 0, zero errors, zero warnings, zero `sorry`; 63 `#print axioms` results, every one depending on at most `propext`, `choice`, `Quot.sound`; the statement of each pinned in `expected_statements.txt` and the definitions they name in `expected_definitions.txt`. `scripts/verify.sh` (checks 1–6) exits 0 on this commit in the producing session. **Produced by the session that reviewed v8.13, applying the third and fourth reviews; not independently verified** (README §4, step 5).
 
 ---
 
@@ -138,7 +138,25 @@ Excluded permanently: biological error rates, the 10⁻³⁸ product, photosynth
 | E.12 | §6.0: primitives; God in `Toy.A` | **Done** — `god_holds`, `knows_everything` |
 | E.13 | L0 entry for direction-neutral causation | **Partly** — noted in III.6 P1; no dossier section yet |
 | E.14 | Add the review results to the expected files | **Done** |
-| — | Not compiled (review Part C): ID ∧ ¬IDF model; a non-mind position-(i) N₂; ¬ID on `W_P4` as a theorem | **Open** |
+| — | Not compiled (review Part C): ID ∧ ¬IDF model; a non-mind position-(i) N₂; ¬ID on `W_P4` as a theorem | ¬ID on `W_P4` **Done (v8.15)**; the other two **Open** |
+
+### 8b. Status of the fourth external review's findings (v8.14 review → v8.15)
+
+| Item | Finding | Status |
+|---|---|---|
+| A1 | Check 5 pins types by name, not definitions | **Done** — check 6, `expected_definitions.txt`; README states what green means |
+| A2 | README cites a SHA-256 that does not exist | **Done** — claim removed |
+| A3 | `verify.sh` fragilities (defended in depth) | Noted; unchanged |
+| B1 | FA and P9 vacuously ahistorical at worlds where the state is absent — far stronger than the prose | **Done** — both restricted to `E_state w s`; premise weakening, no theorem lost |
+| B2 | `W_P2`/`W_P4`/`W_P1`/`W_L4` certify retired P6, not FA | **Done** |
+| B3 | `mind_of_CE_NBL` ends in a fresh `∃ t'` | **Done** — concludes `Mental s ∧ Mind t`; `DState.witness` strengthened |
+| B4 | `T3_11'` proved through `Src` | **Done** — direct proof; "by inspection" wording |
+| B5 | §10.15 "dense ordered field" | **Done** |
+| B6 | P8s/SK consistency and `¬ID` on `W_P4` uncertified | **Done** — `P8s_holds`, `SK_holds`, `IDF_and_not_ID` |
+| B7 | Inert contingents outside `realOf`; `Mind`/`Knows` not in force; `no_modal_collapse` near-analytic; L0 from P1; D18 overstated; `Sens` in `Toy.A` | D27, D28, prose scoping, `L0_of_P1` **Done**; tightening `Mind`/`Knows` **deferred** (own commit) |
+| C1–C6 | Prose faithfulness errors | **Done** |
+| D1–D2 | Lean header stale refs; dead code | Header **Done**; dead code left (anchors) |
+| E, F, G | README / guide / numeric inconsistencies | **Done** |
 
 ---
 
@@ -157,12 +175,14 @@ Excluded permanently: biological error rates, the 10⁻³⁸ product, photosynth
 
 7. **A per-being notion of contribution to F_w.** Without it, III.6's positions (i) and (iv) — a second fundamental that produces with no channel, or by turns — are consistent with IDF, CE, and every field but P4/P4⁺ with no world `Bare` (`W_Two.OneChannel.position_i`, `W_P4`), and the argument has no bill for a naturalist who grants one mind and posits one brute producer alongside it. This is now the highest-leverage formal item.
 8. **A formalization of fallible directedness** with content about the state (weaker than `manif`, stronger than `manif₀`). Nothing has been shown about the fallible reading; `FalliblePowers.actual` is content-free.
-9. **L0** as a dossier entry (direction-neutral causation is excluded there, not at P1).
-10. Not compiled: ID ∧ ¬IDF; a non-mind position-(i) N₂; ¬ID on `W_P4`.
+9. *(withdrawn v8.15: L0 is a theorem of P1, `L0_of_P1`; P1 itself excludes direction-neutral causation.)*
+10. Not compiled: ID ∧ ¬IDF; a non-mind position-(i) N₂. (¬ID on `W_P4`: done, `IDF_and_not_ID`.)
+11. **Tighten `Mind` and `Knows`** to require the state to be in force at some world (D28); re-derive `W_Id.*`, `two_minds`, `DState`, `knowsAll_of_rep` and the identity theorems in a dedicated commit.
+12. **Remove L0 as a field** of `CoreNoP4` (derived from P1) in a dedicated commit that drops the conjunct from every witness statement.
 
 **Open — philosophical:** TR's content claim against a powers naturalist holding the theist's own modal primitive (III.5); IDF against a foundation-haecceitist, as a separate commitment from ID (III.6); CatU's two contestable premises (III.7); the problem of evil at P8/w₀ (located, not answered, by design); BHW's modelling-relativity reply (III.7).
 
-**Housekeeping:** drop the v8.5 and v8.13 reviews into `docs/` (`docs/necessary_agent_v8_13_review.md` is added in this commit); bump `actions/*` to `@v5`; rename the docs from `_v8_7` to unversioned names in one commit. **Next step, per README §4 step 5:** a fresh reader who did not produce v8.14 must reproduce `verify.sh` (58 lines + statements) before anything in this handoff is treated as verified; the two open formal items (§9, items 7–8) are where a fourth review should build its countermodels.
+**Housekeeping:** drop the v8.5 and v8.13 reviews into `docs/` (`docs/necessary_agent_v8_13_review.md` and `docs/necessary_agent_v8_14_review_findings.md` are in the repository); bump `actions/*` to `@v5`; rename the docs from `_v8_7` to unversioned names in one commit. **Next step, per README §4 step 5:** a fresh reader who did not produce v8.14–8.15 must reproduce `verify.sh` (63 lines + statements + definitions) before anything in this handoff is treated as verified; the two open formal items (§9, items 7–8) are where a fourth review should build its countermodels.
 
 ## 10. Rules for every subsequent pass
 

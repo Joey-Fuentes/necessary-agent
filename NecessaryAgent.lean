@@ -22,12 +22,14 @@
     production accords with the moral balance.  Rationale: of the premises
     that could settle the count, P4⁺ is the one a skeptic has least reason to
     deny (parsimony); only a doctrine of necessary generation motivates its
-    denial.  `Toy.W_Id.three_distinct` is now the independence witness for
-    P4⁺: `Axioms0` holds, P4⁺ fails, identity fails.  `identify_of` keeps the
-    conditional form for readers who reject P4⁺.
+    denial.  `Toy.W_Id.originator_neither` (v8.2; formerly `three_distinct`)
+    is the independence witness for P4⁺: `Axioms0` holds, P4⁺ fails, identity
+    fails.  (`identify_of`, the conditional form, was removed in v7.)
   - Optional premises, stated but not in `Core`/`Axioms`, are hypotheses of
-    the theorems that use them: P6′ (`T3_11'`, the route that does not need
-    single-source derivation), ID (`T2_4'`, type-level non-determinism), P4⁺
+    the theorems that use them: ID (`T2_4'`, type-level non-determinism),
+    P8s (`T4_6s`), SK (`knows_actual`), P7all/P8all (`all_tied`), CatU/CatOpen
+    (`P12_of_cat`), IDF (v8.12); P6′ was retired in v8.2 (`T3_11'` is
+    unconditional), P4⁺
     (`identify`, mind = agent = N), and CatU + CatOpen (`P12_of_cat`: P12
     is a theorem from them; `P12_of_cat` uses no axioms).
   - v7.1 (after external review): three theorems retyped over `Axioms0` so
@@ -40,6 +42,20 @@
     Tier 2–4 premises for all worlds; bears on the evidential argument from
     evil); `realOf` defined, `Accurate` content-indexed, MR removed (D12, D14,
     D15).
+  - v8.15 — AFTER THE FOURTH EXTERNAL REVIEW (of v8.14; read-through, no
+    compiler).  (a) FA and P9 restricted to states IN FORCE at w: the
+    v8.2–8.14 forms bound every non-mental (resp. necessary) representing
+    state at every world where it was ABSENT, since `¬ Historical` is vacuous
+    there; a premise-WEAKENING with no loss of theorems.  (b) `W_P2`, `W_P4`,
+    `W_P1`, `W_L4` witnesses listed the retired `P6_stmt` instead of
+    `FA_stmt` since v8.2; fixed.  (c) `mind_of_CE_NBL` concludes `Mental s ∧
+    Mind t` of the SELECTOR (was a fresh `∃ t'`).  (d) `T3_11'` proved
+    directly (was `(T3_11 A).2`, through `Src`).  (e) `L0_of_P1`: L0 is a
+    theorem of P1.  (f) `P8s_holds`, `SK_holds`, `W_P4.IDF_and_not_ID`
+    certified.  (g) `verify.sh` check 6 pins the DEFINITIONS (`#print`) every
+    statement names — check 5 pinned types by name only.  (h) Stale names
+    in this header (`identify_of`, `W_Id.three_distinct`, P6′) corrected.
+    63 `#print axioms` results.
   - v8.14 — AFTER THE THIRD EXTERNAL REVIEW (of v8.13).  (a) The two
     `fallible_witness` theorems are DELETED: `fallible_actual_iff` certifies
     that `FalliblePowers.actual` directs s at D iff the ACTUAL reality has D
@@ -161,7 +177,7 @@
     conservative survey of the fine-tuning literature: CatOpen (sharp kind-
     boundaries) is supported by the constants of our laws; CatU (uncountably
     many kinds) is NOT — the honest independent count of sharply-bounded
-    constraints is ~3–5 — so CatU must be defended over the space of possible
+    constraints is about five — so CatU must be defended over the space of possible
     LAW-STRUCTURES, a modal claim, and the empirical case against chance rests
     on non-normalizability (Schiffrin–Wald 2012), not on CatU.
     (iv) D22 states the two exits a serious naturalist takes and what each
@@ -279,8 +295,7 @@
     mind-role and agent-role to N, L, M — one being, either two-being split,
     or three distinct beings.  Only P4⁺ forces one (`identify`); a stateless
     originator forces N to be neither (`stateless_originator_is_neither`).
-    P6′ merges mind into agent but leaves the originator apart
-    (`agent_ne_originator_under_P6'`).
+    (Since v8.2 FA replaces P6′; the agent is always a mind, `T3_11'`.)
   - L2 is a theorem (`L2_of_P11`), proved in core Lean from an
     axiomatization of Archimedean ordered values and finitely additive
     measures; the measure-theory fact is no longer assumed.
@@ -322,14 +337,16 @@
   D5  Derivation: single source, whole content inherited, source is an
       ancestor (`Src`).  Multi-source or partial derivation is excluded.
       ALTERNATIVE: `T3_11'` reaches the same conclusion (agent is a mind and
-      knows all of Ω) from P6′ without `Src` or the regress in 3.7.
+      knows all of Ω) from FA, with a direct proof (v8.15) that does not go
+      through the regress in 3.7.
   D6  No transfer of "selected because" to sources.  Mind attaches to the
       root state's bearer; agency to the selecting state's bearer.  `T3_11`
       delivers both beings separately; they coincide with N by P4⁺, now a
       field of `Axioms` (`identify`); without P4⁺ they need not
-      (`W_Id.matrix`; `identify_of` keeps the conditional form).
+      (`W_Id.matrix`).
   D7  Premises are stated for all worlds (= L3), with the exceptions of the
-      chance premises (E, P11, P12, L4, CatU, CatOpen are stated at w₀; D11)
+      chance premises (P11, P12, L4, CatU, CatOpen are stated at w₀; D11), of E
+      (a claim about w₀ by content, not a chance premise),
       and of P7 and P8 (v7.3; narrowed v8.7 per review A.3):
       P7 and P8 are stated at w₀ only, because they are principles about an
       agent's actual act; their all-worlds forms (`P7all`, `P8all`) entail
@@ -1118,8 +1135,16 @@ abbrev P5_stmt  : Prop := ∀ w s, M.SelectingRep w s → M.RepAllOmega s
     content is factive (Dretske 1981, 1986); misrepresentation and the
     representation of the non-actual require function, which requires
     history.  Denying FA is affirming naturalistically ungrounded content of
-    the non-actual in a mindless state. -/
-abbrev FA_stmt  : Prop := ∀ w s, ¬ M.Mental s → ¬ M.Historical w s →
+    the non-actual in a mindless state.
+    v8.15: restricted to states IN FORCE at w (`M.E_state w s`).  Without
+    that hypothesis `¬ Historical w s` holds vacuously at every world where
+    s is absent (nothing causes an absent state, F1), and `Rep` is not
+    world-indexed, so the v8.2–8.14 form bound every non-mental representing
+    state at every world where it was absent — far stronger than the prose,
+    and violated by any contingent organism's non-mental detector state.
+    Every use in the proofs has the state in force (it has caused a first
+    item at w), so nothing certified changes. -/
+abbrev FA_stmt  : Prop := ∀ w s, M.E_state w s → ¬ M.Mental s → ¬ M.Historical w s →
           (∀ r, M.Rep s (.alt r) → r = M.realOf w) ∧ (M.Rep s .nil → ∀ x, ¬ M.realOf w x)
 /-- P6 (an underived ahistorical representing state is mental) is no longer a
     premise; what the argument needs — that the selecting state and its root
@@ -1130,7 +1155,9 @@ abbrev P6_stmt  : Prop := ∀ w s, M.RepState s → ¬ M.Derived w s → ¬ M.Hi
 abbrev P7_stmt  : Prop := ∀ t, M.P7Antecedent M.w₀ t → M.ActsOnBest M.w₀ t ∨ M.EssOutweighs t
 abbrev P8_stmt  : Prop := ∀ t, M.P7Antecedent M.w₀ t →
           ¬ M.EssOutweighs t ∧ (M.ActsOnBest M.w₀ t → M.AccordsValue M.w₀)
-abbrev P9_stmt  : Prop := ∀ w s, M.RepState s → ¬ M.Historical w s → M.NecState s → M.AccurateAll s
+/-- P9: an ahistorical necessary representing state, IN FORCE at w (v8.15;
+    same correction as FA), is accurate throughout. -/
+abbrev P9_stmt  : Prop := ∀ w s, M.E_state w s → M.RepState s → ¬ M.Historical w s → M.NecState s → M.AccurateAll s
 /-- NI (Normative Inertness): the laws/dispositions of the ground are not, as
     such, sensitive to maximality on the balance of value-grounded reasons.
     Value-sensitivity has no law-channel.  Naturalists rely on this
@@ -1293,6 +1320,13 @@ theorem P10_of (M : Model) (hNI : NI_stmt M) (hCH : CH_stmt M) (hTR : TR_stmt M)
 
 /-- NI is an instance of NBL. -/
 theorem NI_of_NBL (M : Model) (h : NBL_stmt M) : NI_stmt M := fun w => h w _
+
+/-- L0 (no self-ancestry) is a THEOREM of P1 (v8.15): a well-founded relation
+    is irreflexive.  L0 is kept as a `CoreNoP4` field for continuity with the
+    witness statements, but it is derived, not independent; a direction-
+    neutral theory of causation (two-way links) is excluded by P1 itself. -/
+theorem L0_of_P1 (M : Model) (h : P1_stmt M) : L0_stmt M := fun w x =>
+  (h w).induction (C := fun x => ¬ M.Anc w x x) x (fun x ih hx => ih x hx hx)
 
 /-- **P3 derived.**  Not bare ⇐ CE + NBL + GG: if which reality obtains is not
     totally brute, then (unless deterministic or chance) some channel is
@@ -1685,22 +1719,27 @@ theorem T3_7 {w : M.W} {s : M.State} (hs : M.SelectingRep w s) :
 /-- **Mentality by elimination.**  An ahistorical state that represents
     producing nothing as an alternative, at a world where something
     contingent exists, is mental (FA). -/
-theorem mental_of_nonactual {w : M.W} {s : M.State} (hah : ¬ M.Historical w s)
+theorem mental_of_nonactual {w : M.W} {s : M.State} (hin : M.E_state w s) (hah : ¬ M.Historical w s)
     (hnil : M.Rep s .nil) (hne : ∃ x, M.F w x) : M.Mental s := by
   apply Classical.byContradiction
   intro hnm
   obtain ⟨m, hm⟩ := hne
-  exact (A.FA w s hnm hah).2 hnil m ⟨hm.1, hm.2.1⟩
+  exact (A.FA w s hin hnm hah).2 hnil m ⟨hm.1, hm.2.1⟩
+
+omit A in
+/-- A necessary state of a necessary being is in force at every world. -/
+theorem inground_state_in_force {w : M.W} {s : M.State} (hg : M.InGround (.inr s)) : M.E_state w s :=
+  hg.1 w (hg.2.1 w)
 
 /-- 3.8: the root representation is mental; its bearer is a mind. -/
-theorem T3_8 {w : M.W} {s' : M.State} (hah : ¬ M.Historical w s') (hnil : M.Rep s' .nil)
+theorem T3_8 {w : M.W} {s' : M.State} (hin : M.E_state w s') (hah : ¬ M.Historical w s') (hnil : M.Rep s' .nil)
     (hne : ∃ x, M.F w x) : M.Mental s' ∧ M.Mind (M.bearer s') :=
-  ⟨mental_of_nonactual A hah hnil hne, ⟨s', rfl, mental_of_nonactual A hah hnil hne⟩⟩
+  ⟨mental_of_nonactual A hin hah hnil hne, ⟨s', rfl, mental_of_nonactual A hin hah hnil hne⟩⟩
 
 /-- 3.9–3.10: an ahistorical necessary representing state is accurate. -/
 theorem T3_10 {w : M.W} {s : M.State} (hrep : M.RepState s) (hah : ¬ M.Historical w s)
     (hg : M.InGround (.inr s)) : M.AccurateAll s :=
-  A.P9 w s hrep hah hg.1
+  A.P9 w s (inground_state_in_force hg) hrep hah hg.1
 
 /-- The selecting representation itself is ahistorical, necessary, in the
     ground, and accurate. -/
@@ -1738,12 +1777,15 @@ theorem no_modal_collapse : ∃ w w', M.F w ≠ M.F w' := by
     is a mind and whose state selects the first contingent items: the
     selecting state represents producing nothing as an alternative, is
     ahistorical, and so cannot be non-mental.  No root regress, no `Src`.
-    GG is needed only for the VALUE conclusion. -/
+    GG is needed only for the VALUE conclusion.
+    v8.15: the conclusion now says `M.Mental s ∧ M.Mind t` of the SELECTOR
+    (v8.1–8.14 ended in a fresh `∃ t', … ∧ M.Mind t'`, which the type left
+    free to be another being; the proof always had t' = t). -/
 theorem mind_of_CE_NBL (hCE : CE_stmt M) (hNBL : NBL_stmt M) (hCH : CH_stmt M) (hTR : TR_stmt M) :
     ∃ (t : M.Thing) (s : M.State), M.Nec t ∧ M.Concrete t ∧ M.bearer s = t ∧
       (∃ m, M.F M.w₀ m ∧ M.CausesVia M.w₀ t s m) ∧ M.RepState s ∧
       (∃ P : M.Reality → Prop, M.Sens M.w₀ P (.state s)) ∧
-      ∃ t', M.Nec t' ∧ M.Concrete t' ∧ M.Mind t' := by
+      M.Mental s ∧ M.Mind t := by
   have hne := F_nonempty A
   have hΩ : M.InOmega (M.realOf M.w₀) := ⟨M.w₀, rfl, hne⟩
   -- a state channel exists
@@ -1767,8 +1809,8 @@ theorem mind_of_CE_NBL (hCE : CE_stmt M) (hNBL : NBL_stmt M) (hCH : CH_stmt M) (
   have hnil : M.Rep s .nil := (hTR _ s P hs).1
   have hrs : M.RepState s := ⟨.nil, hnil⟩
   obtain ⟨hah, hg, _⟩ := selecting_props' A hc hrs
-  exact ⟨M.bearer s, s, hg.2.1, hg.2.2, rfl, hc, hrs, ⟨P, hs⟩,
-    ⟨M.bearer s, hg.2.1, hg.2.2, ⟨s, rfl, mental_of_nonactual A hah hnil hne⟩⟩⟩
+  have hment : M.Mental s := mental_of_nonactual A (inground_state_in_force hg) hah hnil hne
+  exact ⟨M.bearer s, s, hg.2.1, hg.2.2, rfl, hc, hrs, ⟨P, hs⟩, hment, ⟨s, rfl, hment⟩⟩
 
 /-- **Structural theorem on the ground.**  Every necessary concrete being other
     than the fundamental one has the fundamental one as an ancestor, at every
@@ -1869,21 +1911,33 @@ theorem T3_11 :
   obtain ⟨hahs, hgs, haccs⟩ := selecting_props A.toCore.toCoreNoP4 hs
   have hall' : M.RepAllOmega s' :=
     ⟨hcont _ hall.1, fun r hr => ⟨hcont _ (hall.2 r hr).1, fun c hc => hcont _ ((hall.2 r hr).2 c hc)⟩⟩
-  exact ⟨⟨M.bearer s', hg.2.1, hg.2.2, (T3_8 A.toCore.toCoreNoP4 hah hall'.1 hne).2, knowsAll_of_rep rfl hall' hacc'⟩,
-         ⟨M.bearer s, hgs.2.1, hgs.2.2, ⟨s, rfl, hs⟩, (T3_8 A.toCore.toCoreNoP4 hahs hall.1 hne).2,
+  exact ⟨⟨M.bearer s', hg.2.1, hg.2.2,
+           (T3_8 A.toCore.toCoreNoP4 (inground_state_in_force hg) hah hall'.1 hne).2, knowsAll_of_rep rfl hall' hacc'⟩,
+         ⟨M.bearer s, hgs.2.1, hgs.2.2, ⟨s, rfl, hs⟩,
+           (T3_8 A.toCore.toCoreNoP4 (inground_state_in_force hgs) hahs hall.1 hne).2,
           knowsAll_of_rep rfl hall haccs⟩⟩
 
-/-- 3.11′: the agent itself is a mind — now a corollary of FA, with no regress
-    to a root representation and no use of `Src`. -/
+/-- 3.11′: the agent itself is a mind — a corollary of FA, with no regress
+    to a root representation.  (Src-freedom is a fact about the proof term
+    below, checked by inspection; see the comment in the proof.) -/
 theorem T3_11' :
-    ∃ Ag : M.Thing, M.Nec Ag ∧ M.Concrete Ag ∧ M.Agent M.w₀ Ag ∧ M.Mind Ag ∧ KnowsAll M Ag :=
-  (T3_11 A).2
+    ∃ Ag : M.Thing, M.Nec Ag ∧ M.Concrete Ag ∧ M.Agent M.w₀ Ag ∧ M.Mind Ag ∧ KnowsAll M Ag := by
+  -- v8.15: proved directly (v8.2–8.14 took it as `(T3_11 A).2`, whose proof
+  -- goes through `root_of_state` and hence `A.Src`).  This proof term does
+  -- not mention `A.Src`; the TYPE cannot certify that, since `Axioms0`
+  -- carries `Src` as a field.
+  obtain ⟨s, hs, hall⟩ := T3_6 A
+  have hne := F_nonempty A.toCore.toCoreNoP4
+  obtain ⟨hah, hg, hacc⟩ := selecting_props A.toCore.toCoreNoP4 hs
+  exact ⟨M.bearer s, hg.2.1, hg.2.2, ⟨s, rfl, hs⟩,
+    ⟨s, rfl, mental_of_nonactual A.toCore.toCoreNoP4 (inground_state_in_force hg) hah hall.1 hne⟩,
+    knowsAll_of_rep rfl hall hacc⟩
 
 /-! ### What is certified about the originator, the mind, and the agent -/
 
 /-- The originator produces the mind and the agent: each is N or has N as an
     ancestor at every world.  Together with `identify` (one being under P4⁺)
-    and `W_Id.three_distinct` (three beings without it), this is the complete
+    and `W_Id.originator_neither` (the originator may be neither, without it), this is the complete
     certified picture: the roles may be filled by one, two, or three necessary
     beings, but everything other than N is produced by N. -/
 theorem originator_produces_mind_and_agent :
@@ -2276,9 +2330,9 @@ which premise statements hold, which one fails, and which conclusion fails.
 
 Family `Toy.Mk` (two worlds, one with empty contingent reality; one necessary
 being N with one necessary state s; a first contingent thing c caused by N in
-virtue of s; a downstream contingent d) parametrized by Favored,
-SelectedBecause, Rep, Mental, Accurate, HasProp.  Covers: consistency (all
-premises), and independence of P3, P10, P5, P6, P9, P12.
+virtue of s; a downstream contingent d) parametrized by `Params` =
+⟨sens, rep, mental, accurate, hasProp, viaS⟩ (v8).  Covers: consistency (all
+premises), and independence of CE, NBL, GG, CH, TR, FA, P9, P5, P12.
 
 Separate models: `W_P2` (an uncaused first contingent item), `W_P4` (two
 fundamental beings), `W_P1` (an infinite causal chain), `W_L4` (uncountably
@@ -2534,10 +2588,10 @@ theorem h_P4 : P4_stmt (M) := ⟨.N, fun w => ⟨fund_N P w, fun t ht => by
     · exact absurd ht.1 (not_nec_d P)⟩⟩
 theorem h_P5 (hrep : ∀ c, P.rep c) : P5_stmt (M) :=
   fun _ _ _ => ⟨hrep _, fun _ _ => ⟨hrep _, fun _ _ => hrep _⟩⟩
-theorem h_FA (hm : P.mental) : FA_stmt (M) := fun _ _ hnm _ => absurd hm hnm
+theorem h_FA (hm : P.mental) : FA_stmt (M) := fun _ _ _ hnm _ => absurd hm hnm
 theorem h_P7 : P7_stmt (M) := fun _ _ => Or.inl trivial
 theorem h_P8 : P8_stmt (M) := fun _ _ => ⟨fun h => h, fun _ => ⟨fun _ _ => trivial, trivial⟩⟩
-theorem h_P9 (ha : P.accurate) : P9_stmt (M) := fun _ _ _ _ _ _ _ => ha
+theorem h_P9 (ha : P.accurate) : P9_stmt (M) := fun _ _ _ _ _ _ _ _ => ha
 theorem h_P11 : P11_stmt (M) := fun _ => ⟨archRat, rfl, ⟨zeroMeasureRat _⟩⟩
 theorem h_P12 (h : (∃ ch, ∀ Q, P.sens true Q ch) ∨ ¬ P.hasProp) : P12_stmt (M) := fun hpg => by
   rcases h with ⟨ch, h⟩ | h
@@ -2609,6 +2663,11 @@ theorem A : Axioms M where
   P4plus := P4plus_holds
 /-- The full premise set, including P4⁺, is consistent. -/
 theorem premises_consistent : Nonempty (Axioms M) := ⟨A⟩
+
+/-- v8.15: the optional premises P8s and SK are satisfiable together with
+    `Axioms` (they hold in the consistency witness). -/
+theorem P8s_holds : P8s_stmt M := fun _ _ => ⟨fun h => h, fun _ => trivial⟩
+theorem SK_holds : SK_stmt M := fun _ _ _ => trivial
 
 /-- v8.14.  `God` holds of N in the consistency witness. -/
 theorem god_holds : God M .N := by
@@ -2692,8 +2751,8 @@ theorem witness : Nonempty (Core (Mk P)) ∧ CE_stmt (Mk P) ∧ NBL_stmt (Mk P) 
     P4plus_stmt (Mk P) ∧ ¬ TR_stmt (Mk P) ∧ ¬ (Mk P).Agential true ∧
     (¬ ∃ t, (Mk P).Mind t) ∧ (¬ ∃ st c, (Mk P).Rep st c) ∧ (Mk P).Favored true := by
   refine ⟨⟨⟨⟨h_F1 P, h_Src P, h_E P, h_L0 P, h_B1 P, h_B1' P, h_B2 P, h_P0 P, h_P1 P, h_P2 P,
-      fun _ _ hs => absurd hs.2.1 (fun ⟨_, h⟩ => h), fun _ _ _ _ => ⟨fun _ h => h.elim, fun h => h.elim⟩,
-      h_P7 P, h_P8 P, fun _ _ ⟨_, h⟩ => h.elim, h_P11 P, h_P12 P (Or.inl viaState_true), h_L4 P⟩, h_P4 P⟩⟩,
+      fun _ _ hs => absurd hs.2.1 (fun ⟨_, h⟩ => h), fun _ _ _ _ _ => ⟨fun _ h => h.elim, fun h => h.elim⟩,
+      h_P7 P, h_P8 P, fun _ _ _ ⟨_, h⟩ => h.elim, h_P11 P, h_P12 P (Or.inl viaState_true), h_L4 P⟩, h_P4 P⟩⟩,
     h_CE P viaState_true, h_NBL P viaState_law, h_GG P (fun _ _ _ h => h), h_CH P rfl viaState_w, h_P4plus P,
     fun h => (h true .s (fun _ => True) ⟨rfl, rfl⟩).1,
     fun h => by obtain ⟨_, _, ⟨_, hr⟩, _⟩ := h.2; exact hr,
@@ -2731,7 +2790,7 @@ theorem witness :
     ¬ FA_stmt (Mk P) ∧
     ¬ ∃ t, (Mk P).Mind t :=
   ⟨⟨h_F1 P, h_Src P, h_E P, h_L0 P, h_B1 P, h_B1' P, h_B2 P, h_P0 P, h_P1 P, h_P2 P, h_P4 P, h_P5 P (fun _ => trivial), h_P7 P, h_P8 P, h_P9 P trivial, h_P11 P, h_P12 P (Or.inl viaState_true), h_L4 P, h_CE P viaState_true, h_NBL P viaState_law, h_GG P (fun _ _ _ h => h), h_CH P rfl viaState_w, h_TR P trivial (fun _ => trivial), h_P4plus P⟩,
-   (fun h => (h true .s id (s_ahistorical P _)).2 trivial (.inl .c) ⟨cont_c P, rfl⟩),
+   (fun h => (h true .s trivial id (s_ahistorical P _)).2 trivial (.inl .c) ⟨cont_c P, rfl⟩),
    fun ⟨_, _, _, hm⟩ => hm⟩
 end NoMind
 
@@ -2766,7 +2825,7 @@ theorem witness :
     ¬ P9_stmt (Mk P) ∧
     ¬ ∃ t, KnowsAll (Mk P) t :=
   ⟨⟨h_F1 P, h_Src P, h_E P, h_L0 P, h_B1 P, h_B1' P, h_B2 P, h_P0 P, h_P1 P, h_P2 P, h_P4 P, h_P5 P (fun _ => trivial), h_FA P trivial, h_P7 P, h_P8 P, h_P11 P, h_P12 P (Or.inl viaState_true), h_L4 P, h_CE P viaState_true, h_NBL P viaState_law, h_GG P (fun _ _ _ h => h), h_CH P rfl viaState_w, h_TR P trivial (fun _ => trivial), h_P4plus P⟩,
-   fun h => h true .s ⟨.nil, trivial⟩ (s_ahistorical P _) (necstate_s P) .nil trivial,
+   fun h => h true .s trivial ⟨.nil, trivial⟩ (s_ahistorical P _) (necstate_s P) .nil trivial,
    fun ⟨_, ⟨_, _, _, ha⟩, _⟩ => ha⟩
 end NoAcc
 
@@ -2912,12 +2971,14 @@ theorem hTR : TR_stmt (Mk P) := fun _ _ _ _ => ⟨trivial, fun _ _ => trivial⟩
 theorem witness :
     Nonempty (Core (Mk P)) ∧ CE_stmt (Mk P) ∧ NBL_stmt (Mk P) ∧ CH_stmt (Mk P) ∧ TR_stmt (Mk P) ∧
     P4plus_stmt (Mk P) ∧ ¬ GG_stmt (Mk P) ∧ ¬ (Mk P).Favored true ∧ ¬ P3_stmt (Mk P) ∧
-    (∃ t, (Mk P).Nec t ∧ (Mk P).Concrete t ∧ (Mk P).Mind t) :=
+    (∃ (t : (Mk P).Thing) (st : (Mk P).State), (Mk P).Nec t ∧ (Mk P).Concrete t ∧ (Mk P).bearer st = t ∧
+      (∃ Q, (Mk P).Sens true Q (.state st)) ∧ (Mk P).Mental st ∧ (Mk P).Mind t) :=
   ⟨⟨core⟩, hCE, hNBL, hCH, hTR, h_P4plus P,
    (fun h => D_ne_max (h true .s D ⟨rfl, rfl, rfl⟩).2.2),
    (fun ⟨_, h⟩ => D_ne_max h.2.2),
    (fun h => h true ⟨_, F_c P⟩ ⟨not_det P, fun ⟨_, h⟩ => D_ne_max h.2.2, id⟩),
-   (by obtain ⟨_, _, _, _, _, _, _, _, t, ht⟩ := mind_of_CE_NBL core.toCoreNoP4 hCE hNBL hCH hTR; exact ⟨t, ht⟩)⟩
+   (by obtain ⟨t, st, h1, h2, h3, _, _, h6, h7, h8⟩ := mind_of_CE_NBL core.toCoreNoP4 hCE hNBL hCH hTR
+       exact ⟨t, st, h1, h2, h3, h6, h7, h8⟩)⟩
 end DState
 
 /-! ### Independence of P2: an uncaused first contingent item.
@@ -3036,7 +3097,7 @@ theorem not_det : ¬ M.Deterministic := by
 
 theorem witness :
     (F1_stmt M ∧ Src_stmt M ∧ E_stmt M ∧ L0_stmt M ∧ B1_stmt M ∧ B1'_stmt M ∧ B2_stmt M ∧
-     P0_stmt M ∧ P1_stmt M ∧ CE_stmt M ∧ NBL_stmt M ∧ GG_stmt M ∧ P4_stmt M ∧ P5_stmt M ∧ P6_stmt M ∧ P7_stmt M ∧
+     P0_stmt M ∧ P1_stmt M ∧ CE_stmt M ∧ NBL_stmt M ∧ GG_stmt M ∧ P4_stmt M ∧ P5_stmt M ∧ FA_stmt M ∧ P7_stmt M ∧
      P8_stmt M ∧ P9_stmt M ∧ CH_stmt M ∧ TR_stmt M ∧ P11_stmt M ∧ P12_stmt M ∧ L4_stmt M ∧ P4plus_stmt M) ∧
     ¬ P2_stmt M ∧
     -- 1.7 fails: c has no fundamental ancestor
@@ -3044,8 +3105,8 @@ theorem witness :
   refine ⟨⟨?F1, fun _ _ _ h => h.elim, ⟨.inl .c, cont_c, rfl⟩, fun w x h => Nat.lt_irrefl _ (anc_rank h),
     ?B1, ?B1', fun w st _ => by cases st; cases w <;> rfl, ?P0,
     (fun _ => Subrelation.wf (fun {_ _} h => anc_rank h) (InvImage.wf rank Nat.lt_wfRel.wf)), ?CE, (fun _ _ h => by cases h.1), (fun _ _ _ h => h), ?P4,
-    fun _ _ _ => ⟨trivial, fun _ _ => ⟨trivial, fun _ _ => trivial⟩⟩, fun _ _ _ _ _ => trivial,
-    fun _ _ => Or.inl trivial, fun _ _ => ⟨fun h => h, fun _ => ⟨fun _ _ => trivial, trivial⟩⟩, fun _ _ _ _ _ _ _ => trivial,
+    fun _ _ _ => ⟨trivial, fun _ _ => ⟨trivial, fun _ _ => trivial⟩⟩, fun _ _ _ hnm _ => absurd trivial hnm,
+    fun _ _ => Or.inl trivial, fun _ _ => ⟨fun h => h, fun _ => ⟨fun _ _ => trivial, trivial⟩⟩, fun _ _ _ _ _ _ _ _ => trivial,
     ?CH, (fun _ _ _ _ => ⟨trivial, fun _ _ => trivial⟩), fun _ => ⟨archRat, rfl, ⟨zeroMeasureRat _⟩⟩,
     fun h => absurd ⟨.state .s, rfl, rfl⟩ h.2.1, fun _ _ ho => ho.elim, ?P4plus⟩, ?P2, ?concl⟩
   case F1 =>
@@ -3242,7 +3303,7 @@ theorem fund_N2 (w : Bool) : M.Fundamental w .N2 := ⟨nec_N2, ⟨true, .inr .s2
 
 theorem witness :
     (F1_stmt M ∧ Src_stmt M ∧ E_stmt M ∧ L0_stmt M ∧ B1_stmt M ∧ B1'_stmt M ∧ B2_stmt M ∧
-     P0_stmt M ∧ P1_stmt M ∧ P2_stmt M ∧ CE_stmt M ∧ NBL_stmt M ∧ GG_stmt M ∧ P5_stmt M ∧ P6_stmt M ∧ P7_stmt M ∧
+     P0_stmt M ∧ P1_stmt M ∧ P2_stmt M ∧ CE_stmt M ∧ NBL_stmt M ∧ GG_stmt M ∧ P5_stmt M ∧ FA_stmt M ∧ P7_stmt M ∧
      P8_stmt M ∧ P9_stmt M ∧ CH_stmt M ∧ TR_stmt M ∧ P11_stmt M ∧ P12_stmt M ∧ L4_stmt M) ∧
     ¬ P4_stmt M ∧ ¬ P4plus_stmt M ∧
     -- 2.8 fails: no single being brings about every world's contingent reality
@@ -3250,8 +3311,8 @@ theorem witness :
   refine ⟨⟨?F1, fun _ _ _ h => h.elim, ⟨.inl .c1, cont_c1, rfl⟩, fun w x h => Nat.lt_irrefl _ (anc_rank h).1,
     ?B1, ?B1', ?B2, ?P0,
     (fun _ => Subrelation.wf (fun {_ _} h => (anc_rank h).1) (InvImage.wf rank Nat.lt_wfRel.wf)), ?P2, ?CE, ?NBL, (fun _ _ _ h => h),
-    fun _ _ _ => ⟨trivial, fun _ _ => ⟨trivial, fun _ _ => trivial⟩⟩, fun _ _ _ _ _ => trivial,
-    fun _ _ => Or.inl trivial, fun _ _ => ⟨fun h => h, fun _ => ⟨fun _ _ => trivial, trivial⟩⟩, fun _ _ _ _ _ _ _ => trivial,
+    fun _ _ _ => ⟨trivial, fun _ _ => ⟨trivial, fun _ _ => trivial⟩⟩, fun _ _ _ hnm _ => absurd trivial hnm,
+    fun _ _ => Or.inl trivial, fun _ _ => ⟨fun h => h, fun _ => ⟨fun _ _ => trivial, trivial⟩⟩, fun _ _ _ _ _ _ _ _ => trivial,
     ?CH, (fun _ _ _ _ => ⟨trivial, fun _ _ => trivial⟩), fun _ => ⟨archRat, rfl, ⟨zeroMeasureRat _⟩⟩,
     fun h => absurd ⟨.state .s1, Or.inl ⟨rfl, rfl⟩⟩ h.2.1, fun _ _ ho => ho.elim⟩, ?P4, ?P4plus, ?concl⟩
   case F1 =>
@@ -3359,6 +3420,25 @@ theorem IDF_and_not_P4 : IDF_stmt M ∧ ¬ P4_stmt M := by
   · exact absurd hsp profile_ne
   · exact absurd hsp profile_ne'
   · rfl
+
+/-- v8.15.  `W_P4` also violates ID (`K := Unit` with both worlds productive):
+    so IDF ∧ ¬ID is certified consistent — IDF and ID are separate commitments. -/
+theorem kinds_all (w : Bool) : M.kindsOf w = fun _ => True := by
+  funext k
+  apply propext
+  refine ⟨fun _ => trivial, fun _ => ?_⟩
+  cases w
+  · exact ⟨.inl .c2, F_c2, @Subsingleton.elim Unit _ _ _⟩
+  · exact ⟨.inl .c1, F_c1, @Subsingleton.elim Unit _ _ _⟩
+theorem type_det : M.TypeDeterministic := fun w w' => (kinds_all w).trans (kinds_all w').symm
+theorem not_det : ¬ M.Deterministic := fun h => by
+  have e : M.F true = M.F false := h true false rfl
+  have : M.F false (.inl .c1) := e ▸ F_c1
+  rcases F_char false _ this with ⟨h1, _⟩ | ⟨_, h2⟩
+  · exact nomatch h1
+  · exact nomatch (Sum.inl.inj h2 : T.c1 = T.c2)
+theorem not_ID : ¬ ID_stmt M := fun h => not_det (h type_det)
+theorem IDF_and_not_ID : IDF_stmt M ∧ ¬ ID_stmt M := ⟨IDF_and_not_P4.1, not_ID⟩
 end W_P4
 
 /-! ### Independence of P1: an infinite causal chain.
@@ -3448,7 +3528,7 @@ theorem anc_c1 {y : M.Item} (h : M.Anc true y (.inl (.c 1))) : ∃ n, y = .inl (
 
 theorem witness :
     (F1_stmt M ∧ Src_stmt M ∧ E_stmt M ∧ L0_stmt M ∧ B1_stmt M ∧ B1'_stmt M ∧ B2_stmt M ∧
-     P0_stmt M ∧ P2_stmt M ∧ CE_stmt M ∧ NBL_stmt M ∧ GG_stmt M ∧ P4_stmt M ∧ P5_stmt M ∧ P6_stmt M ∧ P7_stmt M ∧
+     P0_stmt M ∧ P2_stmt M ∧ CE_stmt M ∧ NBL_stmt M ∧ GG_stmt M ∧ P4_stmt M ∧ P5_stmt M ∧ FA_stmt M ∧ P7_stmt M ∧
      P8_stmt M ∧ P9_stmt M ∧ CH_stmt M ∧ TR_stmt M ∧ P11_stmt M ∧ P12_stmt M ∧ L4_stmt M ∧ P4plus_stmt M) ∧
     ¬ P1_stmt M ∧
     -- 1.7 fails: c 1 has no fundamental ancestor
@@ -3456,8 +3536,8 @@ theorem witness :
   refine ⟨⟨?F1, fun _ _ _ h => h.elim, ⟨.inl (.c 1), cont_c 0, rfl⟩, fun w x h => Nat.lt_irrefl _ (anc_rank h).1,
     ?B1, fun _ _ _ _ h => h.elim, fun w st _ => by cases st; trivial, fun _ _ h => h.elim,
     ?P2, fun w ⟨x, hx⟩ => absurd hx (F_empty w x), (fun _ _ h => h), (fun _ _ _ h => h.elim), ?P4,
-    fun w st ⟨⟨m, hm, _⟩, _⟩ => absurd hm (F_empty w m), fun _ _ _ _ _ => trivial,
-    fun _ _ => Or.inl trivial, fun _ _ => ⟨fun h => h, fun _ => ⟨fun _ _ => trivial, trivial⟩⟩, fun _ _ _ _ _ _ _ => trivial,
+    fun w st ⟨⟨m, hm, _⟩, _⟩ => absurd hm (F_empty w m), fun _ _ _ hnm _ => absurd trivial hnm,
+    fun _ _ => Or.inl trivial, fun _ _ => ⟨fun h => h, fun _ => ⟨fun _ _ => trivial, trivial⟩⟩, fun _ _ _ _ _ _ _ _ => trivial,
     (fun _ _ _ h => h.elim), (fun _ _ _ h => h.elim), fun _ => ⟨archRat, rfl, ⟨zeroMeasureRat _⟩⟩,
     fun h => (h.2.2 : False).elim, fun _ _ ho => ho.elim, ?P4plus⟩,
     ?P1, ?concl⟩
@@ -3646,7 +3726,7 @@ theorem propgov : M.PropGoverned w0 := ⟨not_det, fun ⟨_, h⟩ => h, trivial�
 
 theorem witness :
     (F1_stmt M ∧ Src_stmt M ∧ E_stmt M ∧ L0_stmt M ∧ B1_stmt M ∧ B1'_stmt M ∧ B2_stmt M ∧
-     P0_stmt M ∧ P1_stmt M ∧ P2_stmt M ∧ CE_stmt M ∧ NBL_stmt M ∧ GG_stmt M ∧ P4_stmt M ∧ P5_stmt M ∧ P6_stmt M ∧ P7_stmt M ∧
+     P0_stmt M ∧ P1_stmt M ∧ P2_stmt M ∧ CE_stmt M ∧ NBL_stmt M ∧ GG_stmt M ∧ P4_stmt M ∧ P5_stmt M ∧ FA_stmt M ∧ P7_stmt M ∧
      P8_stmt M ∧ P9_stmt M ∧ CH_stmt M ∧ TR_stmt M ∧ P11_stmt M ∧ P12_stmt M ∧ P4plus_stmt M) ∧
     ¬ L4_stmt M ∧
     -- 2.15 fails: O is propensity-governed
@@ -3656,8 +3736,8 @@ theorem witness :
   refine ⟨⟨fun _ _ _ h => causes_exists h, fun _ _ _ h => h.elim, ⟨.inl (.c w0), cont_c w0, rfl⟩,
     fun w x h => Nat.lt_irrefl _ (anc_rank h), ?B1, ?B1', fun w st _ => by cases st; trivial, ?P0,
     ?P1, ?P2, (fun _ _ => Or.inr (Or.inl trivial)), (fun _ _ h => h), (fun _ _ _ h => h.elim), ?P4,
-    fun _ _ _ => ⟨trivial, fun _ _ => ⟨trivial, fun _ _ => trivial⟩⟩, fun _ _ _ _ _ => trivial,
-    fun _ _ => Or.inl trivial, fun _ _ => ⟨fun h => h, fun _ => ⟨fun _ _ => trivial, trivial⟩⟩, fun _ _ _ _ _ _ _ => trivial,
+    fun _ _ _ => ⟨trivial, fun _ _ => ⟨trivial, fun _ _ => trivial⟩⟩, fun _ _ _ hnm _ => absurd trivial hnm,
+    fun _ _ => Or.inl trivial, fun _ _ => ⟨fun h => h, fun _ => ⟨fun _ _ => trivial, trivial⟩⟩, fun _ _ _ _ _ _ _ _ => trivial,
     (fun _ _ _ h => h.elim), (fun _ _ _ h => h.elim), fun _ => ⟨archRat, rfl, ⟨zeroMeasureRat _⟩⟩, ?P12, ?P4plus⟩, ?L4, propgov, ?CatU, ?CatOpen⟩
   case B1 =>
     intro w st z; cases st
@@ -3936,10 +4016,10 @@ theorem axioms : Axioms0 (M) where
     · exact absurd hx (not_cont_state br bs mentalS _)
   P4 := ⟨.N, fun w => ⟨fund_N br bs mentalS w, fund_only_N br bs mentalS w⟩⟩
   P5 := fun _ _ _ => ⟨trivial, fun _ _ => ⟨trivial, fun _ _ => trivial⟩⟩
-  FA := fun _ _ hnm _ => absurd trivial hnm
+  FA := fun _ _ _ hnm _ => absurd trivial hnm
   P7 := fun _ _ => Or.inl trivial
   P8 := fun _ _ => ⟨fun h => h, fun _ => ⟨fun _ _ => trivial, trivial⟩⟩
-  P9 := fun _ _ _ _ _ _ _ => trivial
+  P9 := fun _ _ _ _ _ _ _ _ => trivial
   P11 := fun h => absurd ⟨.state .s, rfl, rfl⟩ h.2.1
   P12 := fun h => absurd ⟨.state .s, rfl, rfl⟩ h.2.1
   L4 := fun h => absurd ⟨.state .s, rfl, rfl⟩ h.2.1
@@ -4212,10 +4292,10 @@ theorem axioms : Axioms M where
     · rfl
     all_goals exact absurd ht.1 (not_nec (by simp))⟩⟩
   P5 := fun _ _ _ => ⟨trivial, fun _ _ => ⟨trivial, fun _ _ => trivial⟩⟩
-  FA := fun _ _ hnm _ => absurd trivial hnm
+  FA := fun _ _ _ hnm _ => absurd trivial hnm
   P7 := fun _ _ => Or.inl trivial
   P8 := fun _ _ => ⟨fun h => h, fun _ => ⟨fun _ _ => Or.inl realOf_true, Or.inl realOf_true⟩⟩
-  P9 := fun _ _ _ _ _ _ _ => trivial
+  P9 := fun _ _ _ _ _ _ _ _ => trivial
   P11 := fun h => absurd ⟨.state .s, rfl⟩ h.2.1
   P12 := fun h => absurd ⟨.state .s, rfl⟩ h.2.1
   L4 := fun h => absurd ⟨.state .s, rfl⟩ h.2.1
@@ -4444,9 +4524,9 @@ theorem witness :
   refine ⟨⟨?F1, fun _ _ _ h => h.elim, ⟨.inl .c1, cont_c1, rfl⟩, fun _ _ h => Nat.lt_irrefl _ (anc_rank h),
     ?B1, ?B1', fun w st _ => by cases st; cases w <;> rfl, ?P0,
     (fun _ => Subrelation.wf (fun {_ _} h => anc_rank h) (InvImage.wf rank Nat.lt_wfRel.wf)), ?P2, ?P4,
-    fun _ _ hs => hs.2.2.elim, fun _ _ _ _ => ⟨fun _ h => h.elim, fun h => h.elim⟩,
+    fun _ _ hs => hs.2.2.elim, fun _ _ _ _ _ => ⟨fun _ h => h.elim, fun h => h.elim⟩,
     fun _ _ => Or.inl trivial, fun _ _ => ⟨fun h => h, fun _ => ⟨fun _ _ => Or.inl realOf_true, Or.inl realOf_true⟩⟩,
-    fun _ _ ⟨_, h⟩ => h.elim,
+    fun _ _ _ ⟨_, h⟩ => h.elim,
     fun h => h.2.2.elim, fun h => h.2.2.elim, fun h => h.2.2.elim,
     fun _ _ h => h, fun _ _ _ h => h.elim, fun _ _ _ h => h.elim, fun _ _ _ h => h.elim, ?P4plus⟩,
     ?CE, not_det, id, fun ⟨_, h⟩ => h, ⟨not_det, fun ⟨_, h⟩ => h, id⟩,
@@ -4807,9 +4887,9 @@ theorem fields :
   refine ⟨?F1, fun _ _ _ h => h.elim, ⟨.inl .a, cont_a both, rfl⟩, fun w x h => Nat.lt_irrefl _ (anc_rank both h),
     ?B1, ?B1', ?B2, ?P0,
     (fun _ => Subrelation.wf (fun {_ _} h => anc_rank both h) (InvImage.wf rank Nat.lt_wfRel.wf)), ?P2,
-    fun _ _ _ => ⟨trivial, fun _ _ => ⟨trivial, fun _ _ => trivial⟩⟩, fun _ _ hnm _ => absurd trivial hnm,
+    fun _ _ _ => ⟨trivial, fun _ _ => ⟨trivial, fun _ _ => trivial⟩⟩, fun _ _ _ hnm _ => absurd trivial hnm,
     fun _ _ => Or.inl trivial, fun _ _ => ⟨fun h => h, fun _ => ⟨fun _ _ => trivial, trivial⟩⟩,
-    fun _ _ _ _ _ _ _ => trivial,
+    fun _ _ _ _ _ _ _ _ => trivial,
     fun _ => ⟨archRat, rfl, ⟨zeroMeasureRat _⟩⟩, fun h => (h.2.2 : False).elim, fun _ _ ho => ho.elim,
     ?CE, ?NBL, fun _ _ _ h => h, ?CH, fun _ _ _ _ => ⟨trivial, fun _ _ => trivial⟩⟩
   case F1 =>
@@ -5027,6 +5107,11 @@ end Toy
 #print axioms Toy.W_Pref.fork_is_residue
 #print axioms Toy.W_Two.Both.position_ii
 #print axioms Toy.W_Two.OneChannel.position_i
+#print axioms NecessaryAgent.L0_of_P1
+#print axioms NecessaryAgent.fallible_actual_trivial
+#print axioms Toy.P8s_holds
+#print axioms Toy.SK_holds
+#print axioms Toy.W_P4.IDF_and_not_ID
 
 -- v8.14: the STATEMENT of every certified result, pinned (expected_statements.txt)
 #check @NecessaryAgent.main
@@ -5087,3 +5172,110 @@ end Toy
 #check @Toy.W_Pref.fork_is_residue
 #check @Toy.W_Two.Both.position_ii
 #check @Toy.W_Two.OneChannel.position_i
+#check @NecessaryAgent.L0_of_P1
+#check @NecessaryAgent.fallible_actual_trivial
+#check @Toy.P8s_holds
+#check @Toy.SK_holds
+#check @Toy.W_P4.IDF_and_not_ID
+
+-- v8.15: the DEFINITIONS those statements name, pinned (expected_definitions.txt)
+#eval IO.println "-- definitions --"
+#print NecessaryAgent.Content
+#print NecessaryAgent.Chan
+#print NecessaryAgent.Model
+#print NecessaryAgent.Uncountable
+#print NecessaryAgent.iterAdd
+#print NecessaryAgent.ArchOrd
+#print NecessaryAgent.FinMeasure
+#print NecessaryAgent.CoreNoP4
+#print NecessaryAgent.Core
+#print NecessaryAgent.Axioms0
+#print NecessaryAgent.Axioms
+#print NecessaryAgent.KnowsAll
+#print NecessaryAgent.God
+#print NecessaryAgent.Powers
+#print NecessaryAgent.PowersChannel
+#print NecessaryAgent.naturalPowers
+#print NecessaryAgent.FalliblePowers
+#print NecessaryAgent.Powers.fallible
+#print NecessaryAgent.FalliblePowers.actual
+#print NecessaryAgent.Model.Item
+#print NecessaryAgent.Model.Region
+#print NecessaryAgent.Model.E
+#print NecessaryAgent.Model.Anc
+#print NecessaryAgent.Model.Nec
+#print NecessaryAgent.Model.NecState
+#print NecessaryAgent.Model.Concrete
+#print NecessaryAgent.Model.ContingentItem
+#print NecessaryAgent.Model.FirstCont
+#print NecessaryAgent.Model.F
+#print NecessaryAgent.Model.Fundamental
+#print NecessaryAgent.Model.InGround
+#print NecessaryAgent.Model.CauseOfF
+#print NecessaryAgent.Model.Reality
+#print NecessaryAgent.Model.realOf
+#print NecessaryAgent.Model.InOmega
+#print NecessaryAgent.Model.InPhi
+#print NecessaryAgent.Model.emptyReality
+#print NecessaryAgent.Model.Maximal
+#print NecessaryAgent.Model.AccordsValue
+#print NecessaryAgent.Model.Favored
+#print NecessaryAgent.Model.SelectedBecause
+#print NecessaryAgent.Model.BringsAbout
+#print NecessaryAgent.Model.DeterministicWrt
+#print NecessaryAgent.Model.groundConfig
+#print NecessaryAgent.Model.Deterministic
+#print NecessaryAgent.Model.kindsOf
+#print NecessaryAgent.Model.TypeDeterministic
+#print NecessaryAgent.Model.RepState
+#print NecessaryAgent.Model.SelectingRep
+#print NecessaryAgent.Model.Agential
+#print NecessaryAgent.Model.Teleological
+#print NecessaryAgent.Model.PropGoverned
+#print NecessaryAgent.Model.Bare
+#print NecessaryAgent.Model.Derived
+#print NecessaryAgent.Model.Historical
+#print NecessaryAgent.Model.RepAllOmega
+#print NecessaryAgent.Model.Mind
+#print NecessaryAgent.Model.AccurateAll
+#print NecessaryAgent.Model.Knows
+#print NecessaryAgent.Model.Agent
+#print NecessaryAgent.Model.P7Antecedent
+#print NecessaryAgent.F1_stmt
+#print NecessaryAgent.Src_stmt
+#print NecessaryAgent.E_stmt
+#print NecessaryAgent.L0_stmt
+#print NecessaryAgent.B1_stmt
+#print NecessaryAgent.B2_stmt
+#print NecessaryAgent.P0_stmt
+#print NecessaryAgent.P1_stmt
+#print NecessaryAgent.P2_stmt
+#print NecessaryAgent.P3_stmt
+#print NecessaryAgent.P4_stmt
+#print NecessaryAgent.P5_stmt
+#print NecessaryAgent.FA_stmt
+#print NecessaryAgent.P6_stmt
+#print NecessaryAgent.P7_stmt
+#print NecessaryAgent.P8_stmt
+#print NecessaryAgent.P9_stmt
+#print NecessaryAgent.NI_stmt
+#print NecessaryAgent.CH_stmt
+#print NecessaryAgent.TR_stmt
+#print NecessaryAgent.CE_stmt
+#print NecessaryAgent.NBL_stmt
+#print NecessaryAgent.GG_stmt
+#print NecessaryAgent.P10_stmt
+#print NecessaryAgent.P11_stmt
+#print NecessaryAgent.L2P11_stmt
+#print NecessaryAgent.P12_stmt
+#print NecessaryAgent.L4_stmt
+#print NecessaryAgent.ID_stmt
+#print NecessaryAgent.P4plus_stmt
+#print NecessaryAgent.SK_stmt
+#print NecessaryAgent.P8s_stmt
+#print NecessaryAgent.P7all_stmt
+#print NecessaryAgent.P8all_stmt
+#print NecessaryAgent.CatU_stmt
+#print NecessaryAgent.CatOpen_stmt
+#print NecessaryAgent.IDF_stmt
+#print NecessaryAgent.SameProfile

@@ -56,3 +56,8 @@
 'Toy.W_Pref.fork_is_residue' depends on axioms: [propext, Quot.sound]
 'Toy.W_Two.Both.position_ii' depends on axioms: [propext, choice, Quot.sound]
 'Toy.W_Two.OneChannel.position_i' depends on axioms: [propext, choice, Quot.sound]
+'NecessaryAgent.L0_of_P1' does not depend on any axioms
+'NecessaryAgent.fallible_actual_trivial' does not depend on any axioms
+'Toy.P8s_holds' depends on axioms: [propext, Quot.sound]
+'Toy.SK_holds' depends on axioms: [propext, Quot.sound]
+'Toy.W_P4.IDF_and_not_ID' depends on axioms: [propext, choice, Quot.sound]

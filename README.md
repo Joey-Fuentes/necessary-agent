@@ -4,21 +4,26 @@ Three files, which must stay in agreement:
 
 | File | Role | Status |
 |---|---|---|
-| `NecessaryAgent.lean` | The formal argument. Definitions, premises, every derivation line as a theorem, a consistency witness, independence witnesses for every premise, and the named conclusion `God` with `god_exists`. | Certified by Lean 4.33.1 (v8.14: 58 results; statements pinned) |
+| `NecessaryAgent.lean` | The formal argument. Definitions, premises, every derivation line as a theorem, a consistency witness, independence witnesses for every premise, and the named conclusion `God` with `god_exists`. | Certified by Lean 4.33.1 (v8.15: 63 results; statements and definitions pinned) |
 | `docs/necessary_agent_argument_v8_7.md` | The human-readable argument. **Part I** is the Lean file in words, section for section. **Part II** is informal assessment: exits, ledger, ladder, open problems. **Part III** is the soundness dossier: each premise's case, objections, replies, cost of denial, and ceiling. | Part I inherits the certificate *if it matches the Lean file*; Parts II–III are uncertified |
 | `README.md` | This file: how to verify, how to read, how to change things without breaking them. | — |
 | `expected_axioms.txt`, `scripts/verify.sh`, `.github/workflows/verify.yml`, `lean-toolchain`, `lakefile.toml` | Continuous verification (§0.0). | CI |
-| `docs/plain_language_guide_v8_7.md` | Companion for non-specialists. Every premise in plain words; the two exits and their prices. | Uncertified; synchronized with v8.7 |
+| `docs/plain_language_guide_v8_7.md` | Companion for non-specialists. Every premise in plain words; the two exits and their prices. | Uncertified; synchronized with v8.15 |
 | `docs/cosmic_strand_v2.md` | The empirical strand: conservative fine-tuning numbers, their two roles (CatOpen support; Exit 1's bill), and what is excluded. | Uncertified; supersedes all earlier teleological documents |
-| `docs/necessary_agent_v8_5_review.md` | External review of v8.5. Status of each item is in the handoff. | — |
+| `docs/necessary_agent_v8_13_review.md` | Third external review (of v8.13). Status of each item: handoff §8a. | — |
+| `docs/necessary_agent_v8_14_review_findings.md` | Fourth external review (of v8.14; read-through). Status of each item: handoff §8b. | — |
+| `docs/REVIEW_BRIEF_v8_13.md` | The brief handed to the third reviewer. | — |
+| `docs/Necessary_Agent_Handoff_v8_7.md` | Status: certified / priced / open; review-item tables; burdens. | — |
+| `expected_statements.txt`, `expected_definitions.txt` | Pinned `#check` types and `#print` definitions (checks 5–6). | CI |
+| `docs/necessary_agent_v8_5_review.md` | External review of v8.5 — **not in the repository** (`docs/NOTE_review_file.md`). | — |
 
 ---
 
 ## 0. How to verify
 
-No installation: paste `NecessaryAgent.lean` into https://live.lean-lang.org (select a Lean 4 toolchain; Mathlib is not needed). Locally: install `elan` with toolchain `leanprover/lean4:v4.33.1`, then `lean NecessaryAgent.lean`. The file is self-contained (`import Std` only). Last verified 2026-09-13 under Lean 4.33.1 (commit 819816b2): exit 0, no errors, no warnings, ~90 s. The MD5 previously stated here (`21290ecf…`) matched no file in the history; the fingerprint that counts is the SHA-256 in the v8.14 commit message and the byte-identity of `expected_axioms.txt` and `expected_statements.txt`.
+No installation: paste `NecessaryAgent.lean` into https://live.lean-lang.org (select a Lean 4 toolchain; Mathlib is not needed). Locally: install `elan` with toolchain `leanprover/lean4:v4.33.1`, then `lean NecessaryAgent.lean`. The file is self-contained (`import Std` only). Last verified 2026-09-13 under Lean 4.33.1 (commit 819816b2): exit 0, no errors, no warnings, ~90 s. No file fingerprint is stated here (the MD5 once given matched no file, and v8.14's promise of a SHA-256 in the commit message was not kept). What counts is the git commit hash and the byte-identity of `expected_axioms.txt`, `expected_statements.txt` and `expected_definitions.txt` under `scripts/verify.sh`.
 
-Expected `#print axioms` output — these fifty-eight lines and nothing else (followed by the `#check` output pinned in `expected_statements.txt`):
+Expected `#print axioms` output — these sixty-three lines and nothing else (followed by the `#check` output pinned in `expected_statements.txt` and the `#print` output pinned in `expected_definitions.txt`):
 
 ```
 'NecessaryAgent.main' depends on axioms: [propext, choice, Quot.sound]
@@ -79,6 +84,11 @@ Expected `#print axioms` output — these fifty-eight lines and nothing else (fo
 'Toy.W_Pref.fork_is_residue' depends on axioms: [propext, Quot.sound]
 'Toy.W_Two.Both.position_ii' depends on axioms: [propext, choice, Quot.sound]
 'Toy.W_Two.OneChannel.position_i' depends on axioms: [propext, choice, Quot.sound]
+'NecessaryAgent.L0_of_P1' does not depend on any axioms
+'NecessaryAgent.fallible_actual_trivial' does not depend on any axioms
+'Toy.P8s_holds' depends on axioms: [propext, Quot.sound]
+'Toy.SK_holds' depends on axioms: [propext, Quot.sound]
+'Toy.W_P4.IDF_and_not_ID' depends on axioms: [propext, choice, Quot.sound]
 ```
 
 Anything else — an error, a warning, `sorryAx` in an axiom list, a missing line — means the file is not in the certified state.
@@ -91,17 +101,20 @@ Every push to `main` (and every pull request) runs `.github/workflows/verify.yml
 2. the output contains no `error`, `warning`, or `sorry`;
 3. the source declares no `axiom`, contains no `sorry`, and uses no escape hatch (`native_decide`, `implemented_by`, `unsafe`, `partial`, `opaque`);
 4. the `#print axioms` lines are **byte-identical** to `expected_axioms.txt` — the certified list below;
-5. (v8.14) the `#check` output — the **statement** of every certified result — is byte-identical to `expected_statements.txt`. Without this, a theorem whose statement was weakened to `… ∨ (1 = 1)` while keeping the same proof term passed checks 1–4 unchanged; the third external review demonstrated it, and it is now a tested failure.
+5. (v8.14) the `#check` output — the **statement** of every certified result — is byte-identical to `expected_statements.txt`. Without this, a theorem whose statement was weakened to `… ∨ (1 = 1)` while keeping the same proof term passed checks 1–4 unchanged; the third external review demonstrated it, and it is now a tested failure;
+6. (v8.15) the `#print` output of every **definition** those statements name — the `Model` structure and all its definitions, every `X_stmt`, the premise structures, `God`, `KnowsAll`, the powers structures — is byte-identical to `expected_definitions.txt`. Check 5 pins types *by name*; the fourth review showed `def AccordsValue … := True` with patched proofs passed checks 1–5.
 
-A green check on `main` therefore means exactly: the file in the repository is in the certified state described in this README. Any change to a premise, theorem, or witness that alters what is certified changes the output and fails the build; `expected_axioms.txt` must be updated in the same commit with the reason in the message. Locally: `scripts/verify.sh` (needs `lean` on PATH; elan reads `lean-toolchain` automatically), or `lake build`.
+**What green means after all six checks, exactly:** the file declares these sixty-three results, with these axiom sets, these printed types, and these printed definitions. It does not mean the definitions are the right ones — that is the faithfulness question (§1), which is read, not run — and a commit can change a pinned definition and its expected file together; the commit diff is the last line of defence and the reader is the one after that.
 
-The script's negative behaviour is tested: a `sorry` inserted into a proof, a `#print axioms` line removed, and a statement weakened to `… ∨ (1 = 1)` with the same proof each fail the check.
+A green check on `main` means what the paragraph after item 6 says, and no more. Any change to a premise, theorem, or witness that alters what is certified changes the output and fails the build; `expected_axioms.txt` must be updated in the same commit with the reason in the message. Locally: `scripts/verify.sh` (needs `lean` on PATH; elan reads `lean-toolchain` automatically), or `lake build`.
+
+The script's negative behaviour is tested: a `sorry` inserted into a proof, a `#print axioms` line removed, and a statement weakened to `… ∨ (1 = 1)` with the same proof, and a definition changed to `True`, each fail the check.
 
 ### 0.1 The three checks, and why all three
 
 1. **Compiles with no `sorry`.** Necessary. Not sufficient: the first draft of this file compiled with no `sorry` and proved every tier from an inconsistent premise set. (P12 was quantified over every propensity structure, including the one with no open sets, so `Axioms M → False` was provable in three lines, and every theorem was vacuous.)
 2. **Consistency witness compiles** (`Toy.A`). A concrete model in which every premise holds. If the premises are inconsistent, this cannot be built. **Any edit to `Core` or `Axioms` must keep `Toy.A` compiling, or the certificate is void.**
-3. **Independence witnesses compile** (ten `*.witness` theorems). For each contested premise, a model in which every other premise holds, that one fails, and the conclusion it supports fails. These show each premise is genuinely load-bearing and not a consequence of the rest — i.e. that the definitions have not quietly made any conclusion analytic.
+3. **Independence witnesses compile** (seventeen `*.witness` theorems, plus `W_Nat.powers_witness`). For each contested premise, a model in which every other premise holds, that one fails, and the conclusion it supports fails. These show each premise is genuinely load-bearing and not a consequence of the rest — i.e. that the definitions have not quietly made any conclusion analytic.
 
 ---
 
@@ -109,7 +122,7 @@ The script's negative behaviour is tested: a `sorry` inserted into a proof, a `#
 
 **Certified (Lean kernel):**
 - Every conclusion in `main` follows from the fields of `Axioms` under the definitions in `Model`; `god_exists` names that conclusion (`God M N`) and certifies existence and uniqueness. It does not and cannot discharge `Axioms`.
-- `identify` (one being) and `main` follow from `Axioms`, which includes P4⁺; everything else is typed over `Axioms0` (no P4⁺) or `Core` (no P3, P10, P4⁺). `T3_11'` follows from `Axioms0` (since v8.2, unconditionally); `T2_4'` from `Core` plus ID.
+- `identify` (one being) and `main` follow from `Axioms`, which includes P4⁺; everything else is typed over `Axioms0` (no P4⁺) or `Core` (no P3, P10, P4⁺). `T3_11'` follows from `Axioms0` (since v8.2, unconditionally; direct proof since v8.15); `T2_4'` from `CoreNoP4` plus ID.
 - `Axioms` is satisfiable (has a model).
 - Each of P1, P2, P4, P5, FA, P9, P12, L4, CE, NBL, GG, CH, TR, P4⁺ is independent of the other premises and necessary for the conclusion it supports (P3, NI, P10 are derived; P6 was replaced by FA). Two of the witnesses are complete naturalist packages: `W_Nat` (¬CE) and `NoTR` (¬TR, mindless since v8.6). `W_Pref.residue` certifies the theist's own libertarian residue.
 - Theorems in `section CoreTheorems` use neither P3 nor P10 — their type says so.
@@ -117,7 +130,7 @@ The script's negative behaviour is tested: a `sorry` inserted into a proof, a `#
 **Not certified (and not certifiable by any tool):**
 - That the premises are true.
 - That the Lean definitions mean what the prose words mean. This "faithfulness" step is an informal judgment; the definitions are written to make it checkable by inspection, and the prose gives the Lean name beside every definition and premise so the reader can compare.
-- That the modeling decisions (header D1–D23; prose §1.0) are the right stipulations. Each is a place where earlier versions were ambiguous. Rejecting one is rejecting a stipulation, which is priced in prose §7.
+- That the modeling decisions (Lean header D1–D23; prose §1.0 D1–D28) are the right stipulations. Each is a place where earlier versions were ambiguous. Rejecting one is rejecting a stipulation, which is priced in prose §7.
 - Anything in prose Parts II–III, or in `cosmic_strand_v2.md`. In particular: that Exit 1's price (D22) is too high to pay is a judgment, and the TR fork (D23) is stated, not formalized.
 
 ---
@@ -137,7 +150,7 @@ structure Core      CoreNoP4 + P4 (prose §2.1)
 structure Core      … includes FA (factivity of ahistorical non-mental content) in place of P6
 structure Axioms0   extends Core with CE, NBL, GG, CH, TR (P3, NI, P10 derived: P3_of, NI_of_NBL, P10_of)
 structure Axioms    extends Axioms0 with P4⁺ (prose §2.2)
-                    optional: P6'_stmt, ID_stmt, CatU/CatOpen, IDF_stmt (prose §2.3)
+                    optional: ID_stmt, SK_stmt, P8s_stmt, P7all/P8all, CatU/CatOpen, IDF_stmt (prose §2.3)
 exists_minimal      generic: finite strict partial orders have minimal elements
 section CoreTheorems   Tier 1, 2.1–2.15, 3.7–3.10 lemmas, mind_of_CE_NBL — typed over CoreNoP4 (T2_8 over Core)
 section FullTheorems   2.16–4.6, identity relations, all_worlds_accord — typed over Axioms0
@@ -151,7 +164,7 @@ L2_countable_uniform, uniform_countable_refuted   the uniform propensity horn, f
 exists_notin_list, cantor   lemmas for the infinite witnesses
 namespace Toy       model family Mk (Params); per-premise lemmas h_*
   Toy.A             consistency witness
-  Toy.Bare/Axiarch/NoCH/NoTR/NoMind/NoAcc/Narrow/Chance   P3, NI, CH, TR, P6, P9, P5, P12
+  Toy.Bare/Axiarch/NoCH/NoTR/NoMind/NoAcc/Narrow/Chance   CE, NBL, CH, TR, FA, P9, P5, P12
   Toy.DLaw          base-tracking law: ¬NBL, bare, not favored
   Toy.DState        ¬GG: state selects for a non-evaluative property; mind survives
   Toy.W_P2, W_P4    finite models for P2, P4
@@ -167,7 +180,7 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
   Toy.BothChannels  ¬NBL with the state channel on: God still holds (v8.14)
   Toy.W_Pref.fork_is_residue   powers_fork's Horn 1 on the theist's model is residue (v8.14)
   Toy.W_Two         two fundamentals both producing at every world: positions (i) and (ii) (v8.14)
-#print axioms ×58; #check ×58 (statements pinned)
+#print axioms ×63; #check ×63 (statements pinned); #print ×99 definitions (pinned, v8.15)
 ```
 
 ### 2.1 Prose line → theorem
@@ -201,7 +214,7 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | 3.3–3.4 | `T3_4` | Axioms0 (via derived P10) |
 | 3.6 | `T3_6` | Axioms (P5) |
 | 3.7 | `T3_7` | Core (Src, P1, L0, B1) |
-| mentality by elimination | `mental_of_nonactual` | FA |
+| mentality by elimination | `mental_of_nonactual`, `inground_state_in_force` | FA (states in force, v8.15) |
 | 3.8 | `T3_8` | FA |
 | 3.9–3.10 | `T3_10`, `selecting_props` | P9 |
 | 3.11 | `T3_11` | Axioms |
@@ -222,10 +235,12 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | the two naturalist packages | `W_Nat.witness`, `NoTR.witness` | — (models) |
 | the TR fork | `powers_all_tied`, `powers_fork` | `Powers M` only (no `Axioms`) |
 | the fork's horns; inclination ≠ power | `W_Nat.powers_witness`, `NoTR.powers_horn1`, `W_Pref.no_powers_at_maximal` | — (models) |
-| the fallible reading, both sides | `W_Nat.fallible_witness`, `W_Pref.fallible_witness` | — (models) |
 | denying P4 is polytheism | `W_P4.two_minds` | — (model) |
 | IDF alone is not P4 (alternation) | `W_P4.IDF_and_not_P4` | — (model) |
 | the fallible structure is content-free | `fallible_actual_iff`, `fallible_actual_trivial` | — (no axioms) |
+| L0 derived | `L0_of_P1` | P1 |
+| P8s, SK consistent with `Axioms` | `P8s_holds`, `SK_holds` | — (model) |
+| IDF ≠ ID | `W_P4.IDF_and_not_ID` | — (model) |
 | "directed at non-empty" is a tautology | `natural_directed_nonempty` | — (no axioms) |
 | Horn 1 of the fork is the residue | `W_Pref.fork_is_residue` | — (model) |
 | ¬NBL alone keeps `God` | `BothChannels.witness` | — (model) |
@@ -236,6 +251,10 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 ---
 
 ## 3. Changes from v5 found by formalizing
+
+*Rows are history. Lean names in rows (n), (u), (z), (bq) that no longer exist are marked where they occur; the current names are in §2.*
+
+*The change log is history and is not rewritten. Names that appear in rows (n)–(z) and no longer exist — `P6′`, `Toy.W_Id.three_distinct`, `agent_ne_originator_under_P6'`, `identify_of` — were retired in v7 (P4⁺ adopted) and v8.2 (FA replaces P6/P6′; `originator_neither` replaces `three_distinct`); row (bq)'s `fallible_witness` theorems were deleted in v8.14 (row cf).*
 
 | # | v5 | v6 | Where |
 |---|---|---|---|
@@ -257,7 +276,7 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | # | Change | Where |
 |---|---|---|
 | m | Selecting representation must represent the empty alternative | `Content.nil`, `RepAllOmega`, P5, `KnowsAll` |
-| n | Second route to Tier 3 without single-source derivation | P6′, `T3_11'` |
+| n | Second route to Tier 3 without single-source derivation | P6′ *(retired v8.2; `T3_11'` now rests on FA)* |
 | o | D1 made explicit as an optional premise | `TypeDeterministic`, ID, `T2_4'` |
 | p | Independence witnesses for all ten contested premises | `Toy.*`, `W_P2`, `W_P4`, `W_P1`, `W_L4` |
 
@@ -279,7 +298,7 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 
 | # | Change | Where |
 |---|---|---|
-| u | Certified that the premises permit originator, mind, and agent to be three distinct beings; only P4⁺ identifies them | `Toy.W_Id.three_distinct`, `agent_ne_originator_under_P6'` |
+| u | Certified that the premises permit originator, mind, and agent to be three distinct beings; only P4⁺ identifies them | `Toy.W_Id.three_distinct`, `agent_ne_originator_under_P6'` *(both removed v8.2; see `originator_neither`)* |
 
 ### v6.4 → v6.5
 
@@ -294,7 +313,7 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 
 | # | Change | Where |
 |---|---|---|
-| z | P4⁺ adopted as a premise; `identify` unconditional; `main` concludes about one being; `W_Id.three_distinct` becomes P4⁺'s independence witness; `identify_of` keeps the conditional form | `Axioms0`, `Axioms`, `identify`, `identify_of`, `main` |
+| z | P4⁺ adopted as a premise; `identify` unconditional; `main` concludes about one being; `W_Id.three_distinct` becomes P4⁺'s independence witness; `identify_of` keeps the conditional form *(both since removed: `originator_neither` is the witness; `identify_of` is gone)* | `Axioms0`, `Axioms`, `identify`, `identify_of`, `main` |
 | aa | ℚ certified to satisfy `ArchOrd` in core; all witness models use ℚ-valued propensities; Mathlib item closed | `RatArch`, `archRat`, `zeroMeasureRat` |
 
 ### v7 → v7.1 (after external review)
@@ -402,7 +421,7 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | # | Change | Where |
 |---|---|---|
 | bp | `FalliblePowers` (manifests at w₀ only); `Powers.fallible`; `FalliblePowers.actual` — the generic structure every model with a channel state has | after `PowersFork` |
-| bq | `W_Nat.fallible_witness`, `W_Pref.fallible_witness`: the same generic structure directs the channel state at maximality on both models, which differ only in `Sens`, `Rep`, `Mental` | `Toy.*`; prose §III.5 |
+| bq | *(withdrawn v8.14, row cf)* `W_Nat.fallible_witness`, `W_Pref.fallible_witness`: the same generic structure directs the channel state at maximality on both models, which differ only in `Sens`, `Rep`, `Mental` | `Toy.*`; prose §III.5 |
 | br | III.5 closes the fallible reading on Mumford–Anjum, Vetter, and Bird; open problem 0 narrowed to one sentence with nothing further to formalize | prose §III.5, §10 |
 | bs | `#print axioms` ×49 | — |
 
@@ -451,6 +470,19 @@ N_anc_of_nec_concrete, originator_produces_mind_and_agent, stateless_originator_
 | cl | `verify.sh` pins statements (`expected_statements.txt`); the statement-weakening attack is a tested failure | scripts, CI |
 | cm | Prose: III.1 ties and `T2_2`; III.4 count and Collins; III.7 CatU's second premise, BHW, Schiffrin–Wald; III.9 rows; housekeeping | prose |
 
+### v8.14 → v8.15 (after the fourth external review)
+
+| # | Change | Where |
+|---|---|---|
+| cn | FA and P9 restricted to states in force at w (`M.E_state w s →`); `inground_state_in_force`; every consumer re-threaded; a premise weakening with no loss of theorems | `FA_stmt`, `P9_stmt`, `mental_of_nonactual`, `T3_8`, `T3_10`, `T3_11`; prose III.3, D19 |
+| co | `W_P2`, `W_P4`, `W_P1`, `W_L4` witnesses certified `P6_stmt` instead of `FA_stmt` since v8.2; fixed | `Toy.*` |
+| cp | `mind_of_CE_NBL` concludes `Mental s ∧ Mind t` of the selector (was a fresh `∃ t'`); `DState.witness` strengthened | `mind_of_CE_NBL`, `Toy.DState` |
+| cq | `T3_11'` proved directly (was `(T3_11 A).2`, through `Src`) | `T3_11'` |
+| cr | `L0_of_P1`; L0 marked derived; v8.14's "L0 burden" withdrawn | Lean; prose III.6 |
+| cs | `P8s_holds`, `SK_holds`, `W_P4.IDF_and_not_ID` | `Toy.*` |
+| ct | `verify.sh` check 6 pins definitions (`expected_definitions.txt`); README states what green means | scripts, CI, README §0.0 |
+| cu | Stale names in the Lean header (`identify_of`, `three_distinct`, P6′, "~3–5", E as a chance premise) corrected; prose sweep (D25, changelog, §11, title, D23, `Narrow` row, §5.4, §10.15, D18, D27, D28, Appendix A) | Lean header; prose; README; guide; handoff |
+
 ---
 
 ## 4. Workflow for future changes
@@ -461,7 +493,7 @@ Every prior version of this argument was declared fixed by the person who fixed 
 2. **Make the matching change in the Lean file.** If a definition changes, every theorem mentioning it must be re-proved; the compiler will tell you which.
 3. **Run the three checks (§0.1).** If `Toy.A` no longer compiles, either the new premise set is inconsistent or the toy model needs a different instance — find out which before proceeding. If a witness no longer compiles, the corresponding independence claim in the prose must be withdrawn.
 4. **Re-check faithfulness by inspection**: read the changed Lean definition and the changed prose sentence side by side.
-5. **Never accept a "verified" claim from the same session that made the change.** Hand the files to a fresh reader (human or chat) with the expected outputs and the instruction: reproduce the fifty-eight `#print axioms` lines and the pinned statements, then attack faithfulness, then attack Part II. (v8.14 was produced by the session that reviewed v8.13; per this rule it has not been independently verified.)
+5. **Never accept a "verified" claim from the same session that made the change.** Hand the files to a fresh reader (human or chat) with the expected outputs and the instruction: reproduce the sixty-three `#print axioms` lines, the pinned statements and the pinned definitions, then attack faithfulness, then attack Part II. (v8.14 and v8.15 were produced by the session that reviewed v8.13, applying the third and fourth reviews; per this rule neither has been independently verified.)
 
 What a fresh reader can still legitimately attack after all this: (i) whether a Lean definition captures the intended notion; (ii) whether a stipulation D1–D12 is reasonable; (iii) whether a premise is true. They cannot legitimately attack the inference from premises to conclusion — if they think they can, the Lean file is the arbiter, and they should produce a compiling counterexample.
 

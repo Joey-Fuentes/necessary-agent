@@ -76,7 +76,12 @@ Toy.DState.witness : Nonempty (NecessaryAgent.Core (Toy.Mk Toy.DState.P)) ∧
             ¬NecessaryAgent.GG_stmt (Toy.Mk Toy.DState.P) ∧
               ¬(Toy.Mk Toy.DState.P).Favored true ∧
                 ¬NecessaryAgent.P3_stmt (Toy.Mk Toy.DState.P) ∧
-                  ∃ t, (Toy.Mk Toy.DState.P).Nec t ∧ (Toy.Mk Toy.DState.P).Concrete t ∧ (Toy.Mk Toy.DState.P).Mind t
+                  ∃ t st,
+                    (Toy.Mk Toy.DState.P).Nec t ∧
+                      (Toy.Mk Toy.DState.P).Concrete t ∧
+                        (Toy.Mk Toy.DState.P).bearer st = t ∧
+                          (∃ Q, (Toy.Mk Toy.DState.P).Sens true Q (NecessaryAgent.Chan.state st)) ∧
+                            (Toy.Mk Toy.DState.P).Mental st ∧ (Toy.Mk Toy.DState.P).Mind t
 @NecessaryAgent.no_modal_collapse : ∀ {M : NecessaryAgent.Model}, NecessaryAgent.CoreNoP4 M → ∃ w w', M.F w ≠ M.F w'
 @NecessaryAgent.mind_of_CE_NBL : ∀ {M : NecessaryAgent.Model},
   NecessaryAgent.CoreNoP4 M →
@@ -89,8 +94,7 @@ Toy.DState.witness : Nonempty (NecessaryAgent.Core (Toy.Mk Toy.DState.P)) ∧
                 M.Concrete t ∧
                   M.bearer s = t ∧
                     (∃ m, M.F M.w₀ m ∧ M.CausesVia M.w₀ t s m) ∧
-                      M.RepState s ∧
-                        (∃ P, M.Sens M.w₀ P (NecessaryAgent.Chan.state s)) ∧ ∃ t', M.Nec t' ∧ M.Concrete t' ∧ M.Mind t'
+                      M.RepState s ∧ (∃ P, M.Sens M.w₀ P (NecessaryAgent.Chan.state s)) ∧ M.Mental s ∧ M.Mind t
 NecessaryAgent.P3_of : ∀ (M : NecessaryAgent.Model),
   NecessaryAgent.CE_stmt M → NecessaryAgent.NBL_stmt M → NecessaryAgent.GG_stmt M → NecessaryAgent.P3_stmt M
 @NecessaryAgent.exists_maximal : ∀ {M : NecessaryAgent.Model}, NecessaryAgent.Axioms0 M → ∃ r, M.InOmega r ∧ M.Maximal r
@@ -216,7 +220,7 @@ Toy.W_P2.witness : (NecessaryAgent.F1_stmt Toy.W_P2.M ∧
                         NecessaryAgent.GG_stmt Toy.W_P2.M ∧
                           NecessaryAgent.P4_stmt Toy.W_P2.M ∧
                             NecessaryAgent.P5_stmt Toy.W_P2.M ∧
-                              NecessaryAgent.P6_stmt Toy.W_P2.M ∧
+                              NecessaryAgent.FA_stmt Toy.W_P2.M ∧
                                 NecessaryAgent.P7_stmt Toy.W_P2.M ∧
                                   NecessaryAgent.P8_stmt Toy.W_P2.M ∧
                                     NecessaryAgent.P9_stmt Toy.W_P2.M ∧
@@ -242,7 +246,7 @@ Toy.W_P4.witness : (NecessaryAgent.F1_stmt Toy.W_P4.M ∧
                         NecessaryAgent.NBL_stmt Toy.W_P4.M ∧
                           NecessaryAgent.GG_stmt Toy.W_P4.M ∧
                             NecessaryAgent.P5_stmt Toy.W_P4.M ∧
-                              NecessaryAgent.P6_stmt Toy.W_P4.M ∧
+                              NecessaryAgent.FA_stmt Toy.W_P4.M ∧
                                 NecessaryAgent.P7_stmt Toy.W_P4.M ∧
                                   NecessaryAgent.P8_stmt Toy.W_P4.M ∧
                                     NecessaryAgent.P9_stmt Toy.W_P4.M ∧
@@ -267,7 +271,7 @@ Toy.W_P1.witness : (NecessaryAgent.F1_stmt Toy.W_P1.M ∧
                         NecessaryAgent.GG_stmt Toy.W_P1.M ∧
                           NecessaryAgent.P4_stmt Toy.W_P1.M ∧
                             NecessaryAgent.P5_stmt Toy.W_P1.M ∧
-                              NecessaryAgent.P6_stmt Toy.W_P1.M ∧
+                              NecessaryAgent.FA_stmt Toy.W_P1.M ∧
                                 NecessaryAgent.P7_stmt Toy.W_P1.M ∧
                                   NecessaryAgent.P8_stmt Toy.W_P1.M ∧
                                     NecessaryAgent.P9_stmt Toy.W_P1.M ∧
@@ -294,7 +298,7 @@ Toy.W_L4.witness : (NecessaryAgent.F1_stmt Toy.W_L4.M ∧
                           NecessaryAgent.GG_stmt Toy.W_L4.M ∧
                             NecessaryAgent.P4_stmt Toy.W_L4.M ∧
                               NecessaryAgent.P5_stmt Toy.W_L4.M ∧
-                                NecessaryAgent.P6_stmt Toy.W_L4.M ∧
+                                NecessaryAgent.FA_stmt Toy.W_L4.M ∧
                                   NecessaryAgent.P7_stmt Toy.W_L4.M ∧
                                     NecessaryAgent.P8_stmt Toy.W_L4.M ∧
                                       NecessaryAgent.P9_stmt Toy.W_L4.M ∧
@@ -533,3 +537,10 @@ Toy.W_Two.OneChannel.position_i : NecessaryAgent.IDF_stmt (Toy.W_Two.Mk false) �
                 (∀ (w : (Toy.W_Two.Mk false).W), ¬(Toy.W_Two.Mk false).Agent w Toy.W_Two.T.N2) ∧
                   (Toy.W_Two.Mk false).Agent true Toy.W_Two.T.N ∧
                     (Toy.W_Two.Mk false).realOf true ≠ (Toy.W_Two.Mk false).realOf false
+NecessaryAgent.L0_of_P1 : ∀ (M : NecessaryAgent.Model), NecessaryAgent.P1_stmt M → NecessaryAgent.L0_stmt M
+NecessaryAgent.fallible_actual_trivial : ∀ (M : NecessaryAgent.Model) (s : M.State),
+  ((NecessaryAgent.FalliblePowers.actual M s).Directed s fun x => True) ∧
+    (NecessaryAgent.FalliblePowers.actual M s).Directed s fun r => r = M.realOf M.w₀
+Toy.P8s_holds : NecessaryAgent.P8s_stmt Toy.M
+Toy.SK_holds : NecessaryAgent.SK_stmt Toy.M
+Toy.W_P4.IDF_and_not_ID : NecessaryAgent.IDF_stmt Toy.W_P4.M ∧ ¬NecessaryAgent.ID_stmt Toy.W_P4.M
