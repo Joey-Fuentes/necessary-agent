@@ -8,7 +8,7 @@ Three files, which must stay in agreement:
 | `docs/necessary_agent_argument_v8_7.md` | The human-readable argument. **Part I** is the Lean file in words, section for section. **Part II** is informal assessment: exits, ledger, ladder, open problems. **Part III** is the soundness dossier: each premise's case, objections, replies, cost of denial, and ceiling. | Part I inherits the certificate *if it matches the Lean file*; Parts II–III are uncertified |
 | `README.md` | This file: how to verify, how to read, how to change things without breaking them. | — |
 | `expected_axioms.txt`, `scripts/verify.sh`, `.github/workflows/verify.yml`, `lean-toolchain`, `lakefile.toml` | Continuous verification (§0.0). | CI |
-| `docs/plain_language_guide_v8_7.md` | Companion for non-specialists. Every premise in plain words; the two exits and their prices. | Uncertified; synchronized with v8.15 |
+| `docs/plain_language_guide_v8_7.md` | Companion for non-specialists. Every premise in plain words; the two exits and their prices. | Uncertified; synchronized with v8.17 |
 | `docs/cosmic_strand_v2.md` | The empirical strand: conservative fine-tuning numbers, their two roles (CatOpen support; Exit 1's bill), and what is excluded. | Uncertified; supersedes all earlier teleological documents |
 | `docs/necessary_agent_v8_13_review.md` | Third external review (of v8.13). Status of each item: handoff §8a. | — |
 | `docs/necessary_agent_v8_14_review_findings.md` | Fourth external review (of v8.14; read-through). Status of each item: handoff §8b. | — |
